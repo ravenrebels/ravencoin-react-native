@@ -19,3 +19,5 @@ This naive and simple example demonstrate how to
 - install dependencies `npm install`
 - run `npm run build`
 - run `npm start`
+- <img width="436" alt="image" src="https://github.com/ravenrebels/ravencoin-react-native/assets/9694984/b5301ca8-7904-421c-8ab6-d5ad9e6a5d41">
+
