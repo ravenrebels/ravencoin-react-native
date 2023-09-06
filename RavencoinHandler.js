@@ -1,6 +1,6 @@
 const { verifyMessage, sign } = require("@ravenrebels/ravencoin-message");
 const SIGNER = require("@ravenrebels/ravencoin-sign-transaction");
-const RavencoinWallet = require("@ravenrebels/ravencoin-jswallet");
+//const RavencoinWallet = require("@ravenrebels/ravencoin-jswallet");
 const {
   entropyToMnemonic,
   getAddressPair,
@@ -23,5 +23,4 @@ module.exports = {
   sign,
   signTransaction: SIGNER.sign,
   verifyMessage,
-  RavencoinWallet,
 };

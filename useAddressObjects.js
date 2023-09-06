@@ -5,14 +5,14 @@ import config from "./config";
 export function useAddressObjects(mnemonic) {
   const [addressObjects, setAddressObjects] = React.useState([]);
 
-  //Naive and lazy, derive the first 2 external and internal addresses
+  //Naive and lazy, derive the first 10 external and internal addresses
   const temp = [];
 
   React.useEffect(() => {
     if (mnemonic) {
       //Generating the hd key is time consuming, so we do it once.
       const hdKey = RavencoinHandler.getHDKey(config.network, mnemonic);
-      for (let position = 0; position < 2; position++) {
+      for (let position = 0; position < 10; position++) {
         const externalPath = "m/44'/175'/0'/0/" + position;
         const internalPath = "m/44'/175'/0'/1/" + position;
         const external = RavencoinHandler.getAddressByPath(

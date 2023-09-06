@@ -2,7 +2,7 @@
 (function (Buffer){(function (){
 const { verifyMessage, sign } = require("@ravenrebels/ravencoin-message");
 const SIGNER = require("@ravenrebels/ravencoin-sign-transaction");
-const RavencoinWallet = require("@ravenrebels/ravencoin-jswallet");
+//const RavencoinWallet = require("@ravenrebels/ravencoin-jswallet");
 const {
   entropyToMnemonic,
   getAddressPair,
@@ -25,11 +25,10 @@ module.exports = {
   sign,
   signTransaction: SIGNER.sign,
   verifyMessage,
-  RavencoinWallet,
 };
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"@ravenrebels/ravencoin-jswallet":14,"@ravenrebels/ravencoin-key":15,"@ravenrebels/ravencoin-message":16,"@ravenrebels/ravencoin-sign-transaction":18,"buffer":185}],2:[function(require,module,exports){
+},{"@ravenrebels/ravencoin-key":14,"@ravenrebels/ravencoin-message":15,"@ravenrebels/ravencoin-sign-transaction":16,"buffer":183}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -1622,7 +1621,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this)}).call(this,require('_process'))
-},{"./chains.cjs.development.js":2,"./chains.cjs.production.min.js":3,"_process":285}],5:[function(require,module,exports){
+},{"./chains.cjs.development.js":2,"./chains.cjs.production.min.js":3,"_process":283}],5:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.output = exports.exists = exports.hash = exports.bytes = exports.bool = exports.number = void 0;
@@ -2596,802 +2595,6 @@ function randomBytes(bytesLength = 32) {
 exports.randomBytes = randomBytes;
 
 },{"@noble/hashes/crypto":8}],14:[function(require,module,exports){
-var $4aiOY$ravenrebelsravencoinrpc = require("@ravenrebels/ravencoin-rpc");
-var $4aiOY$ravenrebelsravencoinkey = require("@ravenrebels/ravencoin-key");
-var $4aiOY$buffer = require("buffer");
-var $4aiOY$ravenrebelsravencoinsigntransaction = require("@ravenrebels/ravencoin-sign-transaction");
-
-function $parcel$interopDefault(a) {
-  return a && a.__esModule ? a.default : a;
-}
-function $parcel$defineInteropFlag(a) {
-  Object.defineProperty(a, '__esModule', {value: true, configurable: true});
-}
-function $parcel$export(e, n, v, s) {
-  Object.defineProperty(e, n, {get: v, set: s, enumerable: true, configurable: true});
-}
-
-$parcel$defineInteropFlag(module.exports);
-
-$parcel$export(module.exports, "Wallet", () => $bf36305bcbc0cb23$export$bcca3ea514774656);
-$parcel$export(module.exports, "getBaseCurrencyByNetwork", () => $bf36305bcbc0cb23$export$af0c167f1aa2328f);
-$parcel$export(module.exports, "default", () => $bf36305bcbc0cb23$export$2e2bcd8739ae039);
-$parcel$export(module.exports, "createInstance", () => $bf36305bcbc0cb23$export$99152e8d49ca4e7d);
-
-
-const $de29b860155088a6$export$ffff6aea08fd9487 = 1e8;
-
-
-
-const $30fffeab88bbc1c2$var$ONE_HUNDRED_MILLION = 1e8;
-function $30fffeab88bbc1c2$export$24d1144bbf44c6c6(rpc, addresses) {
-    return rpc("getaddressdeltas", [
-        {
-            addresses: addresses,
-            assetName: ""
-        }
-    ]);
-}
-function $30fffeab88bbc1c2$export$4e309754b4830e29(rpc, signedTransaction) {
-    const p = rpc("sendrawtransaction", [
-        signedTransaction
-    ]);
-    p.catch((e)=>{
-        console.log("send raw transaction");
-        console.dir(e);
-    });
-    return p;
-}
-function $30fffeab88bbc1c2$export$4e98a95db76a53e1(rpc, rawTransactionHex, privateKeys) {
-    const s = rpc("signrawtransaction", [
-        rawTransactionHex,
-        null,
-        privateKeys
-    ]);
-    return s;
-}
-function $30fffeab88bbc1c2$export$fcbdf06914f0237a(rpc, raw) {
-    return rpc("decoderawtransaction", [
-        raw
-    ]);
-}
-function $30fffeab88bbc1c2$export$b7bc66c041203976(rpc, id) {
-    return rpc("getrawtransaction", [
-        id,
-        true
-    ]);
-}
-function $30fffeab88bbc1c2$export$3c514ecc803e4adc(rpc, inputs, outputs) {
-    return rpc("createrawtransaction", [
-        inputs,
-        outputs
-    ]);
-}
-async function $30fffeab88bbc1c2$export$f78173835dcde49f(rpc, address) {
-    return rpc("validateaddress", [
-        address
-    ]);
-}
-function $30fffeab88bbc1c2$export$df96cd8d56be0ab1(rpc, addresses) {
-    const includeAssets = true;
-    const promise = rpc("getaddressbalance", [
-        {
-            addresses: addresses
-        },
-        includeAssets
-    ]);
-    return promise;
-}
-function $30fffeab88bbc1c2$export$1021589f9720f1bb(list) {
-    //Remember, sort mutates the underlaying array
-    //Sort by satoshis, lowest first to prevent dust.
-    return list.sort(function(a, b) {
-        if (a.satoshis > b.satoshis) return 1;
-        if (a.satoshis < b.satoshis) return -1;
-        return 0;
-    });
-}
-async function $30fffeab88bbc1c2$export$2c023684d71dad7(rpc, addresses) {
-    const list = await rpc("getaddressutxos", [
-        {
-            addresses: addresses
-        }
-    ]);
-    $30fffeab88bbc1c2$export$1021589f9720f1bb(list);
-    return list;
-}
-function $30fffeab88bbc1c2$export$61ff118ad91d2b8c(rpc, addresses, assetName) {
-    const assets = rpc("getaddressutxos", [
-        {
-            addresses: addresses,
-            assetName: assetName
-        }
-    ]);
-    return assets;
-}
-function $30fffeab88bbc1c2$export$11b542b4427a1a57(rpc, addresses) {
-    /*
-  Seems like getaddressutxos either return RVN UTXOs or asset UTXOs
-  Never both.
-  So we make two requests and we join the answer
-  */ const raven = rpc("getaddressutxos", [
-        {
-            addresses: addresses
-        }
-    ]);
-    const assets = rpc("getaddressutxos", [
-        {
-            addresses: addresses,
-            assetName: "*"
-        }
-    ]);
-    return Promise.all([
-        raven,
-        assets
-    ]).then((values)=>{
-        const all = values[0].concat(values[1]);
-        return all;
-    });
-}
-async function $30fffeab88bbc1c2$export$6bbaa6939a98b630(rpc) {
-    const ids = await rpc("getrawmempool", []);
-    const result = [];
-    for (const id of ids){
-        const transaction = await $30fffeab88bbc1c2$export$b7bc66c041203976(rpc, id);
-        result.push(transaction);
-    }
-    return result;
-}
-function $30fffeab88bbc1c2$export$6a4ffba0c6186ae7(UTXOs) {
-    const inputs = UTXOs.map(function(bla) {
-        //OK we have to convert from "unspent" format to "vout"
-        const obj = {
-            txid: bla.txid,
-            vout: bla.outputIndex,
-            address: bla.address
-        };
-        return obj;
-    });
-    return inputs;
-}
-
-
-
-class $e16394a5869d8429$export$2191b9da168c6cf0 extends Error {
-    constructor(message){
-        super(message); // (1)
-        this.name = "ValidationError"; // (2)
-    }
-}
-class $e16394a5869d8429$export$66c44d927ffead98 extends Error {
-    constructor(message){
-        super(message); // (1)
-        this.name = "InvalidAddressError"; // (2)
-    }
-}
-class $e16394a5869d8429$export$b276096bbba16879 extends Error {
-    constructor(message){
-        super(message); // (1)
-        this.name = "InsufficientFundsError"; // (2)
-    }
-}
-
-
-
-var $827163bad133a0dc$require$Buffer = $4aiOY$buffer.Buffer;
-async function $827163bad133a0dc$var$isValidAddress(rpc, address) {
-    const obj = await $30fffeab88bbc1c2$export$f78173835dcde49f(rpc, address);
-    return obj.isvalid === true;
-}
-function $827163bad133a0dc$var$sumOfUTXOs(UTXOs) {
-    let unspentRavencoinAmount = 0;
-    UTXOs.map(function(item) {
-        const newValue = item.satoshis / 1e8;
-        unspentRavencoinAmount = unspentRavencoinAmount + newValue;
-    });
-    return unspentRavencoinAmount;
-}
-/*
-
-    "Chicken and egg" situation.
-    We need to calculate how much we shall pay in fees based on the size of the transaction.
-    When adding inputs/outputs for the fee, we increase the fee.
-
-    Lets start by first assuming that we will pay 1 RVN in fee (that is sky high).
-    Than we check the size of the transaction and then we just adjust the change output so the fee normalizes
-*/ async function $827163bad133a0dc$var$getFee(rpc, inputs, outputs) {
-    const ONE_KILOBYTE = 1024;
-    //Create a raw transaction to get an aproximation for transaction size.
-    const raw = await $30fffeab88bbc1c2$export$3c514ecc803e4adc(rpc, inputs, outputs);
-    //Get the length of the string bytes not the string
-    //This is NOT the exact size since we will add an output for the change address to the transaction
-    //We add 20% to the size, to cover extra input for fee
-    const size = $827163bad133a0dc$require$Buffer.from(raw).length / ONE_KILOBYTE * 1.2;
-    let fee = 0.02;
-    //Ask the "blockchain" **estimatesmartfee**
-    try {
-        const confirmationTarget = 100;
-        const asdf = await rpc("estimatesmartfee", [
-            confirmationTarget
-        ]);
-        if (!asdf.errors) fee = asdf.feerate;
-    } catch (e) {}
-    const result = fee * Math.max(1, size);
-    return result;
-}
-function $827163bad133a0dc$var$getDefaultSendResult() {
-    const sendResult = {
-        transactionId: "undefined",
-        debug: {
-            assetName: "",
-            assetUTXOs: [],
-            amount: 0,
-            fee: 0,
-            inputs: [],
-            outputs: null,
-            rvnChangeAmount: 0,
-            rvnUTXOs: [],
-            unspentRVNAmount: "",
-            rvnAmount: 0
-        }
-    };
-    return sendResult;
-}
-async function $827163bad133a0dc$export$89db4734f6c919c4(options) {
-    const { amount: amount , assetName: assetName , baseCurrency: baseCurrency , changeAddress: changeAddress , changeAddressAssets: changeAddressAssets , fromAddressObjects: fromAddressObjects , network: network , toAddress: toAddress , rpc: rpc  } = options;
-    const sendResult = $827163bad133a0dc$var$getDefaultSendResult();
-    sendResult.debug.amount = amount;
-    const MAX_FEE = 4;
-    const isAssetTransfer = assetName !== baseCurrency;
-    //VALIDATION
-    if (await $827163bad133a0dc$var$isValidAddress(rpc, toAddress) === false) throw new (0, $e16394a5869d8429$export$66c44d927ffead98)("Invalid address " + toAddress);
-    if (amount < 0) throw new (0, $e16394a5869d8429$export$2191b9da168c6cf0)("Cant send less than zero");
-    const addresses = fromAddressObjects.map((a)=>a.address);
-    //Do we have enough of the asset?
-    if (isAssetTransfer === true) {
-        if (!changeAddressAssets) throw new (0, $e16394a5869d8429$export$2191b9da168c6cf0)("No changeAddressAssets");
-        const b = await $30fffeab88bbc1c2$export$df96cd8d56be0ab1(rpc, addresses);
-        const a = b.find((asset)=>asset.assetName === assetName);
-        if (!a) throw new (0, $e16394a5869d8429$export$b276096bbba16879)("You do not have any " + assetName);
-        const balance = a.balance / (0, $de29b860155088a6$export$ffff6aea08fd9487);
-        if (balance < amount) throw new (0, $e16394a5869d8429$export$b276096bbba16879)("You do not have " + amount + " " + assetName);
-    }
-    let allBaseCurrencyUTXOs = await $30fffeab88bbc1c2$export$2c023684d71dad7(rpc, addresses);
-    //Remove UTXOs that are currently in mempool
-    const mempool = await $30fffeab88bbc1c2$export$6bbaa6939a98b630(rpc);
-    allBaseCurrencyUTXOs = allBaseCurrencyUTXOs.filter((UTXO)=>$827163bad133a0dc$export$9ffd76c05265a057(mempool, UTXO) === false);
-    const enoughBaseCurrencyUTXOs = $827163bad133a0dc$export$aef5e6c96bd29914(allBaseCurrencyUTXOs, isAssetTransfer ? 1 : amount + MAX_FEE);
-    //Sum up the whole unspent amount
-    let unspentBaseCurrencyAmount = $827163bad133a0dc$var$sumOfUTXOs(enoughBaseCurrencyUTXOs);
-    if (unspentBaseCurrencyAmount <= 0) throw new (0, $e16394a5869d8429$export$b276096bbba16879)("Not enough RVN to transfer asset, perhaps your wallet has pending transactions");
-    sendResult.debug.unspentRVNAmount = unspentBaseCurrencyAmount.toLocaleString();
-    if (isAssetTransfer === false) {
-        if (amount > unspentBaseCurrencyAmount) throw new (0, $e16394a5869d8429$export$b276096bbba16879)("Insufficient funds, cant send " + amount.toLocaleString() + " only have " + unspentBaseCurrencyAmount.toLocaleString());
-    }
-    const baseCurrencyAmountToSpend = isAssetTransfer ? 0 : amount;
-    sendResult.debug.rvnUTXOs = enoughBaseCurrencyUTXOs;
-    const inputs = $30fffeab88bbc1c2$export$6a4ffba0c6186ae7(enoughBaseCurrencyUTXOs);
-    const outputs = {};
-    //Add asset inputs
-    sendResult.debug.assetUTXOs = [];
-    if (isAssetTransfer === true) {
-        if (!changeAddressAssets) throw new (0, $e16394a5869d8429$export$2191b9da168c6cf0)("changeAddressAssets is mandatory when transfering assets");
-        const assetUTXOs = await $827163bad133a0dc$var$addAssetInputsAndOutputs(rpc, addresses, assetName, amount, inputs, outputs, toAddress, changeAddressAssets);
-        sendResult.debug.assetUTXOs = assetUTXOs;
-    } else if (isAssetTransfer === false) outputs[toAddress] = baseCurrencyAmountToSpend;
-    const fee = await $827163bad133a0dc$var$getFee(rpc, inputs, outputs);
-    sendResult.debug.assetName = assetName;
-    sendResult.debug.fee = fee;
-    sendResult.debug.rvnAmount = 0;
-    const baseCurrencyChangeAmount = unspentBaseCurrencyAmount - baseCurrencyAmountToSpend - fee;
-    sendResult.debug.rvnChangeAmount = baseCurrencyChangeAmount;
-    //Obviously we only add change address if there is any change
-    if ($827163bad133a0dc$export$82aafe8193f6c0ba(baseCurrencyChangeAmount) > 0) outputs[changeAddress] = $827163bad133a0dc$export$82aafe8193f6c0ba(baseCurrencyChangeAmount);
-    //Now we have enough UTXos, lets create a raw transactions
-    sendResult.debug.inputs = inputs;
-    sendResult.debug.outputs = outputs;
-    const raw = await $30fffeab88bbc1c2$export$3c514ecc803e4adc(rpc, inputs, outputs);
-    sendResult.debug.rawUnsignedTransaction = raw;
-    //OK lets find the private keys (WIF) for input addresses
-    const privateKeys = {};
-    inputs.map(function(input) {
-        const addy = input.address;
-        const addressObject = fromAddressObjects.find((a)=>a.address === addy);
-        if (addressObject) privateKeys[addy] = addressObject.WIF;
-    });
-    sendResult.debug.privateKeys = privateKeys;
-    let UTXOs = [];
-    if (enoughBaseCurrencyUTXOs) UTXOs = UTXOs.concat(enoughBaseCurrencyUTXOs);
-    if (sendResult.debug.assetUTXOs) UTXOs = UTXOs.concat(sendResult.debug.assetUTXOs);
-    try {
-        const signedTransaction = (0, $4aiOY$ravenrebelsravencoinsigntransaction.sign)(network, raw, UTXOs, privateKeys);
-        sendResult.debug.signedTransaction = signedTransaction;
-        const txid = await $30fffeab88bbc1c2$export$4e309754b4830e29(rpc, signedTransaction);
-        sendResult.transactionId = txid;
-    } catch (e) {
-        sendResult.debug.error = e;
-    }
-    return sendResult;
-}
-async function $827163bad133a0dc$var$addAssetInputsAndOutputs(rpc, addresses, assetName, amount, inputs, outputs, toAddress, changeAddressAssets) {
-    let assetUTXOs = await $30fffeab88bbc1c2$export$61ff118ad91d2b8c(rpc, addresses, assetName);
-    const mempool = await $30fffeab88bbc1c2$export$6bbaa6939a98b630(rpc);
-    assetUTXOs = assetUTXOs.filter((UTXO)=>$827163bad133a0dc$export$9ffd76c05265a057(mempool, UTXO) === false);
-    const _UTXOs = $827163bad133a0dc$export$aef5e6c96bd29914(assetUTXOs, amount);
-    const tempInputs = $30fffeab88bbc1c2$export$6a4ffba0c6186ae7(_UTXOs);
-    tempInputs.map((item)=>inputs.push(item));
-    outputs[toAddress] = {
-        transfer: {
-            [assetName]: amount
-        }
-    };
-    const assetSum = $827163bad133a0dc$var$sumOfUTXOs(_UTXOs);
-    const needsChange = assetSum - amount > 0;
-    if (needsChange) outputs[changeAddressAssets] = {
-        transfer: {
-            [assetName]: assetSum - amount
-        }
-    };
-    return _UTXOs; //Return the UTXOs used for asset transfer
-}
-function $827163bad133a0dc$export$82aafe8193f6c0ba(num) {
-    //Found answer here https://stackoverflow.com/questions/11832914/how-to-round-to-at-most-2-decimal-places-if-necessary
-    //In JavaScript the number 77866.98 minus 111 minus 0.2 equals 77755.95999999999
-    //We want it to be 77755.96
-    return Math.trunc(num * 100) / 100;
-}
-function $827163bad133a0dc$export$aef5e6c96bd29914(utxos, amount) {
-    /*
-  Scenario ONE
-  Bob has 300 UTXO with 1 RVN each.
-  Bob has one UTXO with 400 RVN.
-
-  Bob intends to send 300 RVN
-  In this case the best thing to do is to use the single 400 UTXO
-
-  SCENARIO TWO
-
-  Alice have tons of small UTXOs like 0.03 RVN, 0.2 RVN, she wants to send 5 RVN.
-  In this case it makes sense to clean up the "dust", so you dont end up with a lot of small change.
-
-
-  */ //For small transactions,start with small transactions first.
-    let tempAmount = 0;
-    const returnValue = [];
-    utxos.map(function(utxo) {
-        if (utxo.satoshis !== 0 && tempAmount < amount) {
-            const value = utxo.satoshis / (0, $de29b860155088a6$export$ffff6aea08fd9487);
-            tempAmount = tempAmount + value;
-            returnValue.push(utxo);
-        }
-    });
-    //Did we use a MASSIVE amount of UTXOs to safisfy this transaction?
-    //In this case check if we do have one single UTXO that can satisfy our needs
-    if (returnValue.length > 10) {
-        const largerUTXO = utxos.find((utxo)=>utxo.satoshis / (0, $de29b860155088a6$export$ffff6aea08fd9487) > amount);
-        if (largerUTXO) //Send this one UTXO that covers it all
-        return [
-            largerUTXO
-        ];
-    }
-    return returnValue;
-}
-function $827163bad133a0dc$export$9ffd76c05265a057(mempool, UTXO) {
-    function format(transactionId, index) {
-        return transactionId + "_" + index;
-    }
-    const listOfUTXOsInMempool = [];
-    mempool.map((transaction)=>{
-        transaction.vin.map((vin)=>{
-            const id = format(vin.txid, vin.vout);
-            listOfUTXOsInMempool.push(id);
-        });
-    });
-    const index = listOfUTXOsInMempool.indexOf(format(UTXO.txid, UTXO.outputIndex));
-    const isInMempool = index > -1;
-    return isInMempool;
-}
-
-
-
-
-
-(0, ($parcel$interopDefault($4aiOY$ravenrebelsravencoinsigntransaction))).sign; //"Idiocracy" but prevents bundle tools such as PARCEL to strip this dependency out on build.
-//sight rate burger maid melody slogan attitude gas account sick awful hammer
-//OH easter egg ;)
-const $fdd8716063277f2b$var$WIF = "Kz5U4Bmhrng4o2ZgwBi5PjtorCeq2dyM7axGQfdxsBSwCKi5ZfTw";
-async function $fdd8716063277f2b$export$322a62cff28f560a(WIF, wallet, onlineMode) {
-    const privateKey = (0, ($parcel$interopDefault($4aiOY$ravenrebelsravencoinkey))).getAddressByWIF(wallet.network, WIF);
-    const result = {};
-    const rpc = wallet.rpc;
-    const obj = {
-        addresses: [
-            privateKey.address
-        ]
-    };
-    const baseCurrencyUTXOs = await rpc("getaddressutxos", [
-        obj
-    ]);
-    const obj2 = {
-        addresses: [
-            privateKey.address
-        ],
-        assetName: "*"
-    };
-    const assetUTXOs = await rpc("getaddressutxos", [
-        obj2
-    ]);
-    const UTXOs = assetUTXOs.concat(baseCurrencyUTXOs);
-    result.UTXOs = UTXOs;
-    //Create a raw transaction with ALL UTXOs
-    if (UTXOs.length === 0) {
-        result.errorDescription = "Address " + privateKey.address + " has no funds";
-        return result;
-    }
-    const balanceObject = {};
-    UTXOs.map((utxo)=>{
-        if (!balanceObject[utxo.assetName]) balanceObject[utxo.assetName] = 0;
-        balanceObject[utxo.assetName] += utxo.satoshis;
-    });
-    const keys = Object.keys(balanceObject);
-    //Start simple, get the first addresses from the wallet
-    const outputs = {};
-    const fixedFee = 0.02; // should do for now
-    keys.map((assetName, index)=>{
-        const address = wallet.getAddresses()[index];
-        const amount = balanceObject[assetName] / 1e8;
-        if (assetName === wallet.baseCurrency) outputs[address] = (0, $827163bad133a0dc$export$82aafe8193f6c0ba)(amount - fixedFee);
-        else outputs[address] = {
-            transfer: {
-                [assetName]: amount
-            }
-        };
-    });
-    result.outputs = outputs;
-    //Convert from UTXO format to INPUT fomat
-    const inputs = UTXOs.map((utxo, index)=>{
-        /*   {
-         "txid":"id",                      (string, required) The transaction id
-         "vout":n,                         (number, required) The output number
-         "sequence":n                      (number, optional) The sequence number
-       } 
-       */ const input = {
-            txid: utxo.txid,
-            vout: utxo.outputIndex
-        };
-        return input;
-    });
-    //Create raw transaction
-    const rawHex = await rpc("createrawtransaction", [
-        inputs,
-        outputs
-    ]);
-    const privateKeys = {
-        [privateKey.address]: WIF
-    };
-    const signedHex = (0, ($parcel$interopDefault($4aiOY$ravenrebelsravencoinsigntransaction))).sign(wallet.network, rawHex, UTXOs, privateKeys);
-    result.rawTransaction = signedHex;
-    if (onlineMode === true) result.transactionId = await rpc("sendrawtransaction", [
-        signedHex
-    ]);
-    return result;
-}
-
-
-const $bf36305bcbc0cb23$var$URL_MAINNET = "https://rvn-rpc-mainnet.ting.finance/rpc";
-const $bf36305bcbc0cb23$var$URL_TESTNET = "https://rvn-rpc-testnet.ting.finance/rpc";
-class $bf36305bcbc0cb23$export$bcca3ea514774656 {
-    setBaseCurrency(currency) {
-        this.baseCurrency = currency;
-    }
-    getBaseCurrency() {
-        return this.baseCurrency;
-    }
-    /**
-   * Sweeping a private key means to send all the funds the address holds to your your wallet.
-   * The private key you sweep do not become a part of your wallet.
-   *
-   * NOTE: the address you sweep needs to cointain enough RVN to pay for the transaction
-   *
-   * @param WIF the private key of the address that you want move funds from
-   * @returns either a string, that is the transaction id or null if there were no funds to send
-   */ sweep(WIF, onlineMode) {
-        const wallet = this;
-        return (0, $fdd8716063277f2b$export$322a62cff28f560a)(WIF, wallet, onlineMode);
-    }
-    getAddressObjects() {
-        return this.addressObjects;
-    }
-    getAddresses() {
-        const addresses = this.addressObjects.map((obj)=>{
-            return obj.address;
-        });
-        return addresses;
-    }
-    async init(options) {
-        let username = "anonymous";
-        let password = "anonymous";
-        let url = $bf36305bcbc0cb23$var$URL_MAINNET;
-        //VALIDATION
-        if (!options) throw Error("option argument is mandatory");
-        if (options.offlineMode === true) this.offlineMode = true;
-        if (!options.mnemonic) throw Error("option.mnemonic is mandatory");
-        url = options.rpc_url || url;
-        password = options.rpc_password || url;
-        username = options.rpc_username || url;
-        if (options.network) {
-            this.network = options.network;
-            this.setBaseCurrency($bf36305bcbc0cb23$export$af0c167f1aa2328f(options.network));
-        }
-        if (options.network === "rvn-test" && !options.rpc_url) url = $bf36305bcbc0cb23$var$URL_TESTNET;
-        this.rpc = (0, $4aiOY$ravenrebelsravencoinrpc.getRPC)(username, password, url);
-        //DERIVE ADDRESSES BIP44, external 20 unused (that is no history, not no balance)
-        //TODO improve performance by creating blocks of 20 addresses and check history for all 20 at once
-        //That is one history lookup intead of 20
-        this._mnemonic = options.mnemonic;
-        const ACCOUNT = 0;
-        //Should we create an extra amount of addresses at startup?
-        if (options.minAmountOfAddresses) for(let i = 0; i < options.minAmountOfAddresses; i++){
-            const o = (0, ($parcel$interopDefault($4aiOY$ravenrebelsravencoinkey))).getAddressPair(this.network, this._mnemonic, ACCOUNT, this.addressPosition);
-            this.addressObjects.push(o.external);
-            this.addressObjects.push(o.internal);
-            this.addressPosition++;
-        }
-        let isLast20ExternalAddressesUnused = false;
-        while(isLast20ExternalAddressesUnused === false){
-            const tempAddresses = [];
-            for(let i = 0; i < 20; i++){
-                const o = (0, ($parcel$interopDefault($4aiOY$ravenrebelsravencoinkey))).getAddressPair(this.network, this._mnemonic, ACCOUNT, this.addressPosition);
-                this.addressObjects.push(o.external);
-                this.addressObjects.push(o.internal);
-                this.addressPosition++;
-                tempAddresses.push(o.external.address + "");
-                tempAddresses.push(o.internal.address + "");
-            }
-            if (this.offlineMode === true) //BREAK generation of addresses and do NOT check history on the network
-            isLast20ExternalAddressesUnused = true;
-            else //If no history, break
-            isLast20ExternalAddressesUnused = false === await this.hasHistory(tempAddresses);
-        }
-    }
-    async hasHistory(addresses) {
-        const includeAssets = true;
-        const obj = {
-            addresses: addresses
-        };
-        const asdf = await this.rpc((0, $4aiOY$ravenrebelsravencoinrpc.methods).getaddressbalance, [
-            obj,
-            includeAssets
-        ]);
-        //@ts-ignore
-        const hasReceived = Object.values(asdf).find((asset)=>asset.received > 0);
-        return !!hasReceived;
-    }
-    async _getFirstUnusedAddress(external) {
-        //First, check if lastReceivedAddress
-        if (external === true && this.receiveAddress) {
-            const asdf = await this.hasHistory([
-                this.receiveAddress
-            ]);
-            if (asdf === false) return this.receiveAddress;
-        }
-        if (external === false && this.changeAddress) {
-            const asdf = await this.hasHistory([
-                this.changeAddress
-            ]);
-            if (asdf === false) return this.changeAddress;
-        }
-        //First make a list of relevant addresses, either external (even) or change (odd)
-        const addresses = [];
-        this.getAddresses().map(function(address, index) {
-            if (external === true && index % 2 === 0) addresses.push(address);
-            else if (external === false && index % 2 !== 0) addresses.push(address);
-        });
-        //Use BINARY SEARCH
-        // Binary search implementation to find the first item with `history` set to false
-        const binarySearch = async (_addresses)=>{
-            let low = 0;
-            let high = _addresses.length - 1;
-            let result = "";
-            while(low <= high){
-                const mid = Math.floor((low + high) / 2);
-                const addy = _addresses[mid];
-                const hasHistory = await this.hasHistory([
-                    addy
-                ]);
-                if (hasHistory === false) {
-                    result = addy;
-                    high = mid - 1; // Continue searching towards the left
-                } else low = mid + 1; // Continue searching towards the right
-            }
-            return result;
-        };
-        const result = await binarySearch(addresses);
-        if (!result) //IF we have not found one, return the first address
-        return addresses[0];
-        if (external === true) this.receiveAddress = result;
-        else this.changeAddress = result;
-        return result;
-    /*
-    //even addresses are external, odd address are internal/changes
-    for (let counter = 0; counter < addresses.length; counter++) {
-      //Internal addresses should be even numbers
-      if (external && counter % 2 !== 0) {
-        continue;
-      }
-      //Internal addresses should be odd numbers
-      if (external === false && counter % 2 === 0) {
-        continue;
-      }
-      const address = addresses[counter];
-
-      //If an address has tenth of thousands of transactions, getHistory will throw an exception
-
-      const hasHistory = await this.hasHistory([address]);
-
-      if (hasHistory === false) {
-        if (external === true) {
-          this.receiveAddress = address;
-        }
-        if (external === false) {
-          this.changeAddress = address;
-        }
-        return address;
-      }
-    }
-*/ }
-    async getHistory() {
-        const assetName = ""; //Must be empty string, NOT "*"
-        const addresses = this.getAddresses();
-        const deltas = this.rpc((0, $4aiOY$ravenrebelsravencoinrpc.methods).getaddressdeltas, [
-            {
-                addresses: addresses,
-                assetName: assetName
-            }
-        ]);
-        //@ts-ignore
-        const addressDeltas = deltas;
-        return addressDeltas;
-    }
-    async getMempool() {
-        const method = (0, $4aiOY$ravenrebelsravencoinrpc.methods).getaddressmempool;
-        const includeAssets = true;
-        const params = [
-            {
-                addresses: this.getAddresses()
-            },
-            includeAssets
-        ];
-        return this.rpc(method, params);
-    }
-    async getReceiveAddress() {
-        const isExternal = true;
-        return this._getFirstUnusedAddress(isExternal);
-    }
-    async getChangeAddress() {
-        const isExternal = false;
-        return this._getFirstUnusedAddress(isExternal);
-    }
-    /**
-   *
-   * @param assetName if present, only return UTXOs for that asset, otherwise for all assets
-   * @returns UTXOs for assets
-   */ async getAssetUTXOs(assetName) {
-        //If no asset name, set to wildcard, meaning all assets
-        const _assetName = !assetName ? "*" : assetName;
-        const chainInfo = false;
-        const params = [
-            {
-                addresses: this.getAddresses(),
-                chainInfo: chainInfo,
-                assetName: _assetName
-            }
-        ];
-        return this.rpc((0, $4aiOY$ravenrebelsravencoinrpc.methods).getaddressutxos, params);
-    }
-    async getUTXOs() {
-        return this.rpc((0, $4aiOY$ravenrebelsravencoinrpc.methods).getaddressutxos, [
-            {
-                addresses: this.getAddresses()
-            }
-        ]);
-    }
-    getPrivateKeyByAddress(address) {
-        const f = this.addressObjects.find((a)=>a.address === address);
-        if (!f) return undefined;
-        return f.WIF;
-    }
-    async send(options) {
-        const { amount: amount , toAddress: toAddress  } = options;
-        let { assetName: assetName  } = options;
-        if (!assetName) assetName = this.baseCurrency;
-        const changeAddress = await this.getChangeAddress();
-        //Find the first change address after change address (emergency take the first).
-        const addresses = this.getAddresses();
-        let index = addresses.indexOf(changeAddress);
-        if (index > addresses.length - 2) index = 1;
-        if (index === -1) index = 1;
-        const changeAddressAssets = addresses[index + 2];
-        if (changeAddressAssets === changeAddress) throw Error("Internal Error, changeAddress and changeAddressAssets cannot be the same");
-        //Validation
-        if (!toAddress) throw Error("Wallet.send toAddress is mandatory");
-        if (!amount) throw Error("Wallet.send amount is mandatory");
-        if (changeAddress === toAddress) throw Error("Wallet.send change address cannot be the same as toAddress " + changeAddress);
-        if (changeAddressAssets === toAddress) throw Error("Wallet.send change address for assets cannot be the same as toAddress " + changeAddressAssets);
-        const props = {
-            fromAddressObjects: this.addressObjects,
-            amount: amount,
-            assetName: assetName,
-            baseCurrency: this.baseCurrency,
-            changeAddress: changeAddress,
-            changeAddressAssets: changeAddressAssets,
-            network: this.network,
-            rpc: this.rpc,
-            toAddress: toAddress
-        };
-        return $827163bad133a0dc$export$89db4734f6c919c4(props);
-    }
-    async getAssets() {
-        const includeAssets = true;
-        const params = [
-            {
-                addresses: this.getAddresses()
-            },
-            includeAssets
-        ];
-        const balance = await this.rpc((0, $4aiOY$ravenrebelsravencoinrpc.methods).getaddressbalance, params);
-        //Remove baseCurrency
-        const result = balance.filter((obj)=>{
-            return obj.assetName !== this.baseCurrency;
-        });
-        return result;
-    }
-    async getBalance() {
-        const includeAssets = false;
-        const params = [
-            {
-                addresses: this.getAddresses()
-            },
-            includeAssets
-        ];
-        const balance = await this.rpc((0, $4aiOY$ravenrebelsravencoinrpc.methods).getaddressbalance, params);
-        return balance.balance / (0, $de29b860155088a6$export$ffff6aea08fd9487);
-    }
-    constructor(){
-        this.rpc = (0, $4aiOY$ravenrebelsravencoinrpc.getRPC)("anonymous", "anonymous", $bf36305bcbc0cb23$var$URL_MAINNET);
-        this._mnemonic = "";
-        this.network = "rvn";
-        this.addressObjects = [];
-        this.receiveAddress = "";
-        this.changeAddress = "";
-        this.addressPosition = 0;
-        this.baseCurrency = "RVN" //Default is RVN but it could be EVR
-        ;
-        this.offlineMode = false;
-    }
-}
-var $bf36305bcbc0cb23$export$2e2bcd8739ae039 = {
-    createInstance: $bf36305bcbc0cb23$export$99152e8d49ca4e7d
-};
-async function $bf36305bcbc0cb23$export$99152e8d49ca4e7d(options) {
-    const wallet = new $bf36305bcbc0cb23$export$bcca3ea514774656();
-    await wallet.init(options);
-    return wallet;
-}
-function $bf36305bcbc0cb23$export$af0c167f1aa2328f(network) {
-    const map = {
-        evr: "EVR",
-        "evr-test": "EVR",
-        rvn: "RVN",
-        "rvn-test": "RVN"
-    };
-    return map[network];
-}
-
-
-
-
-},{"@ravenrebels/ravencoin-key":15,"@ravenrebels/ravencoin-rpc":17,"@ravenrebels/ravencoin-sign-transaction":18,"buffer":185}],15:[function(require,module,exports){
 var $g5Y9E$buffer = require("buffer");
 var $g5Y9E$bip39 = require("bip39");
 var $g5Y9E$coinkey = require("coinkey");
@@ -3500,7 +2703,7 @@ var $80bd448eb6ea085b$export$2e2bcd8739ae039 = {
 
 
 
-},{"@hyperbitjs/chains":4,"bip39":77,"buffer":185,"coinkey":193,"hdkey":260}],16:[function(require,module,exports){
+},{"@hyperbitjs/chains":4,"bip39":75,"buffer":183,"coinkey":191,"hdkey":258}],15:[function(require,module,exports){
 var $g5Y9E$buffer = require("buffer");
 var $g5Y9E$bitcoinjsmessage = require("bitcoinjs-message");
 
@@ -3530,4517 +2733,7 @@ function $80bd448eb6ea085b$export$228d0e772cc158cb(message, address, signature) 
 
 
 
-},{"bitcoinjs-message":136,"buffer":185}],17:[function(require,module,exports){
-var $g5Y9E$buffer = require("buffer");
-
-function $parcel$export(e, n, v, s) {
-  Object.defineProperty(e, n, {get: v, set: s, enumerable: true, configurable: true});
-}
-
-$parcel$export(module.exports, "getRPC", () => $80bd448eb6ea085b$export$eb94c228b080d168);
-$parcel$export(module.exports, "methods", () => $ca417a034047e18f$export$e13b82b2b0368a6a);
-const $ca417a034047e18f$export$e13b82b2b0368a6a = {
-    /** abandontransaction "txid"
-
-Mark in-wallet transaction <txid> as abandoned
-This will mark this transaction and all its in-wallet descendants as abandoned which will allow
-for their inputs to be respent.  It can be used to replace "stuck" or evicted transactions.
-It only works on transactions which are not included in a block and are not currently in the mempool.
-It has no effect on transactions which are already conflicted or abandoned.
-
-Arguments:
-1. "txid"    (string, required) The transaction id
-
-Result:
-
-Examples:
-> raven-cli abandontransaction "1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "abandontransaction", "params": ["1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ abandontransaction: "abandontransaction",
-    /** abortrescan
-
-Stops current wallet rescan triggered e.g. by an importprivkey call.
-
-Examples:
-
-Import a private key
-> raven-cli importprivkey "mykey"
-
-Abort the running wallet rescan
-> raven-cli abortrescan 
-
-As a JSON-RPC call
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "abortrescan", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ abortrescan: "abortrescan",
-    /** addmultisigaddress nrequired ["key",...] ( "account" )
-
-Add a nrequired-to-sign multisignature address to the wallet.
-Each key is a Raven address or hex-encoded public key.
-If 'account' is specified (DEPRECATED), assign address to that account.
-
-Arguments:
-1. nrequired        (numeric, required) The number of required signatures out of the n keys or addresses.
-2. "keys"         (string, required) A json array of raven addresses or hex-encoded public keys
-     [
-       "address"  (string) raven address or hex-encoded public key
-       ...,
-     ]
-3. "account"      (string, optional) DEPRECATED. An account to assign the addresses to.
-
-Result:
-"address"         (string) A raven address associated with the keys.
-
-Examples:
-
-Add a multisig address from 2 addresses
-> raven-cli addmultisigaddress 2 "[\"16sSauSf5pF2UkUwvKGq4qjNRzBZYqgEL5\",\"171sgjn4YtPu27adkKGrdDwzRTxnRkBfKV\"]"
-
-As json rpc call
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "addmultisigaddress", "params": [2, "[\"16sSauSf5pF2UkUwvKGq4qjNRzBZYqgEL5\",\"171sgjn4YtPu27adkKGrdDwzRTxnRkBfKV\"]"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ addmultisigaddress: "addmultisigaddress",
-    /** addnode "node" "add|remove|onetry"
-
-Attempts to add or remove a node from the addnode list.
-Or try a connection to a node once.
-Nodes added using addnode (or -connect) are protected from DoS disconnection and are not required to be
-full nodes/support SegWit as other outbound peers are (though such peers will not be synced from).
-
-Arguments:
-1. "node"     (string, required) The node (see getpeerinfo for nodes)
-2. "command"  (string, required) 'add' to add a node to the list, 'remove' to remove a node from the list, 'onetry' to try a connection to the node once
-
-Examples:
-> raven-cli addnode "192.168.0.6:8767" "onetry"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "addnode", "params": ["192.168.0.6:8767", "onetry"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ addnode: "addnode",
-    /** addtagtoaddress tag_name to_address (change_address) (asset_data)
-
-Assign a tag to a address
-
-Arguments:
-1. "tag_name"            (string, required) the name of the tag you are assigning to the address, if it doens't have '#' at the front it will be added
-2. "to_address"          (string, required) the address that will be assigned the tag
-3. "change_address"      (string, optional) The change address for the qualifier token to be sent to
-4. "asset_data"          (string, optional) The asset data (ipfs or a hash) to be applied to the transfer of the qualifier token
-
-Result:
-"txid"                     (string) The transaction id
-
-Examples:
-> raven-cli addtagtoaddress "#TAG" "to_address"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "addtagtoaddress", "params": ["#TAG" "to_address"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-> raven-cli addtagtoaddress "#TAG" "to_address" "change_address"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "addtagtoaddress", "params": ["#TAG" "to_address" "change_address"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ addtagtoaddress: "addtagtoaddress",
-    /** addwitnessaddress "address"
-
-Add a witness address for a script (with pubkey or redeemscript known).
-It returns the witness script.
-
-Arguments:
-1. "address"       (string, required) An address known to the wallet
-
-Result:
-"witnessaddress",  (string) The value of the new address (P2SH of witness script).
-}
-**/ addwitnessaddress: "addwitnessaddress",
-    /** backupwallet "destination"
-
-Safely copies current wallet file to destination, which can be a directory or a path with filename.
-
-Arguments:
-1. "destination"   (string) The destination directory or file
-
-Examples:
-> raven-cli backupwallet "backup.dat"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "backupwallet", "params": ["backup.dat"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ backupwallet: "backupwallet",
-    /** bumpfee has been deprecated on the RVN Wallet.**/ bumpfee: "bumpfee",
-    /** cancelsnapshotrequest "asset_name" block_height
-
-Cancels the specified snapshot request.
-
-Arguments:
-1. "asset_name"              (string, required) The asset name for which the snapshot will be taken
-2. "block_height"            (number, required) The block height at which the snapshot will be take
-
-Result:
-{
-  request_status: (string),
-}
-
-Examples:
-> raven-cli cancelsnapshotrequest "TRONCO" 12345
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "cancelsnapshotrequest", "params": ["PHATSTACKS" 34987] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ cancelsnapshotrequest: "cancelsnapshotrequest",
-    /** checkaddressrestriction address restricted_name
-
-Checks to see if an address has been frozen by the given restricted asset
-
-Arguments:
-1. "address"          (string, required) the RVN address to search
-1. "restricted_name"   (string, required) the restricted asset to search
-
-Result:
-"true/false", (boolean) If the address is frozen
-
-Examples:
-> raven-cli checkaddressrestriction "address" "restricted_name"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "checkaddressrestriction", "params": ["address" "restricted_name"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ checkaddressrestriction: "checkaddressrestriction",
-    /** checkaddresstag address tag_name
-
-Checks to see if an address has the given tag
-
-Arguments:
-1. "address"          (string, required) the RVN address to search
-1. "tag_name"         (string, required) the tag to search
-
-Result:
-"true/false", (boolean) If the address has the tag
-
-Examples:
-> raven-cli checkaddresstag "address" "tag_name"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "checkaddresstag", "params": ["address" "tag_name"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ checkaddresstag: "checkaddresstag",
-    /** checkglobalrestriction restricted_name
-
-Checks to see if a restricted asset is globally frozen
-
-Arguments:
-1. "restricted_name"   (string, required) the restricted asset to search
-
-Result:
-"true/false", (boolean) If the restricted asset is frozen globally
-
-Examples:
-> raven-cli checkglobalrestriction "restricted_name"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "checkglobalrestriction", "params": ["restricted_name"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ checkglobalrestriction: "checkglobalrestriction",
-    /** clearbanned
-
-Clear all banned IPs.
-
-Examples:
-> raven-cli clearbanned 
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "clearbanned", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ clearbanned: "clearbanned",
-    /** clearmempool
-
-Removes all transaction from the mempool
-
-Examples:
-> raven-cli clearmempool 
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "clearmempool", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ clearmempool: "clearmempool",
-    /** clearmessages 
-
-Delete current database of messages
-
-Result:[
-
-]
-
-Examples:
-> raven-cli clearmessages 
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "clearmessages", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ clearmessages: "clearmessages",
-    /** combinerawtransaction ["hexstring",...]
-
-Combine multiple partially signed transactions into one transaction.
-The combined transaction may be another partially signed transaction or a 
-fully signed transaction.
-Arguments:
-1. "txs"         (string) A json array of hex strings of partially signed transactions
-    [
-      "hexstring"     (string) A transaction hash
-      ,...
-    ]
-
-Result:
-"hex"            (string) The hex-encoded raw transaction with signature(s)
-
-Examples:
-> raven-cli combinerawtransaction ["myhex1", "myhex2", "myhex3"]
-**/ combinerawtransaction: "combinerawtransaction",
-    /** createmultisig nrequired ["key",...]
-
-Creates a multi-signature address with n signature of m keys required.
-It returns a json object with the address and redeemScript.
-
-Arguments:
-1. nrequired      (numeric, required) The number of required signatures out of the n keys or addresses.
-2. "keys"       (string, required) A json array of keys which are raven addresses or hex-encoded public keys
-     [
-       "key"    (string) raven address or hex-encoded public key
-       ,...
-     ]
-
-Result:
-{
-  "address":"multisigaddress",  (string) The value of the new multisig address.
-  "redeemScript":"script"       (string) The string value of the hex-encoded redemption script.
-}
-
-Examples:
-
-Create a multisig address from 2 addresses
-> raven-cli createmultisig 2 "[\"16sSauSf5pF2UkUwvKGq4qjNRzBZYqgEL5\",\"171sgjn4YtPu27adkKGrdDwzRTxnRkBfKV\"]"
-
-As a json rpc call
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "createmultisig", "params": [2, "[\"16sSauSf5pF2UkUwvKGq4qjNRzBZYqgEL5\",\"171sgjn4YtPu27adkKGrdDwzRTxnRkBfKV\"]"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ createmultisig: "createmultisig",
-    /** createrawtransaction [{"txid":"id","vout":n},...] {"address":(amount or object),"data":"hex",...}
-                     ( locktime ) ( replaceable )
-
-Create a transaction spending the given inputs and creating new outputs.
-Outputs are addresses (paired with a RVN amount, data or object specifying an asset operation) or data.
-Returns hex-encoded raw transaction.
-Note that the transaction's inputs are not signed, and
-it is not stored in the wallet or transmitted to the network.
-
-Paying for Asset Operations:
-  Some operations require an amount of RVN to be sent to a burn address:
-
-    Operation          Amount + Burn Address
-    transfer                 0
-    transferwithmessage      0
-    issue                  500 to RXissueAssetXXXXXXXXXXXXXXXXXhhZGt
-    issue (subasset)       100 to RXissueSubAssetXXXXXXXXXXXXXWcwhwL
-    issue_unique             5 to RXissueUniqueAssetXXXXXXXXXXWEAe58
-    reissue                100 to RXReissueAssetXXXXXXXXXXXXXXVEFAWu
-    issue_restricted      1500 to RXissueRestrictedXXXXXXXXXXXXzJZ1q
-    reissue_restricted     100 to RXReissueAssetXXXXXXXXXXXXXXVEFAWu
-    issue_qualifier       1000 to RXissueQuaLifierXXXXXXXXXXXXUgEDbC
-    issue_qualifier (sub)  100 to RXissueSubQuaLifierXXXXXXXXXVTzvv5
-    tag_addresses          0.1 to RXaddTagBurnXXXXXXXXXXXXXXXXZQm5ya (per address)
-    untag_addresses        0.1 to RXaddTagBurnXXXXXXXXXXXXXXXXZQm5ya (per address)
-    freeze_addresses         0
-    unfreeze_addresses       0
-    freeze_asset             0
-    unfreeze_asset           0
-
-Assets For Authorization:
-  These operations require a specific asset input for authorization:
-    Root Owner Token:
-      reissue
-      issue_unique
-      issue_restricted
-      reissue_restricted
-      freeze_addresses
-      unfreeze_addresses
-      freeze_asset
-      unfreeze_asset
-    Root Qualifier Token:
-      issue_qualifier (when issuing subqualifier)
-    Qualifier Token:
-      tag_addresses
-      untag_addresses
-
-Output Ordering:
-  Asset operations require the following:
-    1) All coin outputs come first (including the burn output).
-    2) The owner token change output comes next (if required).
-    3) An issue, reissue, or any number of transfers comes last
-       (different types can't be mixed in a single transaction).
-
-Arguments:
-1. "inputs"                                (array, required) A json array of json objects
-     [
-       {
-         "txid":"id",                      (string, required) The transaction id
-         "vout":n,                         (number, required) The output number
-         "sequence":n                      (number, optional) The sequence number
-       } 
-       ,...
-     ]
-2. "outputs"                               (object, required) a json object with outputs
-     {
-       "address":                          (string, required) The destination raven address.
-                                               Each output must have a different address.
-         x.xxx                             (number or string, required) The RVN amount
-           or
-         {                                 (object) A json object of assets to send
-           "transfer":
-             {
-               "asset-name":               (string, required) asset name
-               asset-quantity              (number, required) the number of raw units to transfer
-               ,...
-             }
-         }
-           or
-         {                                 (object) A json object of describing the transfer and message contents to send
-           "transferwithmessage":
-             {
-               "asset-name":              (string, required) asset name
-               asset-quantity,            (number, required) the number of raw units to transfer
-               "message":"hash",          (string, required) ipfs hash or a txid hash
-               "expire_time": n           (number, required) utc time in seconds to expire the message
-             }
-         }
-           or
-         {                                 (object) A json object describing new assets to issue
-           "issue":
-             {
-               "asset_name":"asset-name",  (string, required) new asset name
-               "asset_quantity":n,         (number, required) the number of raw units to issue
-               "units":[1-8],              (number, required) display units, between 1 (integral) to 8 (max precision)
-               "reissuable":[0-1],         (number, required) 1=reissuable asset
-               "has_ipfs":[0-1],           (number, required) 1=passing ipfs_hash
-               "ipfs_hash":"hash"          (string, optional) an ipfs hash for discovering asset metadata
-             }
-         }
-           or
-         {                                 (object) A json object describing new unique assets to issue
-           "issue_unique":
-             {
-               "root_name":"root-name",         (string, required) name of the asset the unique asset(s) 
-                                                      are being issued under
-               "asset_tags":["asset_tag", ...], (array, required) the unique tag for each asset which is to be issued
-               "ipfs_hashes":["hash", ...],     (array, optional) ipfs hashes corresponding to each supplied tag 
-                                                      (should be same size as "asset_tags")
-             }
-         }
-           or
-         {                                 (object) A json object describing follow-on asset issue.
-           "reissue":
-             {
-               "asset_name":"asset-name", (string, required) name of asset to be reissued
-               "asset_quantity":n,          (number, required) the number of raw units to issue
-               "reissuable":[0-1],          (number, optional) default is 1, 1=reissuable asset
-               "ipfs_hash":"hash",        (string, optional) An ipfs hash for discovering asset metadata, 
-                                                Overrides the current ipfs hash if given
-               "owner_change_address"       (string, optional) the address where the owner token will be sent to. 
-                                                If not given, it will be sent to the output address
-             }
-         }
-           or
-         {                                 (object) A json object describing how restricted asset to issue
-           "issue_restricted":
-             {
-               "asset_name":"asset-name",(string, required) new asset name
-               "asset_quantity":n,         (number, required) the number of raw units to issue
-               "verifier_string":"text", (string, required) the verifier string to be used for a restricted 
-                                               asset transfer verification
-               "units":[0-8],              (number, required) display units, between 0 (integral) and 8 (max precision)
-               "reissuable":[0-1],         (number, required) 1=reissuable asset
-               "has_ipfs":[0-1],           (number, required) 1=passing ipfs_hash
-               "ipfs_hash":"hash",       (string, optional) an ipfs hash for discovering asset metadata
-               "owner_change_address"      (string, optional) the address where the owner token will be sent to. 
-                                               If not given, it will be sent to the output address
-             }
-         }
-           or
-         {                                 (object) A json object describing follow-on asset issue.
-           "reissue_restricted":
-             {
-               "asset_name":"asset-name", (string, required) name of asset to be reissued
-               "asset_quantity":n,          (number, required) the number of raw units to issue
-               "reissuable":[0-1],          (number, optional) default is 1, 1=reissuable asset
-               "verifier_string":"text",  (string, optional) the verifier string to be used for a restricted asset 
-                                                transfer verification
-               "ipfs_hash":"hash",        (string, optional) An ipfs hash for discovering asset metadata, 
-                                                Overrides the current ipfs hash if given
-               "owner_change_address"       (string, optional) the address where the owner token will be sent to. 
-                                                If not given, it will be sent to the output address
-             }
-         }
-           or
-         {                                 (object) A json object describing a new qualifier to issue.
-           "issue_qualifier":
-             {
-               "asset_name":"asset_name", (string, required) a qualifier name (starts with '#')
-               "asset_quantity":n,          (numeric, optional, default=1) the number of units to be issued (1 to 10)
-               "has_ipfs":[0-1],            (boolean, optional, default=false), whether ifps hash is going 
-                                                to be added to the asset
-               "ipfs_hash":"hash",        (string, optional but required if has_ipfs = 1), an ipfs hash or a 
-                                                txid hash once RIP5 is activated
-               "root_change_address"        (string, optional) Only applies when issuing subqualifiers.
-                                                The address where the root qualifier will be sent.
-                                                If not specified, it will be sent to the output address.
-               "change_quantity":"qty"    (numeric, optional) the asset change amount (defaults to 1)
-             }
-         }
-           or
-         {                                 (object) A json object describing addresses to be tagged.
-                                             The address in the key will used as the asset change address.
-           "tag_addresses":
-             {
-               "qualifier":"qualifier",          (string, required) a qualifier name (starts with '#')
-               "addresses":["addr", ...],        (array, required) the addresses to be tagged (up to 10)
-               "change_quantity":"qty",          (numeric, optional) the asset change amount (defaults to 1)
-             }
-         }
-           or
-         {                                 (object) A json object describing addresses to be untagged.
-                                             The address in the key will be used as the asset change address.
-           "untag_addresses":
-             {
-               "qualifier":"qualifier",          (string, required) a qualifier name (starts with '#')
-               "addresses":["addr", ...],        (array, required) the addresses to be untagged (up to 10)
-               "change_quantity":"qty",          (numeric, optional) the asset change amount (defaults to 1)
-             }
-         }
-           or
-         {                                 (object) A json object describing addresses to be frozen.
-                                             The address in the key will used as the owner change address.
-           "freeze_addresses":
-             {
-               "asset_name":"asset_name",        (string, required) a restricted asset name (starts with '$')
-               "addresses":["addr", ...],        (array, required) the addresses to be frozen (up to 10)
-             }
-         }
-           or
-         {                                 (object) A json object describing addresses to be frozen.
-                                             The address in the key will be used as the owner change address.
-           "unfreeze_addresses":
-             {
-               "asset_name":"asset_name",        (string, required) a restricted asset name (starts with '$')
-               "addresses":["addr", ...],        (array, required) the addresses to be untagged (up to 10)
-             }
-         }
-           or
-         {                                 (object) A json object describing an asset to be frozen.
-                                             The address in the key will used as the owner change address.
-           "freeze_asset":
-             {
-               "asset_name":"asset_name",        (string, required) a restricted asset name (starts with '$')
-             }
-         }
-           or
-         {                                 (object) A json object describing an asset to be frozen.
-                                             The address in the key will be used as the owner change address.
-           "unfreeze_asset":
-             {
-               "asset_name":"asset_name",        (string, required) a restricted asset name (starts with '$')
-             }
-         }
-           or
-       "data": "hex"                       (string, required) The key is "data", the value is hex encoded data
-       ,...
-     }
-3. locktime                  (numeric, optional, default=0) Raw locktime. Non-0 value also locktime-activates inputs
-
-Result:
-"transaction"              (string) hex string of the transaction
-
-Examples:
-> raven-cli createrawtransaction "[{\"txid\":\"mycoin\",\"vout\":0}]" "{\"address\":0.01}"
-> raven-cli createrawtransaction "[{\"txid\":\"mycoin\",\"vout\":0}]" "{\"data\":\"00010203\"}"
-> raven-cli createrawtransaction "[{\"txid\":\"mycoin\",\"vout\":0}]" "{\"RXissueAssetXXXXXXXXXXXXXXXXXhhZGt\":500,\"change_address\":change_amount,\"issuer_address\":{\"issue\":{\"asset_name\":\"MYASSET\",\"asset_quantity\":1000000,\"units\":1,\"reissuable\":0,\"has_ipfs\":1,\"ipfs_hash\":\"43f81c6f2c0593bde5a85e09ae662816eca80797\"}}}"
-> raven-cli createrawtransaction "[{\"txid\":\"mycoin\",\"vout\":0}]" "{\"RXissueRestrictedXXXXXXXXXXXXzJZ1q\":1500,\"change_address\":change_amount,\"issuer_address\":{\"issue_restricted\":{\"asset_name\":\"$MYASSET\",\"asset_quantity\":1000000,\"verifier_string\":\"#TAG & !KYC\",\"units\":1,\"reissuable\":0,\"has_ipfs\":1,\"ipfs_hash\":\"43f81c6f2c0593bde5a85e09ae662816eca80797\"}}}"
-> raven-cli createrawtransaction "[{\"txid\":\"mycoin\",\"vout\":0}]" "{\"RXissueUniqueAssetXXXXXXXXXXWEAe58\":20,\"change_address\":change_amount,\"issuer_address\":{\"issue_unique\":{\"root_name\":\"MYASSET\",\"asset_tags\":[\"ALPHA\",\"BETA\"],\"ipfs_hashes\":[\"43f81c6f2c0593bde5a85e09ae662816eca80797\",\"43f81c6f2c0593bde5a85e09ae662816eca80797\"]}}}"
-> raven-cli createrawtransaction "[{\"txid\":\"mycoin\",\"vout\":0},{\"txid\":\"myasset\",\"vout\":0}]" "{\"address\":{\"transfer\":{\"MYASSET\":50}}}"
-> raven-cli createrawtransaction "[{\"txid\":\"mycoin\",\"vout\":0},{\"txid\":\"myasset\",\"vout\":0}]" "{\"address\":{\"transferwithmessage\":{\"MYASSET\":50,\"message\":\"hash\",\"expire_time\": utc_time}}}"
-> raven-cli createrawtransaction "[{\"txid\":\"mycoin\",\"vout\":0},{\"txid\":\"myownership\",\"vout\":0}]" "{\"issuer_address\":{\"reissue\":{\"asset_name\":\"MYASSET\",\"asset_quantity\":2000000}}}"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "createrawtransaction", "params": ["[{\"txid\":\"mycoin\",\"vout\":0}]", "{\"data\":\"00010203\"}"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ createrawtransaction: "createrawtransaction",
-    /** decodeblock "blockhex"
-
-Arguments:
-1. "blockhex"          (string, required) The block hex
-
-Result:
-{
-  "hash" : "hash",     (string) the block hash (same as provided)
-  "size" : n,            (numeric) The block size
-  "strippedsize" : n,    (numeric) The block size excluding witness data
-  "weight" : n           (numeric) The block weight as defined in BIP 141
-  "height" : n,          (numeric) The block height or index
-  "version" : n,         (numeric) The block version
-  "versionHex" : "00000000", (string) The block version formatted in hexadecimal
-  "merkleroot" : "xxxx", (string) The merkle root
-  "tx" : [               (array of string) The transaction ids
-     "transactionid"     (string) The transaction id
-     ,...
-  ],
-  "time" : ttt,          (numeric) The block time in seconds since epoch (Jan 1 1970 GMT)
-  "nonce" : n,           (numeric) The nonce
-  "bits" : "1d00ffff", (string) The bits
-}
-
-Examples:
-> raven-cli decodeblock "xxxx"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "decodeblock", "params": ["xxxx"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ decodeblock: "decodeblock",
-    /** decoderawtransaction "hexstring"
-
-Return a JSON object representing the serialized, hex-encoded transaction.
-
-Arguments:
-1. "hexstring"      (string, required) The transaction hex string
-
-Result:
-{
-  "txid" : "id",        (string) The transaction id
-  "hash" : "id",        (string) The transaction hash (differs from txid for witness transactions)
-  "size" : n,             (numeric) The transaction size
-  "vsize" : n,            (numeric) The virtual transaction size (differs from size for witness transactions)
-  "version" : n,          (numeric) The version
-  "locktime" : ttt,       (numeric) The lock time
-  "vin" : [               (array of json objects)
-     {
-       "txid": "id",    (string) The transaction id
-       "vout": n,         (numeric) The output number
-       "scriptSig": {     (json object) The script
-         "asm": "asm",  (string) asm
-         "hex": "hex"   (string) hex
-       },
-       "txinwitness": ["hex", ...] (array of string) hex-encoded witness data (if any)
-       "sequence": n     (numeric) The script sequence number
-     }
-     ,...
-  ],
-  "vout" : [             (array of json objects)
-     {
-       "value" : x.xxx,            (numeric) The value in RVN
-       "n" : n,                    (numeric) index
-       "scriptPubKey" : {          (json object)
-         "asm" : "asm",          (string) the asm
-         "hex" : "hex",          (string) the hex
-         "reqSigs" : n,            (numeric) The required sigs
-         "type" : "pubkeyhash",  (string) The type, eg 'pubkeyhash'
-         "asset" : {               (json object) optional
-           "name" : "name",      (string) the asset name
-           "amount" : n,           (numeric) the amount of asset that was sent
-           "message" : "message", (string optional) the message if one was sent
-           "expire_time" : n,      (numeric optional) the message epoch expiration time if one was set
-         "addresses" : [           (json array of string)
-           "12tvKAXCxZjSmdNbao16dKXC8tRWfcF5oc"   (string) raven address
-           ,...
-         ]
-       }
-     }
-     ,...
-  ],
-}
-
-Examples:
-> raven-cli decoderawtransaction "hexstring"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "decoderawtransaction", "params": ["hexstring"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ decoderawtransaction: "decoderawtransaction",
-    /** decodescript "hexstring"
-
-Decode a hex-encoded script.
-
-Arguments:
-1. "hexstring"     (string) the hex encoded script
-
-Result:
-{
-  "asm":"asm",   (string) Script public key
-  "hex":"hex",   (string) hex encoded public key
-  "type":"type", (string) The output type
-  "asset" : {               (json object) optional
-     "name" : "name",      (string) the asset name
-     "amount" : n,           (numeric) the amount of asset that was sent
-     "message" : "message", (string optional) the message if one was sent
-     "expire_time" : n,      (numeric optional ) the message epoch expiration time if one was set
-  "reqSigs": n,    (numeric) The required signatures
-  "addresses": [   (json array of string)
-     "address"     (string) raven address
-     ,...
-  ],
-  "p2sh":"address",       (string) address of P2SH script wrapping this redeem script (not returned if the script is already a P2SH).
-  "(The following only appears if the script is an asset script)
-  "asset_name":"name",      (string) Name of the asset.
-  "amount":"x.xx",          (numeric) The amount of assets interacted with.
-  "units": n,                (numeric) The units of the asset. (Only appears in the type (new_asset))
-  "reissuable": true|false, (boolean) If this asset is reissuable. (Only appears in type (new_asset|reissue_asset))
-  "hasIPFS": true|false,    (boolean) If this asset has an IPFS hash. (Only appears in type (new_asset if hasIPFS is true))
-  "ipfs_hash": "hash",      (string) The ipfs hash for the new asset. (Only appears in type (new_asset))
-  "new_ipfs_hash":"hash",    (string) If new ipfs hash (Only appears in type. (reissue_asset))
-}
-
-Examples:
-> raven-cli decodescript "hexstring"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "decodescript", "params": ["hexstring"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ decodescript: "decodescript",
-    /** disconnectnode "[address]" [nodeid]
-
-Immediately disconnects from the specified peer node.
-
-Strictly one out of 'address' and 'nodeid' can be provided to identify the node.
-
-To disconnect by nodeid, either set 'address' to the empty string, or call using the named 'nodeid' argument only.
-
-Arguments:
-1. "address"     (string, optional) The IP address/port of the node
-2. "nodeid"      (number, optional) The node ID (see getpeerinfo for node IDs)
-
-Examples:
-> raven-cli disconnectnode "192.168.0.6:8767"
-> raven-cli disconnectnode "" 1
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "disconnectnode", "params": ["192.168.0.6:8767"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "disconnectnode", "params": ["", 1] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ disconnectnode: "disconnectnode",
-    /** distributereward "asset_name" snapshot_height "distribution_asset_name" gross_distribution_amount ( "exception_addresses" ) ("change_address") ("dry_run")
-
-Splits the specified amount of the distribution asset to all owners of asset_name that are not in the optional exclusion_addresses
-
-Arguments:
-1. "asset_name"                 (string, required) The reward will be distributed all owners of this asset
-2. "snapshot_height"            (number, required) The block height of the ownership snapshot
-3. "distribution_asset_name"    (string, required) The name of the asset that will be distributed, or RVN
-4. "gross_distribution_amount"  (number, required) The amount of the distribution asset that will be split amongst all owners
-5. "exception_addresses"        (string, optional) Ownership addresses that should be excluded
-6. "change_address"             (string, optional) If the rewards can't be fully distributed. The change will be sent to this address
-
-Result:
-{
-  error_txn_gen_failed: (string),
-  error_nsf: (string),
-  error_rejects: (string),
-  error_db_update: (string),
-  batch_results: [
-    {
-      transaction_id: (string),
-      error_txn_rejected: (string),
-      total_amount: (number),
-      fee: (number),
-      expected_count: (number),
-      actual_count: (number),
-    }
-  ]
-}
-
-Examples:
-> raven-cli distributereward "TRONCO" 12345 "RVN" 1000
-> raven-cli distributereward "PHATSTACKS" 12345 "DIVIDENDS" 1000 "mwN7xC3yomYdvJuVXkVC7ymY9wNBjWNduD,n4Rf18edydDaRBh7t6gHUbuByLbWEoWUTg"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "distributereward", "params": ["TRONCO" 34987 "DIVIDENDS" 100000] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "distributereward", "params": ["PHATSTACKS" 34987 "RVN" 100000 "mwN7xC3yomYdvJuVXkVC7ymY9wNBjWNduD,n4Rf18edydDaRBh7t6gHUbuByLbWEoWUTg"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ distributereward: "distributereward",
-    /** dumpprivkey "address"
-
-Reveals the private key corresponding to 'address'.
-Then the importprivkey can be used with this output
-
-Arguments:
-1. "address"   (string, required) The raven address for the private key
-
-Result:
-"key"                (string) The private key
-
-Examples:
-> raven-cli dumpprivkey "myaddress"
-> raven-cli importprivkey "mykey"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "dumpprivkey", "params": ["myaddress"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ dumpprivkey: "dumpprivkey",
-    /** dumpwallet "filename"
-
-Dumps all wallet keys in a human-readable format to a server-side file. This does not allow overwriting existing files.
-
-Arguments:
-1. "filename"    (string, required) The filename with path (either absolute or relative to ravend)
-
-Result:
-{                           (json object)
-  "filename" : {        (string) The filename with full absolute path
-}
-
-Examples:
-> raven-cli dumpwallet "test"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "dumpwallet", "params": ["test"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ dumpwallet: "dumpwallet",
-    /** encryptwallet "passphrase"
-
-Encrypts the wallet with 'passphrase'. This is for first time encryption.
-After this, any calls that interact with private keys such as sending or signing 
-will require the passphrase to be set prior the making these calls.
-Use the walletpassphrase call for this, and then walletlock call.
-If the wallet is already encrypted, use the walletpassphrasechange call.
-Note that this will shutdown the server.
-
-Arguments:
-1. "passphrase"    (string) The pass phrase to encrypt the wallet with. It must be at least 1 character, but should be long.
-
-Examples:
-
-Encrypt your wallet
-> raven-cli encryptwallet "my pass phrase"
-
-Now set the passphrase to use the wallet, such as for signing or sending raven
-> raven-cli walletpassphrase "my pass phrase"
-
-Now we can do something like sign
-> raven-cli signmessage "address" "test message"
-
-Now lock the wallet again by removing the passphrase
-> raven-cli walletlock 
-
-As a json rpc call
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "encryptwallet", "params": ["my pass phrase"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ encryptwallet: "encryptwallet",
-    /** estimatefee nblocks
-
-DEPRECATED. Please use estimatesmartfee for more intelligent estimates.
-Estimates the approximate fee per kilobyte needed for a transaction to begin
-confirmation within nblocks blocks. Uses virtual transaction size of transaction
-as defined in BIP 141 (witness data is discounted).
-
-Arguments:
-1. nblocks     (numeric, required)
-
-Result:
-n              (numeric) estimated fee-per-kilobyte
-
-A negative value is returned if not enough transactions and blocks
-have been observed to make an estimate.
--1 is always returned for nblocks == 1 as it is impossible to calculate
-a fee that is high enough to get reliably included in the next block.
-
-Example:
-> raven-cli estimatefee 6
-**/ estimatefee: "estimatefee",
-    /** estimatesmartfee conf_target ("estimate_mode")
-
-Estimates the approximate fee per kilobyte needed for a transaction to begin
-confirmation within conf_target blocks if possible and return the number of blocks
-for which the estimate is valid. Uses virtual transaction size as defined
-in BIP 141 (witness data is discounted).
-
-Arguments:
-1. conf_target     (numeric) Confirmation target in blocks (1 - 1008)
-2. "estimate_mode" (string, optional, default=CONSERVATIVE) The fee estimate mode.
-                   Whether to return a more conservative estimate which also satisfies
-                   a longer history. A conservative estimate potentially returns a
-                   higher feerate and is more likely to be sufficient for the desired
-                   target, but is not as responsive to short term drops in the
-                   prevailing fee market.  Must be one of:
-       "UNSET" (defaults to CONSERVATIVE)
-       "ECONOMICAL"
-       "CONSERVATIVE"
-
-Result:
-{
-  "feerate" : x.x,     (numeric, optional) estimate fee rate in RVN/kB
-  "errors": [ str... ] (json array of strings, optional) Errors encountered during processing
-  "blocks" : n         (numeric) block number where estimate was found
-}
-
-The request target will be clamped between 2 and the highest target
-fee estimation is able to return based on how long it has been running.
-An error is returned if not enough transactions and blocks
-have been observed to make an estimate for any number of blocks.
-
-Example:
-> raven-cli estimatesmartfee 6
-**/ estimatesmartfee: "estimatesmartfee",
-    /** freezeaddress asset_name address (change_address) (asset_data)
-
-Freeze an address from transferring a restricted asset
-
-Arguments:
-1. "asset_name"       (string, required) the name of the restricted asset you want to freeze
-2. "address"          (string, required) the address that will be frozen
-3. "change_address"   (string, optional) The change address for the owner token of the restricted asset
-4. "asset_data"       (string, optional) The asset data (ipfs or a hash) to be applied to the transfer of the owner token
-
-Result:
-"txid"                     (string) The transaction id
-
-Examples:
-> raven-cli freezeaddress "$RESTRICTED_ASSET" "address"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "freezeaddress", "params": ["$RESTRICTED_ASSET" "address"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-> raven-cli freezeaddress "$RESTRICTED_ASSET" "address" "change_address"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "freezeaddress", "params": ["$RESTRICTED_ASSET" "address" "change_address"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ freezeaddress: "freezeaddress",
-    /** freezerestrictedasset asset_name (change_address) (asset_data)
-
-Freeze all trading for a specific restricted asset
-
-Arguments:
-1. "asset_name"       (string, required) the name of the restricted asset you want to unfreeze
-2. "change_address"   (string, optional) The change address for the owner token of the restricted asset
-3. "asset_data"       (string, optional) The asset data (ipfs or a hash) to be applied to the transfer of the owner token
-
-Result:
-"txid"                     (string) The transaction id
-
-Examples:
-> raven-cli freezerestrictedasset "$RESTRICTED_ASSET"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "freezerestrictedasset", "params": ["$RESTRICTED_ASSET"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-> raven-cli freezerestrictedasset "$RESTRICTED_ASSET" "change_address"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "freezerestrictedasset", "params": ["$RESTRICTED_ASSET" "change_address"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ freezerestrictedasset: "freezerestrictedasset",
-    /** fundrawtransaction "hexstring" ( options )
-
-Add inputs to a transaction until it has enough in value to meet its out value.
-This will not modify existing inputs, and will add at most one change output to the outputs.
-No existing outputs will be modified unless "subtractFeeFromOutputs" is specified.
-Note that inputs which were signed may need to be resigned after completion since in/outputs have been added.
-The inputs added will not be signed, use signrawtransaction for that.
-Note that all existing inputs must have their previous output transaction be in the wallet.
-Note that all inputs selected must be of standard form and P2SH scripts must be
-in the wallet using importaddress or addmultisigaddress (to calculate fees).
-You can see whether this is the case by checking the "solvable" field in the listunspent output.
-Only pay-to-pubkey, multisig, and P2SH versions thereof are currently supported for watch-only
-
-Arguments:
-1. "hexstring"           (string, required) The hex string of the raw transaction
-2. options                 (object, optional)
-   {
-     "changeAddress"          (string, optional, default pool address) The raven address to receive the change
-     "changePosition"         (numeric, optional, default random) The index of the change output
-     "includeWatching"        (boolean, optional, default false) Also select inputs which are watch only
-     "lockUnspents"           (boolean, optional, default false) Lock selected unspent outputs
-     "feeRate"                (numeric, optional, default not set: makes wallet determine the fee) Set a specific fee rate in RVN/kB
-     "subtractFeeFromOutputs" (array, optional) A json array of integers.
-                              The fee will be equally deducted from the amount of each specified output.
-                              The outputs are specified by their zero-based index, before any change output is added.
-                              Those recipients will receive less ravens than you enter in their corresponding amount field.
-                              If no outputs are specified here, the sender pays the fee.
-                                  [vout_index,...]
-                              Allows this transaction to be replaced by a transaction with higher fees
-     "conf_target"            (numeric, optional) Confirmation target (in blocks)
-     "estimate_mode"          (string, optional, default=UNSET) The fee estimate mode, must be one of:
-         "UNSET"
-         "ECONOMICAL"
-         "CONSERVATIVE"
-   }
-                         for backward compatibility: passing in a true instead of an object will result in {"includeWatching":true}
-
-Result:
-{
-  "hex":       "value", (string)  The resulting raw transaction (hex-encoded string)
-  "fee":       n,         (numeric) Fee in RVN the resulting transaction pays
-  "changepos": n          (numeric) The position of the added change output, or -1
-}
-
-Examples:
-
-Create a transaction with no inputs
-> raven-cli createrawtransaction "[]" "{\"myaddress\":0.01}"
-
-Add sufficient unsigned inputs to meet the output value
-> raven-cli fundrawtransaction "rawtransactionhex"
-
-Sign the transaction
-> raven-cli signrawtransaction "fundedtransactionhex"
-
-Send the transaction
-> raven-cli sendrawtransaction "signedtransactionhex"
-**/ fundrawtransaction: "fundrawtransaction",
-    /** generate nblocks ( maxtries )
-
-Mine up to nblocks blocks immediately (before the RPC call returns) to an address in the wallet.
-
-Arguments:
-1. nblocks      (numeric, required) How many blocks are generated immediately.
-2. maxtries     (numeric, optional) How many iterations to try (default = 1000000).
-
-Result:
-[ blockhashes ]     (array) hashes of blocks generated
-
-Examples:
-
-Generate 11 blocks
-> raven-cli generate 11
-**/ generate: "generate",
-    /** generatetoaddress nblocks address (maxtries)
-
-Mine blocks immediately to a specified address (before the RPC call returns)
-
-Arguments:
-1. nblocks      (numeric, required) How many blocks are generated immediately.
-2. address      (string, required) The address to send the newly generated raven to.
-3. maxtries     (numeric, optional) How many iterations to try (default = 1000000).
-
-Result:
-[ blockhashes ]     (array) hashes of blocks generated
-
-Examples:
-
-Generate 11 blocks to myaddress
-> raven-cli generatetoaddress 11 "myaddress"
-**/ generatetoaddress: "generatetoaddress",
-    /** getaccount "address"
-
-DEPRECATED. Returns the account associated with the given address.
-
-Arguments:
-1. "address"         (string, required) The raven address for account lookup.
-
-Result:
-"accountname"        (string) the account address
-
-Examples:
-> raven-cli getaccount "1D1ZrZNe3JUo7ZycKEYQQiQAWd9y54F4XX"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getaccount", "params": ["1D1ZrZNe3JUo7ZycKEYQQiQAWd9y54F4XX"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getaccount: "getaccount",
-    /** getaccountaddress "account"
-
-DEPRECATED. Returns the current Raven address for receiving payments to this account.
-
-Arguments:
-1. "account"       (string, required) The account name for the address. It can also be set to the empty string "" to represent the default account. The account does not need to exist, it will be created and a new address created  if there is no account by the given name.
-
-Result:
-"address"          (string) The account raven address
-
-Examples:
-> raven-cli getaccountaddress 
-> raven-cli getaccountaddress ""
-> raven-cli getaccountaddress "myaccount"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getaccountaddress", "params": ["myaccount"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getaccountaddress: "getaccountaddress",
-    /** getaddednodeinfo ( "node" )
-
-Returns information about the given added node, or all added nodes
-(note that onetry addnodes are not listed here)
-
-Arguments:
-1. "node"   (string, optional) If provided, return information about this specific node, otherwise all nodes are returned.
-
-Result:
-[
-  {
-    "addednode" : "192.168.0.201",   (string) The node IP address or name (as provided to addnode)
-    "connected" : true|false,          (boolean) If connected
-    "addresses" : [                    (list of objects) Only when connected = true
-       {
-         "address" : "192.168.0.201:8767",  (string) The raven server IP and port we're connected to
-         "connected" : "outbound"           (string) connection, inbound or outbound
-       }
-     ]
-  }
-  ,...
-]
-
-Examples:
-> raven-cli getaddednodeinfo "192.168.0.201"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getaddednodeinfo", "params": ["192.168.0.201"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getaddednodeinfo: "getaddednodeinfo",
-    /** getaddressbalance
-
-Returns the balance for an address(es) (requires addressindex to be enabled).
-
-Arguments:
-{
-  "addresses:"
-    [
-      "address"  (string) The base58check encoded address
-      ,...
-    ]
-},
-"includeAssets" (boolean, optional, default false)  If true this will return an expanded result which includes asset balances
-
-
-Result:
-{
-  "balance"  (string) The current balance in satoshis
-  "received"  (string) The total number of satoshis received (including change)
-}
-OR
-[
-  {
-    "assetName"  (string) The asset associated with the balance (RVN for Ravencoin)
-    "balance"  (string) The current balance in satoshis
-    "received"  (string) The total number of satoshis received (including change)
-  },...
-
-]
-Examples:
-> raven-cli getaddressbalance '{"addresses": ["12c6DSiU4Rq3P4ZxziKxzrL5LmMBrzjrJX"]}'
-> raven-cli getaddressbalance '{"addresses": ["12c6DSiU4Rq3P4ZxziKxzrL5LmMBrzjrJX"]}', true
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getaddressbalance", "params": [{"addresses": ["12c6DSiU4Rq3P4ZxziKxzrL5LmMBrzjrJX"]}] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getaddressbalance", "params": [{"addresses": ["12c6DSiU4Rq3P4ZxziKxzrL5LmMBrzjrJX"]}, true] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getaddressbalance: "getaddressbalance",
-    /** getaddressdeltas
-
-Returns all changes for an address (requires addressindex to be enabled).
-
-Arguments:
-{
-  "addresses"
-    [
-      "address"  (string) The base58check encoded address
-      ,...
-    ]
-  "start" (number) The start block height
-  "end" (number) The end block height
-  "chainInfo" (boolean) Include chain info in results, only applies if start and end specified
-  "assetName"   (string, optional) Get deltas for a particular asset instead of RVN.
-}
-
-Result:
-[
-  {
-    "assetName"  (string) The asset associated with the deltas (RVN for Ravencoin)
-    "satoshis"  (number) The difference of satoshis
-    "txid"  (string) The related txid
-    "index"  (number) The related input or output index
-    "height"  (number) The block height
-    "address"  (string) The base58check encoded address
-  }
-]
-
-Examples:
-> raven-cli getaddressdeltas '{"addresses": ["12c6DSiU4Rq3P4ZxziKxzrL5LmMBrzjrJX"]}'
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getaddressdeltas", "params": [{"addresses": ["12c6DSiU4Rq3P4ZxziKxzrL5LmMBrzjrJX"]}] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-> raven-cli getaddressdeltas '{"addresses": ["12c6DSiU4Rq3P4ZxziKxzrL5LmMBrzjrJX"],"assetName":"MY_ASSET"}'
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getaddressdeltas", "params": [{"addresses": ["12c6DSiU4Rq3P4ZxziKxzrL5LmMBrzjrJX"],"assetName":"MY_ASSET"}] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getaddressdeltas: "getaddressdeltas",
-    /** getaddressesbyaccount "account"
-
-DEPRECATED. Returns the list of addresses for the given account.
-
-Arguments:
-1. "account"        (string, required) The account name.
-
-Result:
-[                     (json array of string)
-  "address"         (string) a raven address associated with the given account
-  ,...
-]
-
-Examples:
-> raven-cli getaddressesbyaccount "tabby"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getaddressesbyaccount", "params": ["tabby"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getaddressesbyaccount: "getaddressesbyaccount",
-    /** getaddressmempool
-
-Returns all mempool deltas for an address (requires addressindex to be enabled).
-
-Arguments:
-{
-  "addresses"
-    [
-      "address"  (string) The base58check encoded address
-      ,...
-    ]
-},
-"includeAssets" (boolean, optional, default false)  If true this will return an expanded result which includes asset deltas
-
-Result:
-[
-  {
-    "address"  (string) The base58check encoded address
-    "assetName"  (string) The name of the associated asset (RVN for Ravencoin)
-    "txid"  (string) The related txid
-    "index"  (number) The related input or output index
-    "satoshis"  (number) The difference of satoshis
-    "timestamp"  (number) The time the transaction entered the mempool (seconds)
-    "prevtxid"  (string) The previous txid (if spending)
-    "prevout"  (string) The previous transaction output index (if spending)
-  }
-]
-
-Examples:
-> raven-cli getaddressmempool '{"addresses": ["12c6DSiU4Rq3P4ZxziKxzrL5LmMBrzjrJX"]}'
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getaddressmempool", "params": [{"addresses": ["12c6DSiU4Rq3P4ZxziKxzrL5LmMBrzjrJX"]}] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-> raven-cli getaddressmempool '{"addresses": ["12c6DSiU4Rq3P4ZxziKxzrL5LmMBrzjrJX"]}', true
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getaddressmempool", "params": [{"addresses": ["12c6DSiU4Rq3P4ZxziKxzrL5LmMBrzjrJX"]}, true] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getaddressmempool: "getaddressmempool",
-    /** getaddresstxids
-
-Returns the txids for an address(es) (requires addressindex to be enabled).
-
-Arguments:
-{
-  "addresses"
-    [
-      "address"  (string) The base58check encoded address
-      ,...
-    ]
-  "start" (number, optional) The start block height
-  "end" (number, optional) The end block height
-},
-"includeAssets" (boolean, optional, default false)  If true this will return an expanded result which includes asset transactions
-
-Result:
-[
-  "transactionid"  (string) The transaction id
-  ,...
-]
-
-Examples:
-> raven-cli getaddresstxids '{"addresses": ["12c6DSiU4Rq3P4ZxziKxzrL5LmMBrzjrJX"]}'
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getaddresstxids", "params": [{"addresses": ["12c6DSiU4Rq3P4ZxziKxzrL5LmMBrzjrJX"]}] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-> raven-cli getaddresstxids '{"addresses": ["12c6DSiU4Rq3P4ZxziKxzrL5LmMBrzjrJX"]}', true
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getaddresstxids", "params": [{"addresses": ["12c6DSiU4Rq3P4ZxziKxzrL5LmMBrzjrJX"]}, true] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getaddresstxids: "getaddresstxids",
-    /** getaddressutxos
-
-Returns all unspent outputs for an address (requires addressindex to be enabled).
-
-Arguments:
-{
-  "addresses"
-    [
-      "address"  (string) The base58check encoded address
-      ,...
-    ],
-  "chainInfo",  (boolean, optional, default false) Include chain info with results
-  "assetName"   (string, optional) Get UTXOs for a particular asset instead of RVN ('*' for all assets).
-}
-
-Result
-[
-  {
-    "address"  (string) The address base58check encoded
-    "assetName" (string) The asset associated with the UTXOs (RVN for Ravencoin)
-    "txid"  (string) The output txid
-    "height"  (number) The block height
-    "outputIndex"  (number) The output index
-    "script"  (strin) The script hex encoded
-    "satoshis"  (number) The number of satoshis of the output
-  }
-]
-
-Examples:
-> raven-cli getaddressutxos '{"addresses": ["12c6DSiU4Rq3P4ZxziKxzrL5LmMBrzjrJX"]}'
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getaddressutxos", "params": [{"addresses": ["12c6DSiU4Rq3P4ZxziKxzrL5LmMBrzjrJX"]}] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-> raven-cli getaddressutxos '{"addresses": ["12c6DSiU4Rq3P4ZxziKxzrL5LmMBrzjrJX"],"assetName":"MY_ASSET"}'
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getaddressutxos", "params": [{"addresses": ["12c6DSiU4Rq3P4ZxziKxzrL5LmMBrzjrJX"],"assetName":"MY_ASSET"}] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getaddressutxos: "getaddressutxos",
-    /** getassetdata "asset_name"
-
-Returns assets metadata if that asset exists
-
-Arguments:
-1. "asset_name"               (string, required) the name of the asset
-
-Result:
-{
-  name: (string),
-  amount: (number),
-  units: (number),
-  reissuable: (number),
-  has_ipfs: (number),
-  ipfs_hash: (hash), (only if has_ipfs = 1 and that data is a ipfs hash)
-  txid_hash: (hash), (only if has_ipfs = 1 and that data is a txid hash)
-  verifier_string: (string)
-}
-
-Examples:
-> raven-cli getassetdata "ASSET_NAME"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getassetdata", "params": ["ASSET_NAME"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getassetdata: "getassetdata",
-    /** getbalance ( "account" minconf include_watchonly )
-
-If account is not specified, returns the server's total available balance.
-If account is specified (DEPRECATED), returns the balance in the account.
-Note that the account "" is not the same as leaving the parameter out.
-The server total may be different to the balance in the default "" account.
-
-Arguments:
-1. "account"         (string, optional) DEPRECATED. The account string may be given as a
-                     specific account name to find the balance associated with wallet keys in
-                     a named account, or as the empty string ("") to find the balance
-                     associated with wallet keys not in any named account, or as "*" to find
-                     the balance associated with all wallet keys regardless of account.
-                     When this option is specified, it calculates the balance in a different
-                     way than when it is not specified, and which can count spends twice when
-                     there are conflicting pending transactions (such as those created by
-                     the bumpfee command), temporarily resulting in low or even negative
-                     balances. In general, account balance calculation is not considered
-                     reliable and has resulted in confusing outcomes, so it is recommended to
-                     avoid passing this argument.
-2. minconf           (numeric, optional, default=1) Only include transactions confirmed at least this many times.
-3. include_watchonly (bool, optional, default=false) Also include balance in watch-only addresses (see 'importaddress')
-
-Result:
-amount              (numeric) The total amount in RVN received for this account.
-
-Examples:
-
-The total amount in the wallet with 1 or more confirmations
-> raven-cli getbalance 
-
-The total amount in the wallet at least 6 blocks confirmed
-> raven-cli getbalance "*" 6
-
-As a json rpc call
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getbalance", "params": ["*", 6] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getbalance: "getbalance",
-    /** getbestblockhash
-
-Returns the hash of the best (tip) block in the longest blockchain.
-
-Result:
-"hex"      (string) the block hash hex encoded
-
-Examples:
-> raven-cli getbestblockhash 
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getbestblockhash", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getbestblockhash: "getbestblockhash",
-    /** getblock "blockhash" ( verbosity ) 
-
-If verbosity is 0, returns a string that is serialized, hex-encoded data for block 'hash'.
-If verbosity is 1, returns an Object with information about block <hash>.
-If verbosity is 2, returns an Object with information about block <hash> and information about each transaction. 
-
-Arguments:
-1. "blockhash"          (string, required) The block hash
-2. verbosity              (numeric, optional, default=1) 0 for hex encoded data, 1 for a json object, and 2 for json object with transaction data
-
-Result (for verbosity = 0):
-"data"             (string) A string that is serialized, hex-encoded data for block 'hash'.
-
-Result (for verbosity = 1):
-{
-  "hash" : "hash",     (string) the block hash (same as provided)
-  "confirmations" : n,   (numeric) The number of confirmations, or -1 if the block is not on the main chain
-  "size" : n,            (numeric) The block size
-  "strippedsize" : n,    (numeric) The block size excluding witness data
-  "weight" : n           (numeric) The block weight as defined in BIP 141
-  "height" : n,          (numeric) The block height or index
-  "version" : n,         (numeric) The block version
-  "versionHex" : "00000000", (string) The block version formatted in hexadecimal
-  "merkleroot" : "xxxx", (string) The merkle root
-  "tx" : [               (array of string) The transaction ids
-     "transactionid"     (string) The transaction id
-     ,...
-  ],
-  "time" : ttt,          (numeric) The block time in seconds since epoch (Jan 1 1970 GMT)
-  "mediantime" : ttt,    (numeric) The median block time in seconds since epoch (Jan 1 1970 GMT)
-  "nonce" : n,           (numeric) The nonce
-  "bits" : "1d00ffff", (string) The bits
-  "difficulty" : x.xxx,  (numeric) The difficulty
-  "chainwork" : "xxxx",  (string) Expected number of hashes required to produce the chain up to this block (in hex)
-  "previousblockhash" : "hash",  (string) The hash of the previous block
-  "nextblockhash" : "hash"       (string) The hash of the next block
-}
-
-Result (for verbosity = 2):
-{
-  ...,                     Same output as verbosity = 1.
-  "tx" : [               (array of Objects) The transactions in the format of the getrawtransaction RPC. Different from verbosity = 1 "tx" result.
-         ,...
-  ],
-  ,...                     Same output as verbosity = 1.
-}
-
-Examples:
-> raven-cli getblock "00000000c937983704a73af28acdec37b049d214adbda81d7e2a3dd146f6ed09"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getblock", "params": ["00000000c937983704a73af28acdec37b049d214adbda81d7e2a3dd146f6ed09"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getblock: "getblock",
-    /** getblockchaininfo
-Returns an object containing various state info regarding blockchain processing.
-
-Result:
-{
-  "chain": "xxxx",        (string) current network name as defined in BIP70 (main, test, regtest)
-  "blocks": xxxxxx,         (numeric) the current number of blocks processed in the server
-  "headers": xxxxxx,        (numeric) the current number of headers we have validated
-  "bestblockhash": "...", (string) the hash of the currently best block
-  "difficulty": xxxxxx,     (numeric) the current difficulty
-  "mediantime": xxxxxx,     (numeric) median time for the current best block
-  "verificationprogress": xxxx, (numeric) estimate of verification progress [0..1]
-  "chainwork": "xxxx"     (string) total amount of work in active chain, in hexadecimal
-  "size_on_disk": xxxxxx,   (numeric) the estimated size of the block and undo files on disk
-  "pruned": xx,             (boolean) if the blocks are subject to pruning
-  "pruneheight": xxxxxx,    (numeric) lowest-height complete block stored (only present if pruning is enabled)
-  "automatic_pruning": xx,  (boolean) whether automatic pruning is enabled (only present if pruning is enabled)
-  "prune_target_size": xxxxxx,  (numeric) the target size used by pruning (only present if automatic pruning is enabled)
-  "softforks": [            (array) status of softforks in progress
-     {
-        "id": "xxxx",        (string) name of softfork
-        "version": xx,         (numeric) block version
-        "reject": {            (object) progress toward rejecting pre-softfork blocks
-           "status": xx,       (boolean) true if threshold reached
-        },
-     }, ...
-  ],
-  "bip9_softforks": {          (object) status of BIP9 softforks in progress
-     "xxxx" : {                (string) name of the softfork
-        "status": "xxxx",    (string) one of "defined", "started", "locked_in", "active", "failed"
-        "bit": xx,             (numeric) the bit (0-28) in the block version field used to signal this softfork (only for "started" status)
-        "startTime": xx,       (numeric) the minimum median time past of a block at which the bit gains its meaning
-        "timeout": xx,         (numeric) the median time past of a block at which the deployment is considered failed if not yet locked in
-        "since": xx,           (numeric) height of the first block to which the status applies
-        "statistics": {        (object) numeric statistics about BIP9 signalling for a softfork (only for "started" status)
-           "period": xx,       (numeric) the length in blocks of the BIP9 signalling period 
-           "threshold": xx,    (numeric) the number of blocks with the version bit set required to activate the feature 
-           "elapsed": xx,      (numeric) the number of blocks elapsed since the beginning of the current period 
-           "count": xx,        (numeric) the number of blocks with the version bit set in the current period 
-           "possible": xx      (boolean) returns false if there are not enough blocks left in this period to pass activation threshold 
-        }
-     }
-  }
-  "warnings" : "...",         (string) any network and blockchain warnings.
-}
-
-Examples:
-> raven-cli getblockchaininfo 
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getblockchaininfo", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getblockchaininfo: "getblockchaininfo",
-    /** getblockcount
-
-Returns the number of blocks in the longest blockchain.
-
-Result:
-n    (numeric) The current block count
-
-Examples:
-> raven-cli getblockcount 
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getblockcount", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getblockcount: "getblockcount",
-    /** getblockhash height
-
-Returns hash of block in best-block-chain at height provided.
-
-Arguments:
-1. height         (numeric, required) The height index
-
-Result:
-"hash"         (string) The block hash
-
-Examples:
-> raven-cli getblockhash 1000
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getblockhash", "params": [1000] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getblockhash: "getblockhash",
-    /** getblockhashes timestamp
-
-Returns array of hashes of blocks within the timestamp range provided.
-
-Arguments:
-1. high         (numeric, required) The newer block timestamp
-2. low          (numeric, required) The older block timestamp
-3. options      (string, required) A json object
-    {
-      "noOrphans":true   (boolean) will only include blocks on the main chain
-      "logicalTimes":true   (boolean) will include logical timestamps with hashes
-    }
-
-Result:
-[
-  "hash"         (string) The block hash
-]
-[
-  {
-    "blockhash": (string) The block hash
-    "logicalts": (numeric) The logical timestamp
-  }
-]
-
-Examples:
-> raven-cli getblockhashes 1231614698 1231024505
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getblockhashes", "params": [1231614698, 1231024505] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-> raven-cli getblockhashes 1231614698 1231024505 '{"noOrphans":false, "logicalTimes":true}'
-**/ getblockhashes: "getblockhashes",
-    /** getblockheader "hash" ( verbose )
-
-If verbose is false, returns a string that is serialized, hex-encoded data for blockheader 'hash'.
-If verbose is true, returns an Object with information about blockheader <hash>.
-
-Arguments:
-1. "hash"          (string, required) The block hash
-2. verbose           (boolean, optional, default=true) true for a json object, false for the hex encoded data
-
-Result (for verbose = true):
-{
-  "hash" : "hash",     (string) the block hash (same as provided)
-  "confirmations" : n,   (numeric) The number of confirmations, or -1 if the block is not on the main chain
-  "height" : n,          (numeric) The block height or index
-  "version" : n,         (numeric) The block version
-  "versionHex" : "00000000", (string) The block version formatted in hexadecimal
-  "merkleroot" : "xxxx", (string) The merkle root
-  "time" : ttt,          (numeric) The block time in seconds since epoch (Jan 1 1970 GMT)
-  "mediantime" : ttt,    (numeric) The median block time in seconds since epoch (Jan 1 1970 GMT)
-  "nonce" : n,           (numeric) The nonce
-  "bits" : "1d00ffff", (string) The bits
-  "difficulty" : x.xxx,  (numeric) The difficulty
-  "chainwork" : "0000...1f3"     (string) Expected number of hashes required to produce the current chain (in hex)
-  "previousblockhash" : "hash",  (string) The hash of the previous block
-  "nextblockhash" : "hash",      (string) The hash of the next block
-}
-
-Result (for verbose=false):
-"data"             (string) A string that is serialized, hex-encoded data for block 'hash'.
-
-Examples:
-> raven-cli getblockheader "00000000c937983704a73af28acdec37b049d214adbda81d7e2a3dd146f6ed09"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getblockheader", "params": ["00000000c937983704a73af28acdec37b049d214adbda81d7e2a3dd146f6ed09"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getblockheader: "getblockheader",
-    /** getblocktemplate ( TemplateRequest )
-
-If the request parameters include a 'mode' key, that is used to explicitly select between the default 'template' request or a 'proposal'.
-It returns data needed to construct a block to work on.
-For full specification, see BIPs 22, 23, 9, and 145:
-    https://github.com/raven/bips/blob/master/bip-0022.mediawiki
-    https://github.com/raven/bips/blob/master/bip-0023.mediawiki
-    https://github.com/raven/bips/blob/master/bip-0009.mediawiki#getblocktemplate_changes
-    https://github.com/raven/bips/blob/master/bip-0145.mediawiki
-
-Arguments:
-1. template_request         (json object, optional) A json object in the following spec
-     {
-       "mode":"template"    (string, optional) This must be set to "template", "proposal" (see BIP 23), or omitted
-       "capabilities":[     (array, optional) A list of strings
-           "support"          (string) client side supported feature, 'longpoll', 'coinbasetxn', 'coinbasevalue', 'proposal', 'serverlist', 'workid'
-           ,...
-       ],
-       "rules":[            (array, optional) A list of strings
-           "support"          (string) client side supported softfork deployment
-           ,...
-       ]
-     }
-
-
-Result:
-{
-  "version" : n,                    (numeric) The preferred block version
-  "rules" : [ "rulename", ... ],    (array of strings) specific block rules that are to be enforced
-  "vbavailable" : {                 (json object) set of pending, supported versionbit (BIP 9) softfork deployments
-      "rulename" : bitnumber          (numeric) identifies the bit number as indicating acceptance and readiness for the named softfork rule
-      ,...
-  },
-  "vbrequired" : n,                 (numeric) bit mask of versionbits the server requires set in submissions
-  "previousblockhash" : "xxxx",     (string) The hash of current highest block
-  "transactions" : [                (array) contents of non-coinbase transactions that should be included in the next block
-      {
-         "data" : "xxxx",             (string) transaction data encoded in hexadecimal (byte-for-byte)
-         "txid" : "xxxx",             (string) transaction id encoded in little-endian hexadecimal
-         "hash" : "xxxx",             (string) hash encoded in little-endian hexadecimal (including witness data)
-         "depends" : [                (array) array of numbers 
-             n                          (numeric) transactions before this one (by 1-based index in 'transactions' list) that must be present in the final block if this one is
-             ,...
-         ],
-         "fee": n,                    (numeric) difference in value between transaction inputs and outputs (in satoshis); for coinbase transactions, this is a negative Number of the total collected block fees (ie, not including the block subsidy); if key is not present, fee is unknown and clients MUST NOT assume there isn't one
-         "sigops" : n,                (numeric) total SigOps cost, as counted for purposes of block limits; if key is not present, sigop cost is unknown and clients MUST NOT assume it is zero
-         "weight" : n,                (numeric) total transaction weight, as counted for purposes of block limits
-         "required" : true|false      (boolean) if provided and true, this transaction must be in the final block
-      }
-      ,...
-  ],
-  "coinbaseaux" : {                 (json object) data that should be included in the coinbase's scriptSig content
-      "flags" : "xx"                  (string) key name is to be ignored, and value included in scriptSig
-  },
-  "coinbasevalue" : n,              (numeric) maximum allowable input to coinbase transaction, including the generation award and transaction fees (in satoshis)
-  "coinbasetxn" : { ... },          (json object) information for coinbase transaction
-  "target" : "xxxx",                (string) The hash target
-  "mintime" : xxx,                  (numeric) The minimum timestamp appropriate for next block time in seconds since epoch (Jan 1 1970 GMT)
-  "mutable" : [                     (array of string) list of ways the block template may be changed 
-     "value"                          (string) A way the block template may be changed, e.g. 'time', 'transactions', 'prevblock'
-     ,...
-  ],
-  "noncerange" : "00000000ffffffff",(string) A range of valid nonces
-  "sigoplimit" : n,                 (numeric) limit of sigops in blocks
-  "sizelimit" : n,                  (numeric) limit of block size
-  "weightlimit" : n,                (numeric) limit of block weight
-  "curtime" : ttt,                  (numeric) current timestamp in seconds since epoch (Jan 1 1970 GMT)
-  "bits" : "xxxxxxxx",              (string) compressed target of next block
-  "height" : n                      (numeric) The height of the next block
-}
-
-Examples:
-> raven-cli getblocktemplate 
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getblocktemplate", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getblocktemplate: "getblocktemplate",
-    /** getcacheinfo 
-
-Result:
-[
-  uxto cache size:
-  asset total (exclude dirty):
-  asset address map:
-  asset address balance:
-  my unspent asset:
-  reissue data:
-  asset metadata map:
-  asset metadata list (est):
-  dirty cache (est):
-]
-
-Examples:
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getcacheinfo", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-> raven-cli getcacheinfo 
-**/ getcacheinfo: "getcacheinfo",
-    /** getchaintips
-Return information about all known tips in the block tree, including the main chain as well as orphaned branches.
-
-Result:
-[
-  {
-    "height": xxxx,         (numeric) height of the chain tip
-    "hash": "xxxx",         (string) block hash of the tip
-    "branchlen": 0          (numeric) zero for main chain
-    "status": "active"      (string) "active" for the main chain
-  },
-  {
-    "height": xxxx,
-    "hash": "xxxx",
-    "branchlen": 1          (numeric) length of branch connecting the tip to the main chain
-    "status": "xxxx"        (string) status of the chain (active, valid-fork, valid-headers, headers-only, invalid)
-  }
-]
-Possible values for status:
-1.  "invalid"               This branch contains at least one invalid block
-2.  "headers-only"          Not all blocks for this branch are available, but the headers are valid
-3.  "valid-headers"         All blocks are available for this branch, but they were never fully validated
-4.  "valid-fork"            This branch is not part of the active chain, but is fully validated
-5.  "active"                This is the tip of the active main chain, which is certainly valid
-
-Examples:
-> raven-cli getchaintips 
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getchaintips", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getchaintips: "getchaintips",
-    /** getchaintxstats ( nblocks blockhash )
-
-Compute statistics about the total number and rate of transactions in the chain.
-
-Arguments:
-1. nblocks      (numeric, optional) Size of the window in number of blocks (default: one month).
-2. "blockhash"  (string, optional) The hash of the block that ends the window.
-
-Result:
-{
-  "time": xxxxx,                (numeric) The timestamp for the final block in the window in UNIX format.
-  "txcount": xxxxx,             (numeric) The total number of transactions in the chain up to that point.
-  "window_block_count": xxxxx,  (numeric) Size of the window in number of blocks.
-  "window_tx_count": xxxxx,     (numeric) The number of transactions in the window. Only returned if "window_block_count" is > 0.
-  "window_interval": xxxxx,     (numeric) The elapsed time in the window in seconds. Only returned if "window_block_count" is > 0.
-  "txrate": x.xx,               (numeric) The average rate of transactions per second in the window. Only returned if "window_interval" is > 0.
-}
-
-Examples:
-> raven-cli getchaintxstats 
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getchaintxstats", "params": [2016] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getchaintxstats: "getchaintxstats",
-    /** getconnectioncount
-
-Returns the number of connections to other nodes.
-
-Result:
-n          (numeric) The connection count
-
-Examples:
-> raven-cli getconnectioncount 
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getconnectioncount", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getconnectioncount: "getconnectioncount",
-    /** getdifficulty
-
-Returns the proof-of-work difficulty as a multiple of the minimum difficulty.
-
-Result:
-n.nnn       (numeric) the proof-of-work difficulty as a multiple of the minimum difficulty.
-
-Examples:
-> raven-cli getdifficulty 
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getdifficulty", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getdifficulty: "getdifficulty",
-    /** getdistributestatus "asset_name" snapshot_height "distribution_asset_name" gross_distribution_amount ( "exception_addresses" )
-
-Give information about the status of the distribution
-
-Arguments:
-1. "asset_name"                 (string, required) The reward will be distributed all owners of this asset
-2. "snapshot_height"            (number, required) The block height of the ownership snapshot
-3. "distribution_asset_name"    (string, required) The name of the asset that will be distributed, or RVN
-4. "gross_distribution_amount"  (number, required) The amount of the distribution asset that will be split amongst all owners
-5. "exception_addresses"        (string, optional) Ownership addresses that should be excluded
-
-Examples:
-> raven-cli getdistributestatus "TRONCO" 12345 "RVN" 1000
-> raven-cli getdistributestatus "PHATSTACKS" 12345 "DIVIDENDS" 1000 "mwN7xC3yomYdvJuVXkVC7ymY9wNBjWNduD,n4Rf18edydDaRBh7t6gHUbuByLbWEoWUTg"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getdistributestatus", "params": ["TRONCO" 34987 "DIVIDENDS" 100000] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getdistributestatus", "params": ["PHATSTACKS" 34987 "RVN" 100000 "mwN7xC3yomYdvJuVXkVC7ymY9wNBjWNduD,n4Rf18edydDaRBh7t6gHUbuByLbWEoWUTg"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getdistributestatus: "getdistributestatus",
-    /** getgenerate
-
-Return if the server is set to generate coins or not. The default is false.
-It is set with the command line argument -gen (or raven.conf setting gen)
-It can also be set with the setgenerate call.
-
-Result
-true|false      (boolean) If the server is set to generate coins or not
-
-Examples:
-> raven-cli getgenerate 
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getgenerate", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getgenerate: "getgenerate",
-    /** getinfo
-
-DEPRECATED. Returns an object containing various state info.
-
-Result:
-{
-  "deprecation-warning": "..." (string) warning that the getinfo command is deprecated and will be removed in 0.16
-  "version": xxxxx,           (numeric) the server version
-  "protocolversion": xxxxx,   (numeric) the protocol version
-  "walletversion": xxxxx,     (numeric) the wallet version
-  "balance": xxxxxxx,         (numeric) the total Ravencoin balance of the wallet
-  "blocks": xxxxxx,           (numeric) the current number of blocks processed in the server
-  "timeoffset": xxxxx,        (numeric) the time offset
-  "connections": xxxxx,       (numeric) the number of connections
-  "proxy": "host:port",       (string, optional) the proxy used by the server
-  "difficulty": xxxxxx,       (numeric) the current difficulty
-  "testnet": true|false,      (boolean) if the server is using testnet or not
-  "keypoololdest": xxxxxx,    (numeric) the timestamp (seconds since Unix epoch) of the oldest pre-generated key in the key pool
-  "keypoolsize": xxxx,        (numeric) how many new keys are pre-generated
-  "unlocked_until": ttt,      (numeric) the timestamp in seconds since epoch (midnight Jan 1 1970 GMT) that the wallet is unlocked for transfers, or 0 if the wallet is locked
-  "paytxfee": x.xxxx,         (numeric) the transaction fee set in RVN/kB
-  "relayfee": x.xxxx,         (numeric) minimum relay fee for transactions in RVN/kB
-  "errors": "..."             (string) any error messages
-}
-
-Examples:
-> raven-cli getinfo 
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getinfo", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getinfo: "getinfo",
-    /** getkawpowhash "header_hash" "mix_hash" nonce, height, "target"
-
-Get the kawpow hash for a block given its block data
-
-Arguments
-1. "header_hash"        (string, required) the prow_pow header hash that was given to the gpu miner from this rpc client
-2. "mix_hash"           (string, required) the mix hash that was mined by the gpu miner via rpc
-3. "nonce"              (string, required) the hex nonce of the block that hashed the valid block
-4. "height"             (number, required) the height of the block data that is being hashed
-5. "target"             (string, optional) the target of the block that is hash is trying to meet
-
-Result:
-
-Examples:
-> raven-cli getkawpowhash "header_hash" "mix_hash" "0x100000" 2456
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getkawpowhash", "params": ["header_hash" "mix_hash" "0x100000" 2456] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getkawpowhash: "getkawpowhash",
-    /** getmasterkeyinfo
-
-Fetches and displays the master private key and the master public key.
-
-Result:
-{                           (json object)
-  "bip32_root_private" : (string) extended master private key,
-  "bip32_root_public" :  (string) extended master public key,
-  "account_derivation_path" : (string) The derivation path to the account public/private keys
-  "account_extended_private_key" : (string) extended account private key,
-  "account_extended_public_key" :  (string) extended account public key,
-}
-
-Examples:
-> raven-cli getmasterkeyinfo 
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getmasterkeyinfo", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getmasterkeyinfo: "getmasterkeyinfo",
-    /** getmemoryinfo ("mode")
-Returns an object containing information about memory usage.
-Arguments:
-1. "mode" determines what kind of information is returned. This argument is optional, the default mode is "stats".
-  - "stats" returns general statistics about memory usage in the daemon.
-  - "mallocinfo" returns an XML string describing low-level heap state (only available if compiled with glibc 2.10+).
-
-Result (mode "stats"):
-{
-  "locked": {               (json object) Information about locked memory manager
-    "used": xxxxx,          (numeric) Number of bytes used
-    "free": xxxxx,          (numeric) Number of bytes available in current arenas
-    "total": xxxxxxx,       (numeric) Total number of bytes managed
-    "locked": xxxxxx,       (numeric) Amount of bytes that succeeded locking. If this number is smaller than total, locking pages failed at some point and key data could be swapped to disk.
-    "chunks_used": xxxxx,   (numeric) Number allocated chunks
-    "chunks_free": xxxxx,   (numeric) Number unused chunks
-  }
-}
-
-Result (mode "mallocinfo"):
-"<malloc version="1">..."
-
-Examples:
-> raven-cli getmemoryinfo 
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getmemoryinfo", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getmemoryinfo: "getmemoryinfo",
-    /** getmempoolancestors txid (verbose)
-
-If txid is in the mempool, returns all in-mempool ancestors.
-
-Arguments:
-1. "txid"                 (string, required) The transaction id (must be in mempool)
-2. verbose                  (boolean, optional, default=false) True for a json object, false for array of transaction ids
-
-Result (for verbose=false):
-[                       (json array of strings)
-  "transactionid"           (string) The transaction id of an in-mempool ancestor transaction
-  ,...
-]
-
-Result (for verbose=true):
-{                           (json object)
-  "transactionid" : {       (json object)
-    "size" : n,             (numeric) virtual transaction size as defined in BIP 141. This is different from actual serialized size for witness transactions as witness data is discounted.
-    "fee" : n,              (numeric) transaction fee in RVN
-    "modifiedfee" : n,      (numeric) transaction fee with fee deltas used for mining priority
-    "time" : n,             (numeric) local time transaction entered pool in seconds since 1 Jan 1970 GMT
-    "height" : n,           (numeric) block height when transaction entered pool
-    "descendantcount" : n,  (numeric) number of in-mempool descendant transactions (including this one)
-    "descendantsize" : n,   (numeric) virtual transaction size of in-mempool descendants (including this one)
-    "descendantfees" : n,   (numeric) modified fees (see above) of in-mempool descendants (including this one)
-    "ancestorcount" : n,    (numeric) number of in-mempool ancestor transactions (including this one)
-    "ancestorsize" : n,     (numeric) virtual transaction size of in-mempool ancestors (including this one)
-    "ancestorfees" : n,     (numeric) modified fees (see above) of in-mempool ancestors (including this one)
-    "wtxid" : hash,         (string) hash of serialized transaction, including witness data
-    "depends" : [           (array) unconfirmed transactions used as inputs for this transaction
-        "transactionid",    (string) parent transaction id
-       ... ]
-  }, ...
-}
-
-Examples:
-> raven-cli getmempoolancestors "mytxid"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getmempoolancestors", "params": ["mytxid"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getmempoolancestors: "getmempoolancestors",
-    /** getmempooldescendants txid (verbose)
-
-If txid is in the mempool, returns all in-mempool descendants.
-
-Arguments:
-1. "txid"                 (string, required) The transaction id (must be in mempool)
-2. verbose                  (boolean, optional, default=false) True for a json object, false for array of transaction ids
-
-Result (for verbose=false):
-[                       (json array of strings)
-  "transactionid"           (string) The transaction id of an in-mempool descendant transaction
-  ,...
-]
-
-Result (for verbose=true):
-{                           (json object)
-  "transactionid" : {       (json object)
-    "size" : n,             (numeric) virtual transaction size as defined in BIP 141. This is different from actual serialized size for witness transactions as witness data is discounted.
-    "fee" : n,              (numeric) transaction fee in RVN
-    "modifiedfee" : n,      (numeric) transaction fee with fee deltas used for mining priority
-    "time" : n,             (numeric) local time transaction entered pool in seconds since 1 Jan 1970 GMT
-    "height" : n,           (numeric) block height when transaction entered pool
-    "descendantcount" : n,  (numeric) number of in-mempool descendant transactions (including this one)
-    "descendantsize" : n,   (numeric) virtual transaction size of in-mempool descendants (including this one)
-    "descendantfees" : n,   (numeric) modified fees (see above) of in-mempool descendants (including this one)
-    "ancestorcount" : n,    (numeric) number of in-mempool ancestor transactions (including this one)
-    "ancestorsize" : n,     (numeric) virtual transaction size of in-mempool ancestors (including this one)
-    "ancestorfees" : n,     (numeric) modified fees (see above) of in-mempool ancestors (including this one)
-    "wtxid" : hash,         (string) hash of serialized transaction, including witness data
-    "depends" : [           (array) unconfirmed transactions used as inputs for this transaction
-        "transactionid",    (string) parent transaction id
-       ... ]
-  }, ...
-}
-
-Examples:
-> raven-cli getmempooldescendants "mytxid"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getmempooldescendants", "params": ["mytxid"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getmempooldescendants: "getmempooldescendants",
-    /** getmempoolentry txid
-
-Returns mempool data for given transaction
-
-Arguments:
-1. "txid"                   (string, required) The transaction id (must be in mempool)
-
-Result:
-{                           (json object)
-    "size" : n,             (numeric) virtual transaction size as defined in BIP 141. This is different from actual serialized size for witness transactions as witness data is discounted.
-    "fee" : n,              (numeric) transaction fee in RVN
-    "modifiedfee" : n,      (numeric) transaction fee with fee deltas used for mining priority
-    "time" : n,             (numeric) local time transaction entered pool in seconds since 1 Jan 1970 GMT
-    "height" : n,           (numeric) block height when transaction entered pool
-    "descendantcount" : n,  (numeric) number of in-mempool descendant transactions (including this one)
-    "descendantsize" : n,   (numeric) virtual transaction size of in-mempool descendants (including this one)
-    "descendantfees" : n,   (numeric) modified fees (see above) of in-mempool descendants (including this one)
-    "ancestorcount" : n,    (numeric) number of in-mempool ancestor transactions (including this one)
-    "ancestorsize" : n,     (numeric) virtual transaction size of in-mempool ancestors (including this one)
-    "ancestorfees" : n,     (numeric) modified fees (see above) of in-mempool ancestors (including this one)
-    "wtxid" : hash,         (string) hash of serialized transaction, including witness data
-    "depends" : [           (array) unconfirmed transactions used as inputs for this transaction
-        "transactionid",    (string) parent transaction id
-       ... ]
-}
-
-Examples:
-> raven-cli getmempoolentry "mytxid"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getmempoolentry", "params": ["mytxid"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getmempoolentry: "getmempoolentry",
-    /** getmempoolinfo
-
-Returns details on the active state of the TX memory pool.
-
-Result:
-{
-  "size": xxxxx,               (numeric) Current tx count
-  "bytes": xxxxx,              (numeric) Sum of all virtual transaction sizes as defined in BIP 141. Differs from actual serialized size because witness data is discounted
-  "usage": xxxxx,              (numeric) Total memory usage for the mempool
-  "maxmempool": xxxxx,         (numeric) Maximum memory usage for the mempool
-  "mempoolminfee": xxxxx       (numeric) Minimum fee rate in RVN/kB for tx to be accepted
-}
-
-Examples:
-> raven-cli getmempoolinfo 
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getmempoolinfo", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getmempoolinfo: "getmempoolinfo",
-    /** getmininginfo
-
-Returns a json object containing mining-related information.
-Result:
-{
-  "blocks": nnn,             (numeric) The current block
-  "currentblockweight": nnn, (numeric) The last block weight
-  "currentblocktx": nnn,     (numeric) The last block transaction
-  "difficulty": xxx.xxxxx    (numeric) The current difficulty
-  "networkhashps": nnn,      (numeric) The network hashes per second
-  "hashespersec": nnn,       (numeric) The hashes per second of built-in miner
-  "pooledtx": n              (numeric) The size of the mempool
-  "chain": "xxxx",           (string) current network name as defined in BIP70 (main, test, regtest)
-  "warnings": "..."          (string) any network and blockchain warnings
-  "errors": "..."            (string) DEPRECATED. Same as warnings. Only shown when ravend is started with -deprecatedrpc=getmininginfo
-}
-
-Examples:
-> raven-cli getmininginfo 
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getmininginfo", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getmininginfo: "getmininginfo",
-    /** getmywords ( "account" )
-
-Returns the 12 words and passphrase used by BIP39 to generate the wallets private keys
-Only returns value if wallet was created by the 12 words import/generation
-
-Result:
-"word_list:"    (string) A string of words separated by spaces
-"passphrase:"    (optional) Only show if passphrase was used when creating the wallet
-
-Examples:
-> raven-cli getmywords 
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getmywords", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getmywords: "getmywords",
-    /** getnettotals
-
-Returns information about network traffic, including bytes in, bytes out,
-and current time.
-
-Result:
-{
-  "totalbytesrecv": n,   (numeric) Total bytes received
-  "totalbytessent": n,   (numeric) Total bytes sent
-  "timemillis": t,       (numeric) Current UNIX time in milliseconds
-  "uploadtarget":
-  {
-    "timeframe": n,                         (numeric) Length of the measuring timeframe in seconds
-    "target": n,                            (numeric) Target in bytes
-    "target_reached": true|false,           (boolean) True if target is reached
-    "serve_historical_blocks": true|false,  (boolean) True if serving historical blocks
-    "bytes_left_in_cycle": t,               (numeric) Bytes left in current time cycle
-    "time_left_in_cycle": t                 (numeric) Seconds left in current time cycle
-  }
-}
-
-Examples:
-> raven-cli getnettotals 
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getnettotals", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getnettotals: "getnettotals",
-    /** getnetworkhashps ( nblocks height )
-
-Returns the estimated network hashes per second based on the last n blocks.
-Pass in [blocks] to override # of blocks, -1 specifies since last difficulty change.
-Pass in [height] to estimate the network speed at the time when a certain block was found.
-
-Arguments:
-1. nblocks     (numeric, optional, default=120) The number of blocks, or -1 for blocks since last difficulty change.
-2. height      (numeric, optional, default=-1) To estimate at the time of the given height.
-
-Result:
-x             (numeric) Hashes per second estimated
-
-Examples:
-> raven-cli getnetworkhashps 
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getnetworkhashps", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getnetworkhashps: "getnetworkhashps",
-    /** getnetworkinfo
-Returns an object containing various state info regarding P2P networking.
-
-Result:
-{
-  "version": xxxxx,                      (numeric) the server version
-  "subversion": "/Satoshi:x.x.x/",     (string) the server subversion string
-  "protocolversion": xxxxx,              (numeric) the protocol version
-  "localservices": "xxxxxxxxxxxxxxxx", (string) the services we offer to the network
-  "localrelay": true|false,              (bool) true if transaction relay is requested from peers
-  "timeoffset": xxxxx,                   (numeric) the time offset
-  "connections": xxxxx,                  (numeric) the number of connections
-  "networkactive": true|false,           (bool) whether p2p networking is enabled
-  "networks": [                          (array) information per network
-  {
-    "name": "xxx",                     (string) network (ipv4, ipv6 or onion)
-    "limited": true|false,               (boolean) is the network limited using -onlynet?
-    "reachable": true|false,             (boolean) is the network reachable?
-    "proxy": "host:port"               (string) the proxy that is used for this network, or empty if none
-    "proxy_randomize_credentials": true|false,  (string) Whether randomized credentials are used
-  }
-  ,...
-  ],
-  "relayfee": x.xxxxxxxx,                (numeric) minimum relay fee for transactions in RVN/kB
-  "incrementalfee": x.xxxxxxxx,          (numeric) minimum fee increment for mempool limiting or BIP 125 replacement in RVN/kB
-  "localaddresses": [                    (array) list of local addresses
-  {
-    "address": "xxxx",                 (string) network address
-    "port": xxx,                         (numeric) network port
-    "score": xxx                         (numeric) relative score
-  }
-  ,...
-  ]
-  "warnings": "..."                    (string) any network and blockchain warnings
-}
-
-Examples:
-> raven-cli getnetworkinfo 
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getnetworkinfo", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getnetworkinfo: "getnetworkinfo",
-    /** getnewaddress ( "account" )
-
-Returns a new Raven address for receiving payments.
-If 'account' is specified (DEPRECATED), it is added to the address book 
-so payments received with the address will be credited to 'account'.
-
-Arguments:
-1. "account"        (string, optional) DEPRECATED. The account name for the address to be linked to. If not provided, the default account "" is used. It can also be set to the empty string "" to represent the default account. The account does not need to exist, it will be created if there is no account by the given name.
-
-Result:
-"address"    (string) The new raven address
-
-Examples:
-> raven-cli getnewaddress 
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getnewaddress", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getnewaddress: "getnewaddress",
-    /** getpeerinfo
-
-Returns data about each connected network node as a json array of objects.
-
-Result:
-[
-  {
-    "id": n,                   (numeric) Peer index
-    "addr":"host:port",      (string) The IP address and port of the peer
-    "addrbind":"ip:port",    (string) Bind address of the connection to the peer
-    "addrlocal":"ip:port",   (string) Local address as reported by the peer
-    "services":"xxxxxxxxxxxxxxxx",   (string) The services offered
-    "relaytxes":true|false,    (boolean) Whether peer has asked us to relay transactions to it
-    "lastsend": ttt,           (numeric) The time in seconds since epoch (Jan 1 1970 GMT) of the last send
-    "lastrecv": ttt,           (numeric) The time in seconds since epoch (Jan 1 1970 GMT) of the last receive
-    "bytessent": n,            (numeric) The total bytes sent
-    "bytesrecv": n,            (numeric) The total bytes received
-    "conntime": ttt,           (numeric) The connection time in seconds since epoch (Jan 1 1970 GMT)
-    "timeoffset": ttt,         (numeric) The time offset in seconds
-    "pingtime": n,             (numeric) ping time (if available)
-    "minping": n,              (numeric) minimum observed ping time (if any at all)
-    "pingwait": n,             (numeric) ping wait (if non-zero)
-    "version": v,              (numeric) The peer version, such as 7001
-    "subver": "/Satoshi:0.8.5/",  (string) The string version
-    "inbound": true|false,     (boolean) Inbound (true) or Outbound (false)
-    "addnode": true|false,     (boolean) Whether connection was due to addnode/-connect or if it was an automatic/inbound connection
-    "startingheight": n,       (numeric) The starting height (block) of the peer
-    "banscore": n,             (numeric) The ban score
-    "synced_headers": n,       (numeric) The last header we have in common with this peer
-    "synced_blocks": n,        (numeric) The last block we have in common with this peer
-    "inflight": [
-       n,                        (numeric) The heights of blocks we're currently asking from this peer
-       ...
-    ],
-    "whitelisted": true|false, (boolean) Whether the peer is whitelisted
-    "bytessent_per_msg": {
-       "addr": n,              (numeric) The total bytes sent aggregated by message type
-       ...
-    },
-    "bytesrecv_per_msg": {
-       "addr": n,              (numeric) The total bytes received aggregated by message type
-       ...
-    }
-  }
-  ,...
-]
-
-Examples:
-> raven-cli getpeerinfo 
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getpeerinfo", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getpeerinfo: "getpeerinfo",
-    /** getrawchangeaddress
-
-Returns a new Raven address, for receiving change.
-This is for use with raw transactions, NOT normal use.
-
-Result:
-"address"    (string) The address
-
-Examples:
-> raven-cli getrawchangeaddress 
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getrawchangeaddress", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getrawchangeaddress: "getrawchangeaddress",
-    /** getrawmempool ( verbose )
-
-Returns all transaction ids in memory pool as a json array of string transaction ids.
-
-Hint: use getmempoolentry to fetch a specific transaction from the mempool.
-
-Arguments:
-1. verbose (boolean, optional, default=false) True for a json object, false for array of transaction ids
-
-Result: (for verbose = false):
-[                     (json array of string)
-  "transactionid"     (string) The transaction id
-  ,...
-]
-
-Result: (for verbose = true):
-{                           (json object)
-  "transactionid" : {       (json object)
-    "size" : n,             (numeric) virtual transaction size as defined in BIP 141. This is different from actual serialized size for witness transactions as witness data is discounted.
-    "fee" : n,              (numeric) transaction fee in RVN
-    "modifiedfee" : n,      (numeric) transaction fee with fee deltas used for mining priority
-    "time" : n,             (numeric) local time transaction entered pool in seconds since 1 Jan 1970 GMT
-    "height" : n,           (numeric) block height when transaction entered pool
-    "descendantcount" : n,  (numeric) number of in-mempool descendant transactions (including this one)
-    "descendantsize" : n,   (numeric) virtual transaction size of in-mempool descendants (including this one)
-    "descendantfees" : n,   (numeric) modified fees (see above) of in-mempool descendants (including this one)
-    "ancestorcount" : n,    (numeric) number of in-mempool ancestor transactions (including this one)
-    "ancestorsize" : n,     (numeric) virtual transaction size of in-mempool ancestors (including this one)
-    "ancestorfees" : n,     (numeric) modified fees (see above) of in-mempool ancestors (including this one)
-    "wtxid" : hash,         (string) hash of serialized transaction, including witness data
-    "depends" : [           (array) unconfirmed transactions used as inputs for this transaction
-        "transactionid",    (string) parent transaction id
-       ... ]
-  }, ...
-}
-
-Examples:
-> raven-cli getrawmempool true
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getrawmempool", "params": [true] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getrawmempool: "getrawmempool",
-    /** getrawtransaction "txid" ( verbose )
-
-NOTE: By default this function only works for mempool transactions. If the -txindex option is
-enabled, it also works for blockchain transactions.
-DEPRECATED: for now, it also works for transactions with unspent outputs.
-
-Return the raw transaction data.
-
-If verbose is 'true', returns an Object with information about 'txid'.
-If verbose is 'false' or omitted, returns a string that is serialized, hex-encoded data for 'txid'.
-
-Arguments:
-1. "txid"      (string, required) The transaction id
-2. verbose       (bool, optional, default=false) If false, return a string, otherwise return a json object
-
-Result (if verbose is not set or set to false):
-"data"      (string) The serialized, hex-encoded data for 'txid'
-
-Result (if verbose is set to true):
-{
-  "hex" : "data",       (string) The serialized, hex-encoded data for 'txid'
-  "txid" : "id",        (string) The transaction id (same as provided)
-  "hash" : "id",        (string) The transaction hash (differs from txid for witness transactions)
-  "size" : n,             (numeric) The serialized transaction size
-  "vsize" : n,            (numeric) The virtual transaction size (differs from size for witness transactions)
-  "version" : n,          (numeric) The version
-  "locktime" : ttt,       (numeric) The lock time
-  "vin" : [               (array of json objects)
-     {
-       "txid": "id",    (string) The transaction id
-       "vout": n,         (numeric) 
-       "scriptSig": {     (json object) The script
-         "asm": "asm",  (string) asm
-         "hex": "hex"   (string) hex
-       },
-       "sequence": n      (numeric) The script sequence number
-       "txinwitness": ["hex", ...] (array of string) hex-encoded witness data (if any)
-     }
-     ,...
-  ],
-  "vout" : [              (array of json objects)
-     {
-       "value" : x.xxx,            (numeric) The value in RVN
-       "n" : n,                    (numeric) index
-       "scriptPubKey" : {          (json object)
-         "asm" : "asm",          (string) the asm
-         "hex" : "hex",          (string) the hex
-         "reqSigs" : n,            (numeric) The required sigs
-         "type" : "pubkeyhash",  (string) The type, eg 'pubkeyhash'
-         "addresses" : [           (json array of string)
-           "address"        (string) raven address
-           ,...
-         ]
-       }
-     }
-     ,...
-  ],
-  "blockhash" : "hash",   (string) the block hash
-  "confirmations" : n,      (numeric) The confirmations
-  "time" : ttt,             (numeric) The transaction time in seconds since epoch (Jan 1 1970 GMT)
-  "blocktime" : ttt         (numeric) The block time in seconds since epoch (Jan 1 1970 GMT)
-}
-
-Examples:
-> raven-cli getrawtransaction "mytxid"
-> raven-cli getrawtransaction "mytxid" true
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getrawtransaction", "params": ["mytxid", true] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getrawtransaction: "getrawtransaction",
-    /** getreceivedbyaccount "account" ( minconf )
-
-DEPRECATED. Returns the total amount received by addresses with <account> in transactions with at least [minconf] confirmations.
-
-Arguments:
-1. "account"      (string, required) The selected account, may be the default account using "".
-2. minconf          (numeric, optional, default=1) Only include transactions confirmed at least this many times.
-
-Result:
-amount              (numeric) The total amount in RVN received for this account.
-
-Examples:
-
-Amount received by the default account with at least 1 confirmation
-> raven-cli getreceivedbyaccount ""
-
-Amount received at the tabby account including unconfirmed amounts with zero confirmations
-> raven-cli getreceivedbyaccount "tabby" 0
-
-The amount with at least 6 confirmations
-> raven-cli getreceivedbyaccount "tabby" 6
-
-As a json rpc call
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getreceivedbyaccount", "params": ["tabby", 6] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getreceivedbyaccount: "getreceivedbyaccount",
-    /** getreceivedbyaddress "address" ( minconf )
-
-Returns the total amount received by the given address in transactions with at least minconf confirmations.
-
-Arguments:
-1. "address"         (string, required) The raven address for transactions.
-2. minconf             (numeric, optional, default=1) Only include transactions confirmed at least this many times.
-
-Result:
-amount   (numeric) The total amount in RVN received at this address.
-
-Examples:
-
-The amount from transactions with at least 1 confirmation
-> raven-cli getreceivedbyaddress "1D1ZrZNe3JUo7ZycKEYQQiQAWd9y54F4XX"
-
-The amount including unconfirmed transactions, zero confirmations
-> raven-cli getreceivedbyaddress "1D1ZrZNe3JUo7ZycKEYQQiQAWd9y54F4XX" 0
-
-The amount with at least 6 confirmations
-> raven-cli getreceivedbyaddress "1D1ZrZNe3JUo7ZycKEYQQiQAWd9y54F4XX" 6
-
-As a json rpc call
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getreceivedbyaddress", "params": ["1D1ZrZNe3JUo7ZycKEYQQiQAWd9y54F4XX", 6] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getreceivedbyaddress: "getreceivedbyaddress",
-    /** getrpcinfo
-Returns details of the RPC server.
-
-Result:
-{
- "active_commands" (array) All active commands
-  [
-   {               (object) Information about an active command
-    "method"       (string)  The name of the RPC command 
-    "duration"     (numeric)  The running time in microseconds
-   },...
-  ],
-}
-> raven-cli getrpcinfo 
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getrpcinfo", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getrpcinfo: "getrpcinfo",
-    /** getsnapshot "asset_name" block_height
-
-Returns details for the asset snapshot, at the specified height
-
-Arguments:
-1. "asset_name"               (string, required) the name of the asset
-2. block_height                 (int, required) the block height of the snapshot
-
-Result:
-{
-  name: (string),
-  height: (number),
-  owners: [
-    {
-      address: (string),
-      amount_owned: (number),
-    }
-}
-
-Examples:
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getsnapshot", "params": ["ASSET_NAME" 28546] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getsnapshot: "getsnapshot",
-    /** getsnapshotrequest "asset_name" block_height
-
-Retrieves the specified snapshot request details.
-
-Arguments:
-1. "asset_name"              (string, required) The asset name for which the snapshot will be taken
-2. "block_height"            (number, required) The block height at which the snapshot will be take
-
-Result:
-{
-  asset_name: (string),
-  block_height: (number),
-}
-
-Examples:
-> raven-cli getsnapshotrequest "TRONCO" 12345
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getsnapshotrequest", "params": ["PHATSTACKS" 34987] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getsnapshotrequest: "getsnapshotrequest",
-    /** getspentinfo
-
-Returns the txid and index where an output is spent.
-
-Arguments:
-{
-  "txid" (string) The hex string of the txid
-  "index" (number) The start block height
-}
-
-Result:
-{
-  "txid"  (string) The transaction id
-  "index"  (number) The spending input index
-  ,...
-}
-
-Examples:
-> raven-cli getspentinfo '{"txid": "0437cd7f8525ceed2324359c2d0ba26006d92d856a9c20fa0241106ee5a597c9", "index": 0}'
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getspentinfo", "params": [{"txid": "0437cd7f8525ceed2324359c2d0ba26006d92d856a9c20fa0241106ee5a597c9", "index": 0}] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getspentinfo: "getspentinfo",
-    /** gettransaction "txid" ( include_watchonly )
-
-Get detailed information about in-wallet transaction <txid>
-
-Arguments:
-1. "txid"                  (string, required) The transaction id
-2. "include_watchonly"     (bool, optional, default=false) Whether to include watch-only addresses in balance calculation and details[]
-
-Result:
-{
-  "amount" : x.xxx,        (numeric) The transaction amount in RVN
-  "fee": x.xxx,            (numeric) The amount of the fee in RVN. This is negative and only available for the 
-                              'send' category of transactions.
-  "confirmations" : n,     (numeric) The number of confirmations
-  "blockhash" : "hash",  (string) The block hash
-  "blockindex" : xx,       (numeric) The index of the transaction in the block that includes it
-  "blocktime" : ttt,       (numeric) The time in seconds since epoch (1 Jan 1970 GMT)
-  "txid" : "transactionid",   (string) The transaction id.
-  "time" : ttt,            (numeric) The transaction time in seconds since epoch (1 Jan 1970 GMT)
-  "timereceived" : ttt,    (numeric) The time received in seconds since epoch (1 Jan 1970 GMT)
-  "bip125-replaceable": "yes|no|unknown",  (string) Whether this transaction could be replaced due to BIP125 (replace-by-fee);
-                                                   may be unknown for unconfirmed transactions not in the mempool
-  "details" : [
-    {
-      "account" : "accountname",      (string) DEPRECATED. The account name involved in the transaction, can be "" for the default account.
-      "address" : "address",          (string) The raven address involved in the transaction
-      "category" : "send|receive",    (string) The category, either 'send' or 'receive'
-      "amount" : x.xxx,                 (numeric) The amount in RVN
-      "label" : "label",              (string) A comment for the address/transaction, if any
-      "vout" : n,                       (numeric) the vout value
-      "fee": x.xxx,                     (numeric) The amount of the fee in RVN. This is negative and only available for the 
-                                           'send' category of transactions.
-      "abandoned": xxx                  (bool) 'true' if the transaction has been abandoned (inputs are respendable). Only available for the 
-                                           'send' category of transactions.
-    }
-    ,...
-  ],
-  "asset_details" : [
-    {
-      "asset_type" : "new_asset|transfer_asset|reissue_asset", (string) The type of asset transaction
-      "asset_name" : "asset_name",          (string) The name of the asset
-      "amount" : x.xxx,                 (numeric) The amount in RVN
-      "address" : "address",          (string) The raven address involved in the transaction
-      "vout" : n,                       (numeric) the vout value
-      "category" : "send|receive",    (string) The category, either 'send' or 'receive'
-    }
-    ,...
-  ],
-  "hex" : "data"         (string) Raw data for transaction
-}
-
-Examples:
-> raven-cli gettransaction "1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d"
-> raven-cli gettransaction "1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d" true
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "gettransaction", "params": ["1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ gettransaction: "gettransaction",
-    /** gettxout "txid" n ( include_mempool )
-
-Returns details about an unspent transaction output.
-
-Arguments:
-1. "txid"             (string, required) The transaction id
-2. "n"                (numeric, required) vout number
-3. "include_mempool"  (boolean, optional) Whether to include the mempool. Default: true.     Note that an unspent output that is spent in the mempool won't appear.
-
-Result:
-{
-  "bestblock" : "hash",    (string) the block hash
-  "confirmations" : n,       (numeric) The number of confirmations
-  "value" : x.xxx,           (numeric) The transaction value in RVN
-  "scriptPubKey" : {         (json object)
-     "asm" : "code",       (string) 
-     "hex" : "hex",        (string) 
-     "reqSigs" : n,          (numeric) Number of required signatures
-     "type" : "pubkeyhash", (string) The type, eg pubkeyhash
-     "addresses" : [          (array of string) array of raven addresses
-        "address"     (string) raven address
-        ,...
-     ]
-  },
-  "coinbase" : true|false   (boolean) Coinbase or not
-}
-
-Examples:
-
-Get unspent transactions
-> raven-cli listunspent 
-
-View the details
-> raven-cli gettxout "txid" 1
-
-As a json rpc call
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "gettxout", "params": ["txid", 1] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ gettxout: "gettxout",
-    /** gettxoutproof ["txid",...] ( blockhash )
-
-Returns a hex-encoded proof that "txid" was included in a block.
-
-NOTE: By default this function only works sometimes. This is when there is an
-unspent output in the utxo for this transaction. To make it always work,
-you need to maintain a transaction index, using the -txindex command line option or
-specify the block in which the transaction is included manually (by blockhash).
-
-Arguments:
-1. "txids"       (string) A json array of txids to filter
-    [
-      "txid"     (string) A transaction hash
-      ,...
-    ]
-2. "blockhash"   (string, optional) If specified, looks for txid in the block with this hash
-
-Result:
-"data"           (string) A string that is a serialized, hex-encoded data for the proof.
-**/ gettxoutproof: "gettxoutproof",
-    /** gettxoutsetinfo
-
-Returns statistics about the unspent transaction output set.
-Note this call may take some time.
-
-Result:
-{
-  "height":n,     (numeric) The current block height (index)
-  "bestblock": "hex",   (string) the best block hash hex
-  "transactions": n,      (numeric) The number of transactions
-  "txouts": n,            (numeric) The number of output transactions
-  "bogosize": n,          (numeric) A meaningless metric for UTXO set size
-  "hash_serialized_2": "hash", (string) The serialized hash
-  "disk_size": n,         (numeric) The estimated size of the chainstate on disk
-  "total_amount": x.xxx          (numeric) The total amount
-}
-
-Examples:
-> raven-cli gettxoutsetinfo 
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "gettxoutsetinfo", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ gettxoutsetinfo: "gettxoutsetinfo",
-    /** getunconfirmedbalance
-Returns the server's total unconfirmed balance
-**/ getunconfirmedbalance: "getunconfirmedbalance",
-    /** getverifierstring restricted_name
-
-Retrieve the verifier string that belongs to the given restricted asset
-
-Arguments:
-1. "restricted_name"          (string, required) the asset_name
-
-Result:
-"verifier_string", (string) The verifier for the asset
-
-Examples:
-> raven-cli getverifierstring "restricted_name"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getverifierstring", "params": ["restricted_name"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getverifierstring: "getverifierstring",
-    /** getwalletinfo
-Returns an object containing various wallet state info.
-
-Result:
-{
-  "walletname": xxxxx,             (string) the wallet name
-  "walletversion": xxxxx,          (numeric) the wallet version
-  "balance": xxxxxxx,              (numeric) the total confirmed balance of the wallet in RVN
-  "unconfirmed_balance": xxx,      (numeric) the total unconfirmed balance of the wallet in RVN
-  "immature_balance": xxxxxx,      (numeric) the total immature balance of the wallet in RVN
-  "txcount": xxxxxxx,              (numeric) the total number of transactions in the wallet
-  "keypoololdest": xxxxxx,         (numeric) the timestamp (seconds since Unix epoch) of the oldest pre-generated key in the key pool
-  "keypoolsize": xxxx,             (numeric) how many new keys are pre-generated (only counts external keys)
-  "keypoolsize_hd_internal": xxxx, (numeric) how many new keys are pre-generated for internal use (used for change outputs, only appears if the wallet is using this feature, otherwise external keys are used)
-  "unlocked_until": ttt,           (numeric) the timestamp in seconds since epoch (midnight Jan 1 1970 GMT) that the wallet is unlocked for transfers, or 0 if the wallet is locked
-  "paytxfee": x.xxxx,              (numeric) the transaction fee configuration, set in RVN/kB
-  "hdseedid": "<hash160>"          (string, optional) the Hash160 of the HD seed (only present when HD is enabled)
-  "hdmasterkeyid": "<hash160>"     (string, optional) alias for hdseedid retained for backwards-compatibility. Will be removed in V0.18.
-}
-
-Examples:
-> raven-cli getwalletinfo 
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getwalletinfo", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ getwalletinfo: "getwalletinfo",
-    /** help ( "command" )
-
-List all commands, or get help for a specified command.
-
-Arguments:
-1. "command"     (string, optional) The command to get help on
-
-Result:
-"text"     (string) The help text
-**/ help: "help",
-    /** importaddress "address" ( "label" rescan p2sh )
-
-Adds a script (in hex) or address that can be watched as if it were in your wallet but cannot be used to spend.
-
-Arguments:
-1. "script"           (string, required) The hex-encoded script (or address)
-2. "label"            (string, optional, default="") An optional label
-3. rescan               (boolean, optional, default=true) Rescan the wallet for transactions
-4. p2sh                 (boolean, optional, default=false) Add the P2SH version of the script as well
-
-Note: This call can take minutes to complete if rescan is true.
-If you have the full public key, you should call importpubkey instead of this.
-
-Note: If you import a non-standard raw script in hex form, outputs sending to it will be treated
-as change, and not show up in many RPCs.
-
-Examples:
-
-Import a script with rescan
-> raven-cli importaddress "myscript"
-
-Import using a label without rescan
-> raven-cli importaddress "myscript" "testing" false
-
-As a JSON-RPC call
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "importaddress", "params": ["myscript", "testing", false] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ importaddress: "importaddress",
-    /** importmulti "requests" ( "options" )
-
-Import addresses/scripts (with private or public keys, redeem script (P2SH)), rescanning all addresses in one-shot-only (rescan can be disabled via options).
-
-Arguments:
-1. requests     (array, required) Data to be imported
-  [     (array of json objects)
-    {
-      "scriptPubKey": "<script>" | { "address":"<address>" }, (string / json, required) Type of scriptPubKey (string for script, json for address)
-      "timestamp": timestamp | "now"                        , (integer / string, required) Creation time of the key in seconds since epoch (Jan 1 1970 GMT),
-                                                              or the string "now" to substitute the current synced blockchain time. The timestamp of the oldest
-                                                              key will determine how far back blockchain rescans need to begin for missing wallet transactions.
-                                                              "now" can be specified to bypass scanning, for keys which are known to never have been used, and
-                                                              0 can be specified to scan the entire blockchain. Blocks up to 2 hours before the earliest key
-                                                              creation time of all keys being imported by the importmulti call will be scanned.
-      "redeemscript": "<script>"                            , (string, optional) Allowed only if the scriptPubKey is a P2SH address or a P2SH scriptPubKey
-      "pubkeys": ["<pubKey>", ... ]                         , (array, optional) Array of strings giving pubkeys that must occur in the output or redeemscript
-      "keys": ["<key>", ... ]                               , (array, optional) Array of strings giving private keys whose corresponding public keys must occur in the output or redeemscript
-      "internal": <true>                                    , (boolean, optional, default: false) Stating whether matching outputs should be treated as not incoming payments
-      "watchonly": <true>                                   , (boolean, optional, default: false) Stating whether matching outputs should be considered watched even when they're not spendable, only allowed if keys are empty
-      "label": <label>                                      , (string, optional, default: '') Label to assign to the address (aka account name, for now), only allowed with internal=false
-    }
-  ,...
-  ]
-2. options                 (json, optional)
-  {
-     "rescan": <false>,         (boolean, optional, default: true) Stating if should rescan the blockchain after all imports
-  }
-
-Examples:
-> raven-cli importmulti '[{ "scriptPubKey": { "address": "<my address>" }, "timestamp":1455191478 }, { "scriptPubKey": { "address": "<my 2nd address>" }, "label": "example 2", "timestamp": 1455191480 }]'
-> raven-cli importmulti '[{ "scriptPubKey": { "address": "<my address>" }, "timestamp":1455191478 }]' '{ "rescan": false}'
-
-Response is an array with the same size as the input that has the execution result :
-  [{ "success": true } , { "success": false, "error": { "code": -1, "message": "Internal Server Error"} }, ... ]
-**/ importmulti: "importmulti",
-    /** importprivkey "privkey" ( "label" ) ( rescan )
-
-Adds a private key (as returned by dumpprivkey) to your wallet.
-
-Arguments:
-1. "privkey"          (string, required) The private key (see dumpprivkey)
-2. "label"            (string, optional, default="") An optional label
-3. rescan               (boolean, optional, default=true) Rescan the wallet for transactions
-
-Note: This call can take minutes to complete if rescan is true.
-
-Examples:
-
-Dump a private key
-> raven-cli dumpprivkey "myaddress"
-
-Import the private key with rescan
-> raven-cli importprivkey "mykey"
-
-Import using a label and without rescan
-> raven-cli importprivkey "mykey" "testing" false
-
-Import using default blank label and without rescan
-> raven-cli importprivkey "mykey" "" false
-
-As a JSON-RPC call
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "importprivkey", "params": ["mykey", "testing", false] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ importprivkey: "importprivkey",
-    /** importprunedfunds
-
-Imports funds without rescan. Corresponding address or script must previously be included in wallet. Aimed towards pruned wallets. The end-user is responsible to import additional transactions that subsequently spend the imported outputs or rescan after the point in the blockchain the transaction is included.
-
-Arguments:
-1. "rawtransaction" (string, required) A raw transaction in hex funding an already-existing address in wallet
-2. "txoutproof"     (string, required) The hex output from gettxoutproof that contains the transaction
-**/ importprunedfunds: "importprunedfunds",
-    /** importpubkey "pubkey" ( "label" rescan )
-
-Adds a public key (in hex) that can be watched as if it were in your wallet but cannot be used to spend.
-
-Arguments:
-1. "pubkey"           (string, required) The hex-encoded public key
-2. "label"            (string, optional, default="") An optional label
-3. rescan               (boolean, optional, default=true) Rescan the wallet for transactions
-
-Note: This call can take minutes to complete if rescan is true.
-
-Examples:
-
-Import a public key with rescan
-> raven-cli importpubkey "mypubkey"
-
-Import using a label without rescan
-> raven-cli importpubkey "mypubkey" "testing" false
-
-As a JSON-RPC call
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "importpubkey", "params": ["mypubkey", "testing", false] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ importpubkey: "importpubkey",
-    /** importwallet "filename"
-
-Imports keys from a wallet dump file (see dumpwallet).
-
-Arguments:
-1. "filename"    (string, required) The wallet file
-
-Examples:
-
-Dump the wallet
-> raven-cli dumpwallet "test"
-
-Import the wallet
-> raven-cli importwallet "test"
-
-Import using the json rpc call
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "importwallet", "params": ["test"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ importwallet: "importwallet",
-    /** issue "asset_name" qty "( to_address )" "( change_address )" ( units ) ( reissuable ) ( has_ipfs ) "( ipfs_hash )"
-
-Issue an asset, subasset or unique asset.
-Asset name must not conflict with any existing asset.
-Unit as the number of decimals precision for the asset (0 for whole units ("1"), 8 for max precision ("1.00000000")
-Reissuable is true/false for whether additional units can be issued by the original issuer.
-If issuing a unique asset these values are required (and will be defaulted to): qty=1, units=0, reissuable=false.
-
-Arguments:
-1. "asset_name"            (string, required) a unique name
-2. "qty"                   (numeric, optional, default=1) the number of units to be issued
-3. "to_address"            (string), optional, default=""), address asset will be sent to, if it is empty, address will be generated for you
-4. "change_address"        (string), optional, default=""), address the the rvn change will be sent to, if it is empty, change address will be generated for you
-5. "units"                 (integer, optional, default=0, min=0, max=8), the number of decimals precision for the asset (0 for whole units ("1"), 8 for max precision ("1.00000000")
-6. "reissuable"            (boolean, optional, default=true (false for unique assets)), whether future reissuance is allowed
-7. "has_ipfs"              (boolean, optional, default=false), whether ipfs hash is going to be added to the asset
-8. "ipfs_hash"             (string, optional but required if has_ipfs = 1), an ipfs hash or a txid hash once RIP5 is activated
-
-Result:
-"txid"                     (string) The transaction id
-
-Examples:
-> raven-cli issue "ASSET_NAME" 1000
-> raven-cli issue "ASSET_NAME" 1000 "myaddress"
-> raven-cli issue "ASSET_NAME" 1000 "myaddress" "changeaddress" 4
-> raven-cli issue "ASSET_NAME" 1000 "myaddress" "changeaddress" 2 true
-> raven-cli issue "ASSET_NAME" 1000 "myaddress" "changeaddress" 8 false true QmTqu3Lk3gmTsQVtjU7rYYM37EAW4xNmbuEAp2Mjr4AV7E
-> raven-cli issue "ASSET_NAME/SUB_ASSET" 1000 "myaddress" "changeaddress" 2 true
-> raven-cli issue "ASSET_NAME#uniquetag"
-**/ issue: "issue",
-    /** issuequalifierasset "asset_name" qty "( to_address )" "( change_address )" ( has_ipfs ) "( ipfs_hash )"
-
-Issue an qualifier or sub qualifier asset
-If the '#' character isn't added, it will be added automatically
-Amount is a number between 1 and 10
-Asset name must not conflict with any existing asset.
-Unit is always set to Zero (0) for qualifier assets
-Reissuable is always set to false for qualifier assets
-
-Arguments:
-1. "asset_name"            (string, required) a unique name
-2. "qty"                   (numeric, optional, default=1) the number of units to be issued
-3. "to_address"            (string), optional, default=""), address asset will be sent to, if it is empty, address will be generated for you
-4. "change_address"        (string), optional, default=""), address the the rvn change will be sent to, if it is empty, change address will be generated for you
-5. "has_ipfs"              (boolean, optional, default=false), whether ipfs hash is going to be added to the asset
-6. "ipfs_hash"             (string, optional but required if has_ipfs = 1), an ipfs hash or a txid hash once RIP5 is activated
-
-Result:
-"txid"                     (string) The transaction id
-
-Examples:
-> raven-cli issuequalifierasset "#ASSET_NAME" 1000
-> raven-cli issuequalifierasset "ASSET_NAME" 1000 "myaddress"
-> raven-cli issuequalifierasset "#ASSET_NAME" 1000 "myaddress" "changeaddress"
-> raven-cli issuequalifierasset "ASSET_NAME" 1000 "myaddress" "changeaddress"
-> raven-cli issuequalifierasset "#ASSET_NAME" 1000 "myaddress" "changeaddress" true QmTqu3Lk3gmTsQVtjU7rYYM37EAW4xNmbuEAp2Mjr4AV7E
-> raven-cli issuequalifierasset "ASSET_NAME/SUB_QUALIFIER" 1000 "myaddress" "changeaddress"
-> raven-cli issuequalifierasset "#ASSET_NAME"
-**/ issuequalifierasset: "issuequalifierasset",
-    /** issuerestrictedasset "asset_name" qty "verifier" "to_address" "( change_address )" (units) ( reissuable ) ( has_ipfs ) "( ipfs_hash )"
-
-Issue a restricted asset.
-Restricted asset names must not conflict with any existing restricted asset.
-Restricted assets have units set to 0.
-Reissuable is true/false for whether additional asset quantity can be created and if the verifier string can be changed
-
-Arguments:
-1. "asset_name"            (string, required) a unique name, starts with '$', if '$' is not there it will be added automatically
-2. "qty"                   (numeric, required) the quantity of the asset to be issued
-3. "verifier"              (string, required) the verifier string that will be evaluated when restricted asset transfers are made
-4. "to_address"            (string, required) address asset will be sent to, this address must meet the verifier string requirements
-5. "change_address"        (string, optional, default="") address that the rvn change will be sent to, if it is empty, change address will be generated for you
-6. "units"                 (integer, optional, default=0, min=0, max=8) the number of decimals precision for the asset (0 for whole units ("1"), 8 for max precision ("1.00000000")
-7. "reissuable"            (boolean, optional, default=true (false for unique assets)) whether future reissuance is allowed
-8. "has_ipfs"              (boolean, optional, default=false) whether an ipfs hash or txid hash is going to be added to the asset
-9. "ipfs_hash"             (string, optional but required if has_ipfs = 1) an ipfs hash or a txid hash once RIP5 is activated
-
-Result:
-"txid"                     (string) The transaction id
-
-Examples:
-> raven-cli issuerestrictedasset "$ASSET_NAME" 1000 "#KYC & !#AML" "myaddress"
-> raven-cli issuerestrictedasset "$ASSET_NAME" 1000 "#KYC & !#AML" "myaddress"
-> raven-cli issuerestrictedasset "$ASSET_NAME" 1000 "#KYC & !#AML" "myaddress" "changeaddress" 5
-> raven-cli issuerestrictedasset "$ASSET_NAME" 1000 "#KYC & !#AML" "myaddress" "changeaddress" 8 true
-> raven-cli issuerestrictedasset "$ASSET_NAME" 1000 "#KYC & !#AML" "myaddress" "changeaddress" 0 false true QmTqu3Lk3gmTsQVtjU7rYYM37EAW4xNmbuEAp2Mjr4AV7E
-**/ issuerestrictedasset: "issuerestrictedasset",
-    /** issueunique "root_name" [asset_tags] ( [ipfs_hashes] ) "( to_address )" "( change_address )"
-
-Issue unique asset(s).
-root_name must be an asset you own.
-An asset will be created for each element of asset_tags.
-If provided ipfs_hashes must be the same length as asset_tags.
-Five (5) RVN will be burned for each asset created.
-
-Arguments:
-1. "root_name"             (string, required) name of the asset the unique asset(s) are being issued under
-2. "asset_tags"            (array, required) the unique tag for each asset which is to be issued
-3. "ipfs_hashes"           (array, optional) ipfs hashes or txid hashes corresponding to each supplied tag (should be same size as "asset_tags")
-4. "to_address"            (string, optional, default=""), address assets will be sent to, if it is empty, address will be generated for you
-5. "change_address"        (string, optional, default=""), address the the rvn change will be sent to, if it is empty, change address will be generated for you
-
-Result:
-"txid"                     (string) The transaction id
-
-Examples:
-> raven-cli issueunique "MY_ASSET" '["primo","secundo"]'
-> raven-cli issueunique "MY_ASSET" '["primo","secundo"]' '["first_hash","second_hash"]'
-**/ issueunique: "issueunique",
-    /** isvalidverifierstring verifier_string
-
-Checks to see if the given verifier string is valid
-
-Arguments:
-1. "verifier_string"   (string, required) the verifier string to check
-
-Result:
-"xxxxxxx", (string) If the verifier string is valid, and the reason
-
-Examples:
-> raven-cli isvalidverifierstring "verifier_string"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "isvalidverifierstring", "params": ["verifier_string"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ isvalidverifierstring: "isvalidverifierstring",
-    /** keypoolrefill ( newsize )
-
-Fills the keypool.
-
-Arguments
-1. newsize     (numeric, optional, default=100) The new keypool size
-
-Examples:
-> raven-cli keypoolrefill 
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "keypoolrefill", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ keypoolrefill: "keypoolrefill",
-    /** listaccounts ( minconf include_watchonly)
-
-DEPRECATED. Returns Object that has account names as keys, account balances as values.
-
-Arguments:
-1. minconf             (numeric, optional, default=1) Only include transactions with at least this many confirmations
-2. include_watchonly   (bool, optional, default=false) Include balances in watch-only addresses (see 'importaddress')
-
-Result:
-{                      (json object where keys are account names, and values are numeric balances
-  "account": x.xxx,  (numeric) The property name is the account name, and the value is the total balance for the account.
-  ...
-}
-
-Examples:
-
-List account balances where there at least 1 confirmation
-> raven-cli listaccounts 
-
-List account balances including zero confirmation transactions
-> raven-cli listaccounts 0
-
-List account balances for 6 or more confirmations
-> raven-cli listaccounts 6
-
-As json rpc call
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "listaccounts", "params": [6] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ listaccounts: "listaccounts",
-    /** listaddressesbyasset "asset_name" (onlytotal) (count) (start)
-
-Returns a list of all address that own the given asset (with balances)
-Or returns the total size of how many address own the given asset
-Arguments:
-1. "asset_name"               (string, required) name of asset
-2. "onlytotal"                (boolean, optional, default=false) when false result is just a list of addresses with balances -- when true the result is just a single number representing the number of addresses
-3. "count"                    (integer, optional, default=50000, MAX=50000) truncates results to include only the first _count_ assets found
-4. "start"                    (integer, optional, default=0) results skip over the first _start_ assets found (if negative it skips back from the end)
-
-Result:
-[   (address): balance,
-  ...
-]
-
-Examples:
-> raven-cli listaddressesbyasset "ASSET_NAME" false 2 0
-> raven-cli listaddressesbyasset "ASSET_NAME" true
-> raven-cli listaddressesbyasset "ASSET_NAME"
-**/ listaddressesbyasset: "listaddressesbyasset",
-    /** listaddressesfortag tag_name
-
-List all addresses that have been assigned a given tag
-
-Arguments:
-1. "tag_name"          (string, required) the tag asset name to search for
-
-Result:
-["address",        (string) The address
-...,
-]
-
-Examples:
-> raven-cli listaddressesfortag "#TAG"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "listaddressesfortag", "params": ["#TAG"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ listaddressesfortag: "listaddressesfortag",
-    /** listaddressgroupings
-
-Lists groups of addresses which have had their common ownership
-made public by common use as inputs or as the resulting change
-in past transactions
-
-Result:
-[
-  [
-    [
-      "address",            (string) The raven address
-      amount,                 (numeric) The amount in RVN
-      "account"             (string, optional) DEPRECATED. The account
-    ]
-    ,...
-  ]
-  ,...
-]
-
-Examples:
-> raven-cli listaddressgroupings 
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "listaddressgroupings", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ listaddressgroupings: "listaddressgroupings",
-    /** listaddressrestrictions address
-
-List all assets that have frozen this address
-
-Arguments:
-1. "address"          (string), required) the address to list restrictions for
-
-Result:
-["asset_name",        (string) The restriction name
-...,
-]
-
-Examples:
-> raven-cli listaddressrestrictions "address"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "listaddressrestrictions", "params": ["address"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ listaddressrestrictions: "listaddressrestrictions",
-    /** listassetbalancesbyaddress "address" (onlytotal) (count) (start)
-
-Returns a list of all asset balances for an address.
-
-Arguments:
-1. "address"                  (string, required) a raven address
-2. "onlytotal"                (boolean, optional, default=false) when false result is just a list of assets balances -- when true the result is just a single number representing the number of assets
-3. "count"                    (integer, optional, default=50000, MAX=50000) truncates results to include only the first _count_ assets found
-4. "start"                    (integer, optional, default=0) results skip over the first _start_ assets found (if negative it skips back from the end)
-
-Result:
-{
-  (asset_name) : (quantity),
-  ...
-}
-
-Examples:
-> raven-cli listassetbalancesbyaddress "myaddress" false 2 0
-> raven-cli listassetbalancesbyaddress "myaddress" true
-> raven-cli listassetbalancesbyaddress "myaddress"
-**/ listassetbalancesbyaddress: "listassetbalancesbyaddress",
-    /** listassets "( asset )" ( verbose ) ( count ) ( start )
-
-Returns a list of all assets
-
-This could be a slow/expensive operation as it reads from the database
-
-Arguments:
-1. "asset"                    (string, optional, default="*") filters results -- must be an asset name or a partial asset name followed by '*' ('*' matches all trailing characters)
-2. "verbose"                  (boolean, optional, default=false) when false result is just a list of asset names -- when true results are asset name mapped to metadata
-3. "count"                    (integer, optional, default=ALL) truncates results to include only the first _count_ assets found
-4. "start"                    (integer, optional, default=0) results skip over the first _start_ assets found (if negative it skips back from the end)
-
-Result (verbose=false):
-[
-  asset_name,
-  ...
-]
-
-Result (verbose=true):
-{
-  (asset_name):
-    {
-      amount: (number),
-      units: (number),
-      reissuable: (number),
-      has_ipfs: (number),
-      ipfs_hash: (hash) (only if has_ipfs = 1 and data is a ipfs hash)
-      ipfs_hash: (hash) (only if has_ipfs = 1 and data is a txid hash)
-    },
-  {...}, {...}
-}
-
-Examples:
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "listassets", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-> raven-cli listassets ASSET
-> raven-cli listassets "ASSET*" true 10 20
-**/ listassets: "listassets",
-    /** listbanned
-
-List all banned IPs/Subnets.
-
-Examples:
-> raven-cli listbanned 
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "listbanned", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ listbanned: "listbanned",
-    /** listglobalrestrictions
-
-List all global restricted assets
-
-Result:
-["asset_name", (string) The asset name
-...,
-]
-
-Examples:
-> raven-cli listglobalrestrictions 
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "listglobalrestrictions", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ listglobalrestrictions: "listglobalrestrictions",
-    /** listlockunspent
-
-Returns list of temporarily unspendable outputs.
-See the lockunspent call to lock and unlock transactions for spending.
-
-Result:
-[
-  {
-    "txid" : "transactionid",     (string) The transaction id locked
-    "vout" : n                      (numeric) The vout value
-  }
-  ,...
-]
-
-Examples:
-
-List the unspent transactions
-> raven-cli listunspent 
-
-Lock an unspent transaction
-> raven-cli lockunspent false "[{\"txid\":\"a08e6907dbbd3d809776dbfc5d82e371b764ed838b5655e72f463568df1aadf0\",\"vout\":1}]"
-
-List the locked transactions
-> raven-cli listlockunspent 
-
-Unlock the transaction again
-> raven-cli lockunspent true "[{\"txid\":\"a08e6907dbbd3d809776dbfc5d82e371b764ed838b5655e72f463568df1aadf0\",\"vout\":1}]"
-
-As a json rpc call
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "listlockunspent", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ listlockunspent: "listlockunspent",
-    /** listmyassets "( asset )" ( verbose ) ( count ) ( start ) (confs) 
-
-Returns a list of all asset that are owned by this wallet
-
-Arguments:
-1. "asset"                    (string, optional, default="*") filters results -- must be an asset name or a partial asset name followed by '*' ('*' matches all trailing characters)
-2. "verbose"                  (boolean, optional, default=false) when false results only contain balances -- when true results include outpoints
-3. "count"                    (integer, optional, default=ALL) truncates results to include only the first _count_ assets found
-4. "start"                    (integer, optional, default=0) results skip over the first _start_ assets found (if negative it skips back from the end)
-5. "confs"                    (integet, optional, default=0) results are skipped if they don't have this number of confirmations
-
-Result (verbose=false):
-{
-  (asset_name): balance,
-  ...
-}
-
-Result (verbose=true):
-{
-  (asset_name):
-    {
-      "balance": balance,
-      "outpoints":
-        [
-          {
-            "txid": txid,
-            "vout": vout,
-            "amount": amount
-          }
-          {...}, {...}
-        ]
-    }
-}
-{...}, {...}
-
-Examples:
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "listmyassets", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-> raven-cli listmyassets ASSET
-> raven-cli listmyassets "ASSET*" true 10 20
-> raven-cli listmyassets "ASSET*" true 10 20 1
-**/ listmyassets: "listmyassets",
-    /** listreceivedbyaccount ( minconf include_empty include_watchonly)
-
-DEPRECATED. List balances by account.
-
-Arguments:
-1. minconf           (numeric, optional, default=1) The minimum number of confirmations before payments are included.
-2. include_empty     (bool, optional, default=false) Whether to include accounts that haven't received any payments.
-3. include_watchonly (bool, optional, default=false) Whether to include watch-only addresses (see 'importaddress').
-
-Result:
-[
-  {
-    "involvesWatchonly" : true,   (bool) Only returned if imported addresses were involved in transaction
-    "account" : "accountname",  (string) The account name of the receiving account
-    "amount" : x.xxx,             (numeric) The total amount received by addresses with this account
-    "confirmations" : n,          (numeric) The number of confirmations of the most recent transaction included
-    "label" : "label"           (string) A comment for the address/transaction, if any
-  }
-  ,...
-]
-
-Examples:
-> raven-cli listreceivedbyaccount 
-> raven-cli listreceivedbyaccount 6 true
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "listreceivedbyaccount", "params": [6, true, true] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ listreceivedbyaccount: "listreceivedbyaccount",
-    /** listreceivedbyaddress ( minconf include_empty include_watchonly)
-
-List balances by receiving address.
-
-Arguments:
-1. minconf           (numeric, optional, default=1) The minimum number of confirmations before payments are included.
-2. include_empty     (bool, optional, default=false) Whether to include addresses that haven't received any payments.
-3. include_watchonly (bool, optional, default=false) Whether to include watch-only addresses (see 'importaddress').
-
-Result:
-[
-  {
-    "involvesWatchonly" : true,        (bool) Only returned if imported addresses were involved in transaction
-    "address" : "receivingaddress",  (string) The receiving address
-    "account" : "accountname",       (string) DEPRECATED. The account of the receiving address. The default account is "".
-    "amount" : x.xxx,                  (numeric) The total amount in RVN received by the address
-    "confirmations" : n,               (numeric) The number of confirmations of the most recent transaction included
-    "label" : "label",               (string) A comment for the address/transaction, if any
-    "txids": [
-       n,                                (numeric) The ids of transactions received with the address 
-       ...
-    ]
-  }
-  ,...
-]
-
-Examples:
-> raven-cli listreceivedbyaddress 
-> raven-cli listreceivedbyaddress 6 true
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "listreceivedbyaddress", "params": [6, true, true] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ listreceivedbyaddress: "listreceivedbyaddress",
-    /** listsinceblock ( "blockhash" target_confirmations include_watchonly include_removed )
-
-Get all transactions in blocks since block [blockhash], or all transactions if omitted.
-If "blockhash" is no longer a part of the main chain, transactions from the fork point onward are included.
-Additionally, if include_removed is set, transactions affecting the wallet which were removed are returned in the "removed" array.
-
-Arguments:
-1. "blockhash"            (string, optional) The block hash to list transactions since
-2. target_confirmations:    (numeric, optional, default=1) Return the nth block hash from the main chain. e.g. 1 would mean the best block hash. Note: this is not used as a filter, but only affects [lastblock] in the return value
-3. include_watchonly:       (bool, optional, default=false) Include transactions to watch-only addresses (see 'importaddress')
-4. include_removed:         (bool, optional, default=true) Show transactions that were removed due to a reorg in the "removed" array
-                                                           (not guaranteed to work on pruned nodes)
-
-Result:
-{
-  "transactions": [
-    "account":"accountname",       (string) DEPRECATED. The account name associated with the transaction. Will be "" for the default account.
-    "address":"address",    (string) The raven address of the transaction. Not present for move transactions (category = move).
-    "category":"send|receive",     (string) The transaction category. 'send' has negative amounts, 'receive' has positive amounts.
-    "amount": x.xxx,          (numeric) The amount in RVN. This is negative for the 'send' category, and for the 'move' category for moves 
-                                          outbound. It is positive for the 'receive' category, and for the 'move' category for inbound funds.
-    "vout" : n,               (numeric) the vout value
-    "fee": x.xxx,             (numeric) The amount of the fee in RVN. This is negative and only available for the 'send' category of transactions.
-    "confirmations": n,       (numeric) The number of confirmations for the transaction. Available for 'send' and 'receive' category of transactions.
-                                          When it's < 0, it means the transaction conflicted that many blocks ago.
-    "blockhash": "hashvalue",     (string) The block hash containing the transaction. Available for 'send' and 'receive' category of transactions.
-    "blockindex": n,          (numeric) The index of the transaction in the block that includes it. Available for 'send' and 'receive' category of transactions.
-    "blocktime": xxx,         (numeric) The block time in seconds since epoch (1 Jan 1970 GMT).
-    "txid": "transactionid",  (string) The transaction id. Available for 'send' and 'receive' category of transactions.
-    "time": xxx,              (numeric) The transaction time in seconds since epoch (Jan 1 1970 GMT).
-    "timereceived": xxx,      (numeric) The time received in seconds since epoch (Jan 1 1970 GMT). Available for 'send' and 'receive' category of transactions.
-    "bip125-replaceable": "yes|no|unknown",  (string) Whether this transaction could be replaced due to BIP125 (replace-by-fee);
-                                                   may be unknown for unconfirmed transactions not in the mempool
-    "abandoned": xxx,         (bool) 'true' if the transaction has been abandoned (inputs are respendable). Only available for the 'send' category of transactions.
-    "comment": "...",       (string) If a comment is associated with the transaction.
-    "label" : "label"       (string) A comment for the address/transaction, if any
-    "to": "...",            (string) If a comment to is associated with the transaction.
-  ],
-  "removed": [
-    <structure is the same as "transactions" above, only present if include_removed=true>
-    Note: transactions that were readded in the active chain will appear as-is in this array, and may thus have a positive confirmation count.
-  ],
-  "lastblock": "lastblockhash"     (string) The hash of the block (target_confirmations-1) from the best block on the main chain. This is typically used to feed back into listsinceblock the next time you call it. So you would generally use a target_confirmations of say 6, so you will be continually re-notified of transactions until they've reached 6 confirmations plus any new ones
-}
-
-Examples:
-> raven-cli listsinceblock 
-> raven-cli listsinceblock "000000000000000bacf66f7497b7dc45ef753ee9a7d38571037cdb1a57f663ad" 6
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "listsinceblock", "params": ["000000000000000bacf66f7497b7dc45ef753ee9a7d38571037cdb1a57f663ad", 6] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ listsinceblock: "listsinceblock",
-    /** listsnapshotrequests ["asset_name" [block_height]]
-
-List snapshot request details.
-
-Arguments:
-asset_name: (string, optional) List only requests for a specific asset (default is "" for ALL)
-block_height: (number, optional) List only requests for a particular block height (default is 0 for ALL)
-
-Result:
-[
-  {
-    asset_name: (string),
-    block_height: (number)
-  }
-]
-
-Examples:
-> raven-cli listsnapshotrequests 
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "listsnapshotrequests", "params": ["TRONCO" 345333] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ listsnapshotrequests: "listsnapshotrequests",
-    /** listtagsforaddress address
-
-List all tags assigned to an address
-
-Arguments:
-1. "address"          (string, required) the address to list tags for
-
-Result:
-["tag_name",        (string) The tag name
-...,
-]
-
-Examples:
-> raven-cli listtagsforaddress "address"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "listtagsforaddress", "params": ["address"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ listtagsforaddress: "listtagsforaddress",
-    /** listtransactions ( "account" count skip include_watchonly)
-
-Returns up to 'count' most recent transactions skipping the first 'from' transactions for account 'account'.
-
-Arguments:
-1. "account"    (string, optional) DEPRECATED. The account name. Should be "*".
-2. count          (numeric, optional, default=10) The number of transactions to return
-3. skip           (numeric, optional, default=0) The number of transactions to skip
-4. include_watchonly (bool, optional, default=false) Include transactions to watch-only addresses (see 'importaddress')
-
-Result:
-[
-  {
-    "account":"accountname",       (string) DEPRECATED. The account name associated with the transaction. 
-                                                It will be "" for the default account.
-    "address":"address",    (string) The raven address of the transaction. Not present for 
-                                                move transactions (category = move).
-    "category":"send|receive|move", (string) The transaction category. 'move' is a local (off blockchain)
-                                                transaction between accounts, and not associated with an address,
-                                                transaction id or block. 'send' and 'receive' transactions are 
-                                                associated with an address, transaction id and block details
-    "amount": x.xxx,          (numeric) The amount in RVN. This is negative for the 'send' category, and for the
-                                         'move' category for moves outbound. It is positive for the 'receive' category,
-                                         and for the 'move' category for inbound funds.
-    "label": "label",       (string) A comment for the address/transaction, if any
-    "vout": n,                (numeric) the vout value
-    "fee": x.xxx,             (numeric) The amount of the fee in RVN. This is negative and only available for the 
-                                         'send' category of transactions.
-    "confirmations": n,       (numeric) The number of confirmations for the transaction. Available for 'send' and 
-                                         'receive' category of transactions. Negative confirmations indicate the
-                                         transaction conflicts with the block chain
-    "trusted": xxx,           (bool) Whether we consider the outputs of this unconfirmed transaction safe to spend.
-    "blockhash": "hashvalue", (string) The block hash containing the transaction. Available for 'send' and 'receive'
-                                          category of transactions.
-    "blockindex": n,          (numeric) The index of the transaction in the block that includes it. Available for 'send' and 'receive'
-                                          category of transactions.
-    "blocktime": xxx,         (numeric) The block time in seconds since epoch (1 Jan 1970 GMT).
-    "txid": "transactionid", (string) The transaction id. Available for 'send' and 'receive' category of transactions.
-    "time": xxx,              (numeric) The transaction time in seconds since epoch (midnight Jan 1 1970 GMT).
-    "timereceived": xxx,      (numeric) The time received in seconds since epoch (midnight Jan 1 1970 GMT). Available 
-                                          for 'send' and 'receive' category of transactions.
-    "comment": "...",       (string) If a comment is associated with the transaction.
-    "otheraccount": "accountname",  (string) DEPRECATED. For the 'move' category of transactions, the account the funds came 
-                                          from (for receiving funds, positive amounts), or went to (for sending funds,
-                                          negative amounts).
-    "bip125-replaceable": "yes|no|unknown",  (string) Whether this transaction could be replaced due to BIP125 (replace-by-fee);
-                                                     may be unknown for unconfirmed transactions not in the mempool
-    "abandoned": xxx          (bool) 'true' if the transaction has been abandoned (inputs are respendable). Only available for the 
-                                         'send' category of transactions.
-  }
-]
-
-Examples:
-
-List the most recent 10 transactions in the systems
-> raven-cli listtransactions 
-
-List transactions 100 to 120
-> raven-cli listtransactions "*" 20 100
-
-As a json rpc call
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "listtransactions", "params": ["*", 20, 100] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ listtransactions: "listtransactions",
-    /** listunspent ( minconf maxconf  ["addresses",...] [include_unsafe] [query_options])
-
-Returns array of unspent transaction outputs
-with between minconf and maxconf (inclusive) confirmations.
-Optionally filter to only include txouts paid to specified addresses.
-
-Arguments:
-1. minconf          (numeric, optional, default=1) The minimum confirmations to filter
-2. maxconf          (numeric, optional, default=9999999) The maximum confirmations to filter
-3. "addresses"      (string) A json array of raven addresses to filter
-    [
-      "address"     (string) raven address
-      ,...
-    ]
-4. include_unsafe (bool, optional, default=true) Include outputs that are not safe to spend
-                  See description of "safe" attribute below.
-5. query_options    (json, optional) JSON with query options
-    {
-      "minimumAmount"    (numeric or string, default=0) Minimum value of each UTXO in RVN
-      "maximumAmount"    (numeric or string, default=unlimited) Maximum value of each UTXO in RVN
-      "maximumCount"     (numeric or string, default=unlimited) Maximum number of UTXOs
-      "minimumSumAmount" (numeric or string, default=unlimited) Minimum sum value of all UTXOs in RVN
-    }
-
-Result
-[                   (array of json object)
-  {
-    "txid" : "txid",          (string) the transaction id 
-    "vout" : n,               (numeric) the vout value
-    "address" : "address",    (string) the raven address
-    "account" : "account",    (string) DEPRECATED. The associated account, or "" for the default account
-    "scriptPubKey" : "key",   (string) the script key
-    "amount" : x.xxx,         (numeric) the transaction output amount in RVN
-    "confirmations" : n,      (numeric) The number of confirmations
-    "redeemScript" : n        (string) The redeemScript if scriptPubKey is P2SH
-    "spendable" : xxx,        (bool) Whether we have the private keys to spend this output
-    "solvable" : xxx,         (bool) Whether we know how to spend this output, ignoring the lack of keys
-    "safe" : xxx              (bool) Whether this output is considered safe to spend. Unconfirmed transactions
-                              from outside keys and unconfirmed replacement transactions are considered unsafe
-                              and are not eligible for spending by fundrawtransaction and sendtoaddress.
-  }
-  ,...
-]
-
-Examples
-> raven-cli listunspent 
-> raven-cli listunspent 6 9999999 "[\"1PGFqEzfmQch1gKD3ra4k18PNj3tTUUSqg\",\"1LtvqCaApEdUGFkpKMM4MstjcaL4dKg8SP\"]"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "listunspent", "params": [6, 9999999 "[\"1PGFqEzfmQch1gKD3ra4k18PNj3tTUUSqg\",\"1LtvqCaApEdUGFkpKMM4MstjcaL4dKg8SP\"]"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-> raven-cli listunspent 6 9999999 '[]' true '{ "minimumAmount": 0.005 }'
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "listunspent", "params": [6, 9999999, [] , true, { "minimumAmount": 0.005 } ] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ listunspent: "listunspent",
-    /** listwallets
-Returns a list of currently loaded wallets.
-For full information on the wallet, use "getwalletinfo"
-
-Result:
-[                         (json array of strings)
-  "walletname"            (string) the wallet name
-   ...
-]
-
-Examples:
-> raven-cli listwallets 
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "listwallets", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ listwallets: "listwallets",
-    /** lockunspent unlock ([{"txid":"txid","vout":n},...])
-
-Updates list of temporarily unspendable outputs.
-Temporarily lock (unlock=false) or unlock (unlock=true) specified transaction outputs.
-If no transaction outputs are specified when unlocking then all current locked transaction outputs are unlocked.
-A locked transaction output will not be chosen by automatic coin selection, when spending ravens.
-Locks are stored in memory only. Nodes start with zero locked outputs, and the locked output list
-is always cleared (by virtue of process exit) when a node stops or fails.
-Also see the listunspent call
-
-Arguments:
-1. unlock            (boolean, required) Whether to unlock (true) or lock (false) the specified transactions
-2. "transactions"  (string, optional) A json array of objects. Each object the txid (string) vout (numeric)
-     [           (json array of json objects)
-       {
-         "txid":"id",    (string) The transaction id
-         "vout": n         (numeric) The output number
-       }
-       ,...
-     ]
-
-Result:
-true|false    (boolean) Whether the command was successful or not
-
-Examples:
-
-List the unspent transactions
-> raven-cli listunspent 
-
-Lock an unspent transaction
-> raven-cli lockunspent false "[{\"txid\":\"a08e6907dbbd3d809776dbfc5d82e371b764ed838b5655e72f463568df1aadf0\",\"vout\":1}]"
-
-List the locked transactions
-> raven-cli listlockunspent 
-
-Unlock the transaction again
-> raven-cli lockunspent true "[{\"txid\":\"a08e6907dbbd3d809776dbfc5d82e371b764ed838b5655e72f463568df1aadf0\",\"vout\":1}]"
-
-As a json rpc call
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "lockunspent", "params": [false, "[{\"txid\":\"a08e6907dbbd3d809776dbfc5d82e371b764ed838b5655e72f463568df1aadf0\",\"vout\":1}]"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ lockunspent: "lockunspent",
-    /** move "fromaccount" "toaccount" amount ( minconf "comment" )
-
-DEPRECATED. Move a specified amount from one account in your wallet to another.
-
-Arguments:
-1. "fromaccount"   (string, required) The name of the account to move funds from. May be the default account using "".
-2. "toaccount"     (string, required) The name of the account to move funds to. May be the default account using "".
-3. amount            (numeric) Quantity of RVN to move between accounts.
-4. (dummy)           (numeric, optional) Ignored. Remains for backward compatibility.
-5. "comment"       (string, optional) An optional comment, stored in the wallet only.
-
-Result:
-true|false           (boolean) true if successful.
-
-Examples:
-
-Move 0.01 RVN from the default account to the account named tabby
-> raven-cli move "" "tabby" 0.01
-
-Move 0.01 RVN timotei to akiko with a comment and funds have 6 confirmations
-> raven-cli move "timotei" "akiko" 0.01 6 "happy birthday!"
-
-As a json rpc call
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "move", "params": ["timotei", "akiko", 0.01, 6, "happy birthday!"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ move: "move",
-    /** ping
-
-Requests that a ping be sent to all other nodes, to measure ping time.
-Results provided in getpeerinfo, pingtime and pingwait fields are decimal seconds.
-Ping command is handled in queue with all other commands, so it measures processing backlog, not just network ping.
-
-Examples:
-> raven-cli ping 
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "ping", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ ping: "ping",
-    /** pprpcsb "header_hash" "mix_hash" "nonce"
-
-Attempts to submit new block to network mined by kawpow gpu miner via rpc.
-
-Arguments
-1. "header_hash"        (string, required) the prow_pow header hash that was given to the gpu miner from this rpc client
-2. "mix_hash"           (string, required) the mix hash that was mined by the gpu miner via rpc
-3. "nonce"              (string, required) the nonce of the block that hashed the valid block
-
-Result:
-
-Examples:
-> raven-cli pprpcsb "header_hash" "mix_hash" 100000
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "pprpcsb", "params": ["header_hash" "mix_hash" 100000] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ pprpcsb: "pprpcsb",
-    /** preciousblock "blockhash"
-
-Treats a block as if it were received before others with the same work.
-
-A later preciousblock call can override the effect of an earlier one.
-
-The effects of preciousblock are not retained across restarts.
-
-Arguments:
-1. "blockhash"   (string, required) the hash of the block to mark as precious
-
-Result:
-
-Examples:
-> raven-cli preciousblock "blockhash"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "preciousblock", "params": ["blockhash"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ preciousblock: "preciousblock",
-    /** prioritisetransaction <txid> <dummy value> <fee delta>
-Accepts the transaction into mined blocks at a higher (or lower) priority
-
-Arguments:
-1. "txid"       (string, required) The transaction id.
-2. dummy          (numeric, optional) API-Compatibility for previous API. Must be zero or null.
-                  DEPRECATED. For forward compatibility use named arguments and omit this parameter.
-3. fee_delta      (numeric, required) The fee value (in satoshis) to add (or subtract, if negative).
-                  The fee is not actually paid, only the algorithm for selecting transactions into a block
-                  considers the transaction as it would have paid a higher (or lower) fee.
-
-Result:
-true              (boolean) Returns true
-
-Examples:
-> raven-cli prioritisetransaction "txid" 0.0 10000
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "prioritisetransaction", "params": ["txid", 0.0, 10000] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ prioritisetransaction: "prioritisetransaction",
-    /** pruneblockchain
-
-Arguments:
-1. "height"       (numeric, required) The block height to prune up to. May be set to a discrete height, or a unix timestamp
-                  to prune blocks whose block time is at least 2 hours older than the provided timestamp.
-
-Result:
-n    (numeric) Height of the last block pruned.
-
-Examples:
-> raven-cli pruneblockchain 1000
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "pruneblockchain", "params": [1000] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ pruneblockchain: "pruneblockchain",
-    /** purgesnapshot "asset_name" block_height
-
-Removes details for the asset snapshot, at the specified height
-
-Arguments:
-1. "asset_name"               (string, required) the name of the asset
-2. block_height                 (int, required) the block height of the snapshot
-
-Result:
-{
-  name: (string),
-  height: (number),
-}
-
-Examples:
-> raven-cli purgesnapshot "ASSET_NAME" 28546
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "purgesnapshot", "params": ["ASSET_NAME" 28546] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ purgesnapshot: "purgesnapshot",
-    /** reissue "asset_name" qty "to_address" "change_address" ( reissuable ) ( new_units) "( new_ipfs )" 
-
-Reissues a quantity of an asset to an owned address if you own the Owner Token
-Can change the reissuable flag during reissuance
-Can change the ipfs hash during reissuance
-Arguments:
-1. "asset_name"               (string, required) name of asset that is being reissued
-2. "qty"                      (numeric, required) number of assets to reissue
-3. "to_address"               (string, required) address to send the asset to
-4. "change_address"           (string, optional) address that the change of the transaction will be sent to
-5. "reissuable"               (boolean, optional, default=true), whether future reissuance is allowed
-6. "new_units"                (numeric, optional, default=-1), the new units that will be associated with the asset
-7. "new_ipfs"                 (string, optional, default=""), whether to update the current ipfs hash or txid once RIP5 is active
-
-Result:
-"txid"                     (string) The transaction id
-
-Examples:
-> raven-cli reissue "ASSET_NAME" 20 "address"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "reissue", "params": ["ASSET_NAME" 20 "address" "change_address" "true" 8 "Qmd286K6pohQcTKYqnS1YhWrCiS4gz7Xi34sdwMe9USZ7u"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ reissue: "reissue",
-    /** reissuerestrictedasset "asset_name" qty to_address ( change_verifier ) ( "new_verifier" ) "( change_address )" ( new_units ) ( reissuable ) "( new_ipfs )"
-
-Reissue an already created restricted asset
-Reissuable is true/false for whether additional asset quantity can be created and if the verifier string can be changed
-
-Arguments:
-1. "asset_name"            (string, required) a unique name, starts with '$'
-2. "qty"                   (numeric, required) the additional quantity of the asset to be issued
-3. "to_address"            (string, required) address asset will be sent to, this address must meet the verifier string requirements
-4. "change_verifier"       (boolean, optional, default=false) if the verifier string will get changed
-5. "new_verifier"          (string, optional, default="") the new verifier string that will be evaluated when restricted asset transfers are made
-6. "change_address"        (string, optional, default="") address that the rvn change will be sent to, if it is empty, change address will be generated for you
-7. "new_units"             (numeric, optional, default=-1) the new units that will be associated with the asset
-8. "reissuable"            (boolean, optional, default=true (false for unique assets)) whether future reissuance is allowed
-9. "new_ipfs"              (string, optional, default="") whether to update the current ipfs hash or txid once RIP5 is active
-
-Result:
-"txid"                     (string) The transaction id
-
-Examples:
-> raven-cli reissuerestrictedasset "$ASSET_NAME" 1000  "myaddress" true "KYC & !AML"
-> raven-cli reissuerestrictedasset "$ASSET_NAME" 1000  "myaddress" true "KYC & !AML" 
-> raven-cli reissuerestrictedasset "$ASSET_NAME" 1000  "myaddress" true "KYC & !AML" "changeaddress"
-> raven-cli reissuerestrictedasset "$ASSET_NAME" 1000  "myaddress" true "KYC & !AML" "changeaddress" -1 true
-> raven-cli reissuerestrictedasset "$ASSET_NAME" 1000  "myaddress" false "" "changeaddress" -1 false QmTqu3Lk3gmTsQVtjU7rYYM37EAW4xNmbuEAp2Mjr4AV7E
-**/ reissuerestrictedasset: "reissuerestrictedasset",
-    /** removeprunedfunds "txid"
-
-Deletes the specified transaction from the wallet. Meant for use with pruned wallets and as a companion to importprunedfunds. This will affect wallet balances.
-
-Arguments:
-1. "txid"           (string, required) The hex-encoded id of the transaction you are deleting
-
-Examples:
-> raven-cli removeprunedfunds "a8d0c0184dde994a09ec054286f1ce581bebf46446a512166eae7628734ea0a5"
-
-As a JSON-RPC call
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "removeprunedfunds", "params": ["a8d0c0184dde994a09ec054286f1ce581bebf46446a512166eae7628734ea0a5"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ removeprunedfunds: "removeprunedfunds",
-    /** removetagfromaddress tag_name to_address (change_address) (asset_data)
-
-Remove a tag from a address
-
-Arguments:
-1. "tag_name"            (string, required) the name of the tag you are removing from the address
-2. "to_address"          (string, required) the address that the tag will be removed from
-3. "change_address"      (string, optional) The change address for the qualifier token to be sent to
-4. "asset_data"          (string, optional) The asset data (ipfs or a hash) to be applied to the transfer of the qualifier token
-
-Result:
-"txid"                     (string) The transaction id
-
-Examples:
-> raven-cli removetagfromaddress "#TAG" "to_address"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "removetagfromaddress", "params": ["#TAG" "to_address"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-> raven-cli removetagfromaddress "#TAG" "to_address" "change_address"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "removetagfromaddress", "params": ["#TAG" "to_address" "change_address"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ removetagfromaddress: "removetagfromaddress",
-    /** requestsnapshot "asset_name" block_height
-
-Schedules a snapshot of the specified asset at the specified block height.
-
-Arguments:
-1. "asset_name"              (string, required) The asset name for which the snapshot will be taken
-2. "block_height"            (number, required) The block height at which the snapshot will be take
-
-Result:
-{
-  request_status: "Added",
-}
-
-Examples:
-> raven-cli requestsnapshot "TRONCO" 12345
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "requestsnapshot", "params": ["PHATSTACKS" 34987] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ requestsnapshot: "requestsnapshot",
-    /** rescanblockchain ("start_height") ("stop_height")
-
-Rescan the local blockchain for wallet related transactions.
-
-Arguments:
-1. "start_height"    (numeric, optional) block height where the rescan should start
-2. "stop_height"     (numeric, optional) the last block height that should be scanned
-
-Result:
-{
-  "start_height"     (numeric) The block height where the rescan has started. If omitted, rescan started from the genesis block.
-  "stop_height"      (numeric) The height of the last rescanned block. If omitted, rescan stopped at the chain tip.
-}
-
-Examples:
-> raven-cli rescanblockchain 100000 120000
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "rescanblockchain", "params": [100000, 120000] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ rescanblockchain: "rescanblockchain",
-    /** savemempool
-
-Dumps the mempool to disk.
-
-Examples:
-> raven-cli savemempool 
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "savemempool", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ savemempool: "savemempool",
-    /** sendfrom "fromaccount" "toaddress" amount ( minconf "comment" "comment_to" )
-
-DEPRECATED (use sendtoaddress). Sent an amount from an account to a raven address.
-
-Arguments:
-1. "fromaccount"       (string, required) The name of the account to send funds from. May be the default account using "".
-                       Specifying an account does not influence coin selection, but it does associate the newly created
-                       transaction with the account, so the account's balance computation and transaction history can reflect
-                       the spend.
-2. "toaddress"         (string, required) The raven address to send funds to.
-3. amount                (numeric or string, required) The amount in RVN (transaction fee is added on top).
-4. minconf               (numeric, optional, default=1) Only use funds with at least this many confirmations.
-5. "comment"           (string, optional) A comment used to store what the transaction is for. 
-                                     This is not part of the transaction, just kept in your wallet.
-6. "comment_to"        (string, optional) An optional comment to store the name of the person or organization 
-                                     to which you're sending the transaction. This is not part of the transaction, 
-                                     it is just kept in your wallet.
-
-Result:
-"txid"                 (string) The transaction id.
-
-Examples:
-
-Send 0.01 RVN from the default account to the address, must have at least 1 confirmation
-> raven-cli sendfrom "" "1M72Sfpbz1BPpXFHz9m3CdqATR44Jvaydd" 0.01
-
-Send 0.01 from the tabby account to the given address, funds must have at least 6 confirmations
-> raven-cli sendfrom "tabby" "1M72Sfpbz1BPpXFHz9m3CdqATR44Jvaydd" 0.01 6 "donation" "seans outpost"
-
-As a json rpc call
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "sendfrom", "params": ["tabby", "1M72Sfpbz1BPpXFHz9m3CdqATR44Jvaydd", 0.01, 6, "donation", "seans outpost"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ sendfrom: "sendfrom",
-    /** sendfromaddress "from_address" "to_address" amount ( "comment" "comment_to" subtractfeefromamount replaceable conf_target "estimate_mode")
-
-Send an amount from a specific address to a given address. All rvn change will get sent back to the from_address
-
-Arguments:
-1. "from_address"       (string, required) The raven address to send from.
-2. "to_address"            (string, required) The raven address to send to.
-3. "amount"             (numeric or string, required) The amount in RVN to send. eg 0.1
-4. "comment"            (string, optional) A comment used to store what the transaction is for. 
-                             This is not part of the transaction, just kept in your wallet.
-5. "comment_to"         (string, optional) A comment to store the name of the person or organization 
-                             to which you're sending the transaction. This is not part of the 
-                             transaction, just kept in your wallet.
-6. subtractfeefromamount  (boolean, optional, default=false) The fee will be deducted from the amount being sent.
-                             The recipient will receive less ravens than you enter in the amount field.
-7. conf_target            (numeric, optional) Confirmation target (in blocks)
-8. "estimate_mode"      (string, optional, default=UNSET) The fee estimate mode, must be one of:
-       "UNSET"
-       "ECONOMICAL"
-       "CONSERVATIVE"
-
-Result:
-"txid"                  (string) The transaction id.
-
-Examples:
-> raven-cli sendfromaddress "1M72Sfpbz1BPpXFHz9m3CdqATR44Jvaydd" "1M72Sfpbz1BPpXFHz9m3CdqATR44Jvaydd" 0.1
-> raven-cli sendfromaddress "1M72Sfpbz1BPpXFHz9m3CdqATR44Jvaydd" "1M72Sfpbz1BPpXFHz9m3CdqATR44Jvaydd" 0.1 "donation" "seans outpost"
-> raven-cli sendfromaddress "1M72Sfpbz1BPpXFHz9m3CdqATR44Jvaydd" "1M72Sfpbz1BPpXFHz9m3CdqATR44Jvaydd" 0.1 "" "" true
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "sendfromaddress", "params": ["1M72Sfpbz1BPpXFHz9m3CdqATR44Jvaydd" "1M72Sfpbz1BPpXFHz9m3CdqATR44Jvaydd", 0.1, "donation", "seans outpost"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ sendfromaddress: "sendfromaddress",
-    /** sendmany "fromaccount" {"address":amount,...} ( minconf "comment" ["address",...] replaceable conf_target "estimate_mode")
-
-Send multiple times. Amounts are double-precision floating point numbers.
-
-Arguments:
-1. "fromaccount"         (string, required) DEPRECATED. The account to send the funds from. Should be "" for the default account
-2. "amounts"             (string, required) A json object with addresses and amounts
-    {
-      "address":amount   (numeric or string) The raven address is the key, the numeric amount (can be string) in RVN is the value
-      ,...
-    }
-3. minconf                 (numeric, optional, default=1) Only use the balance confirmed at least this many times.
-4. "comment"             (string, optional) A comment
-5. subtractfeefrom         (array, optional) A json array with addresses.
-                           The fee will be equally deducted from the amount of each selected address.
-                           Those recipients will receive less ravens than you enter in their corresponding amount field.
-                           If no addresses are specified here, the sender pays the fee.
-    [
-      "address"          (string) Subtract fee from this address
-      ,...
-    ]
-6. conf_target            (numeric, optional) Confirmation target (in blocks)
-7. "estimate_mode"      (string, optional, default=UNSET) The fee estimate mode, must be one of:
-       "UNSET"
-       "ECONOMICAL"
-       "CONSERVATIVE"
-
-Result:
-"txid"                   (string) The transaction id for the send. Only 1 transaction is created regardless of 
-                                    the number of addresses.
-
-Examples:
-
-Send two amounts to two different addresses:
-> raven-cli sendmany "" "{\"1D1ZrZNe3JUo7ZycKEYQQiQAWd9y54F4XX\":0.01,\"1353tsE8YMTA4EuV7dgUXGjNFf9KpVvKHz\":0.02}"
-
-Send two amounts to two different addresses setting the confirmation and comment:
-> raven-cli sendmany "" "{\"1D1ZrZNe3JUo7ZycKEYQQiQAWd9y54F4XX\":0.01,\"1353tsE8YMTA4EuV7dgUXGjNFf9KpVvKHz\":0.02}" 6 "testing"
-
-Send two amounts to two different addresses, subtract fee from amount:
-> raven-cli sendmany "" "{\"1D1ZrZNe3JUo7ZycKEYQQiQAWd9y54F4XX\":0.01,\"1353tsE8YMTA4EuV7dgUXGjNFf9KpVvKHz\":0.02}" 1 "" "[\"1D1ZrZNe3JUo7ZycKEYQQiQAWd9y54F4XX\",\"1353tsE8YMTA4EuV7dgUXGjNFf9KpVvKHz\"]"
-
-As a json rpc call
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "sendmany", "params": ["", "{\"1D1ZrZNe3JUo7ZycKEYQQiQAWd9y54F4XX\":0.01,\"1353tsE8YMTA4EuV7dgUXGjNFf9KpVvKHz\":0.02}", 6, "testing"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ sendmany: "sendmany",
-    /** sendmessage "channel_name" "ipfs_hash" (expire_time)
-
-Creates and broadcasts a message transaction to the network for a channel this wallet owns
-Arguments:
-1. "channel_name"             (string, required) Name of the channel that you want to send a message with (message channel, administrator asset), if a non administrator asset name is given, the administrator '!' will be added to it
-2. "ipfs_hash"                (string, required) The IPFS hash of the message
-3. "expire_time"              (numeric, optional) UTC timestamp of when the message expires
-
-Result:[
-txid
-]
-
-Examples:
-> raven-cli sendmessage "ASSET_NAME!" "QmTqu3Lk3gmTsQVtjU7rYYM37EAW4xNmbuEAp2Mjr4AV7E" 15863654
-> raven-cli sendmessage "ASSET_NAME!" "QmTqu3Lk3gmTsQVtjU7rYYM37EAW4xNmbuEAp2Mjr4AV7E" 15863654
-**/ sendmessage: "sendmessage",
-    /** sendrawtransaction "hexstring" ( allowhighfees )
-
-Submits raw transaction (serialized, hex-encoded) to local node and network.
-
-Also see createrawtransaction and signrawtransaction calls.
-
-Arguments:
-1. "hexstring"    (string, required) The hex string of the raw transaction)
-2. allowhighfees    (boolean, optional, default=false) Allow high fees
-
-Result:
-"hex"             (string) The transaction hash in hex
-
-Examples:
-
-Create a transaction
-> raven-cli createrawtransaction "[{\"txid\" : \"mytxid\",\"vout\":0}]" "{\"myaddress\":0.01}"
-Sign the transaction, and get back the hex
-> raven-cli signrawtransaction "myhex"
-
-Send the transaction (signed hex)
-> raven-cli sendrawtransaction "signedhex"
-
-As a json rpc call
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "sendrawtransaction", "params": ["signedhex"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ sendrawtransaction: "sendrawtransaction",
-    /** sendtoaddress "address" amount ( "comment" "comment_to" subtractfeefromamount replaceable conf_target "estimate_mode")
-
-Send an amount to a given address.
-
-Arguments:
-1. "address"            (string, required) The raven address to send to.
-2. "amount"             (numeric or string, required) The amount in RVN to send. eg 0.1
-3. "comment"            (string, optional) A comment used to store what the transaction is for. 
-                             This is not part of the transaction, just kept in your wallet.
-4. "comment_to"         (string, optional) A comment to store the name of the person or organization 
-                             to which you're sending the transaction. This is not part of the 
-                             transaction, just kept in your wallet.
-5. subtractfeefromamount  (boolean, optional, default=false) The fee will be deducted from the amount being sent.
-                             The recipient will receive less ravens than you enter in the amount field.
-6. conf_target            (numeric, optional) Confirmation target (in blocks)
-7. "estimate_mode"      (string, optional, default=UNSET) The fee estimate mode, must be one of:
-       "UNSET"
-       "ECONOMICAL"
-       "CONSERVATIVE"
-
-Result:
-"txid"                  (string) The transaction id.
-
-Examples:
-> raven-cli sendtoaddress "1M72Sfpbz1BPpXFHz9m3CdqATR44Jvaydd" 0.1
-> raven-cli sendtoaddress "1M72Sfpbz1BPpXFHz9m3CdqATR44Jvaydd" 0.1 "donation" "seans outpost"
-> raven-cli sendtoaddress "1M72Sfpbz1BPpXFHz9m3CdqATR44Jvaydd" 0.1 "" "" true
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "sendtoaddress", "params": ["1M72Sfpbz1BPpXFHz9m3CdqATR44Jvaydd", 0.1, "donation", "seans outpost"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ sendtoaddress: "sendtoaddress",
-    /** setaccount "address" "account"
-
-DEPRECATED. Sets the account associated with the given address.
-
-Arguments:
-1. "address"         (string, required) The raven address to be associated with an account.
-2. "account"         (string, required) The account to assign the address to.
-
-Examples:
-> raven-cli setaccount "1D1ZrZNe3JUo7ZycKEYQQiQAWd9y54F4XX" "tabby"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "setaccount", "params": ["1D1ZrZNe3JUo7ZycKEYQQiQAWd9y54F4XX", "tabby"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ setaccount: "setaccount",
-    /** setban "subnet" "add|remove" (bantime) (absolute)
-
-Attempts to add or remove an IP/Subnet from the banned list.
-
-Arguments:
-1. "subnet"       (string, required) The IP/Subnet (see getpeerinfo for nodes IP) with an optional netmask (default is /32 = single IP)
-2. "command"      (string, required) 'add' to add an IP/Subnet to the list, 'remove' to remove an IP/Subnet from the list
-3. "bantime"      (numeric, optional) time in seconds how long (or until when if [absolute] is set) the IP is banned (0 or empty means using the default time of 24h which can also be overwritten by the -bantime startup argument)
-4. "absolute"     (boolean, optional) If set, the bantime must be an absolute timestamp in seconds since epoch (Jan 1 1970 GMT)
-
-Examples:
-> raven-cli setban "192.168.0.6" "add" 86400
-> raven-cli setban "192.168.0.0/24" "add"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "setban", "params": ["192.168.0.6", "add", 86400] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ setban: "setban",
-    /** setgenerate generate ( genproclimit )
-
-Set 'generate' true or false to turn generation on or off.
-Generation is limited to 'genproclimit' processors, -1 is unlimited.
-See the getgenerate call for the current setting.
-
-Arguments:
-1. generate         (boolean, required) Set to true to turn on generation, false to turn off.
-2. genproclimit     (numeric, optional) Set the processor limit for when generation is on. Can be -1 for unlimited.
-
-Examples:
-
-Set the generation on with a limit of one processor
-> raven-cli setgenerate true 1
-
-Check the setting
-> raven-cli getgenerate 
-
-Turn off generation
-> raven-cli setgenerate false
-
-Using json rpc
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "setgenerate", "params": [true, 1] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ setgenerate: "setgenerate",
-    /** setnetworkactive true|false
-
-Disable/enable all p2p network activity.
-
-Arguments:
-1. "state"        (boolean, required) true to enable networking, false to disable
-**/ setnetworkactive: "setnetworkactive",
-    /** settxfee amount
-
-Set the transaction fee per kB. Overwrites the paytxfee parameter.
-
-Arguments:
-1. amount         (numeric or string, required) The transaction fee in RVN/kB
-
-Result
-true|false        (boolean) Returns true if successful
-
-Examples:
-> raven-cli settxfee 0.00001
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "settxfee", "params": [0.00001] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ settxfee: "settxfee",
-    /** signmessage "address" "message"
-
-Sign a message with the private key of an address
-
-Arguments:
-1. "address"         (string, required) The raven address to use for the private key.
-2. "message"         (string, required) The message to create a signature of.
-
-Result:
-"signature"          (string) The signature of the message encoded in base 64
-
-Examples:
-
-Unlock the wallet for 30 seconds
-> raven-cli walletpassphrase "mypassphrase" 30
-
-Create the signature
-> raven-cli signmessage "1D1ZrZNe3JUo7ZycKEYQQiQAWd9y54F4XX" "my message"
-
-Verify the signature
-> raven-cli verifymessage "1D1ZrZNe3JUo7ZycKEYQQiQAWd9y54F4XX" "signature" "my message"
-
-As json rpc
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "signmessage", "params": ["1D1ZrZNe3JUo7ZycKEYQQiQAWd9y54F4XX", "my message"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ signmessage: "signmessage",
-    /** signmessagewithprivkey "privkey" "message"
-
-Sign a message with the private key of an address
-
-Arguments:
-1. "privkey"         (string, required) The private key to sign the message with.
-2. "message"         (string, required) The message to create a signature of.
-
-Result:
-"signature"          (string) The signature of the message encoded in base 64
-
-Examples:
-
-Create the signature
-> raven-cli signmessagewithprivkey "privkey" "my message"
-
-Verify the signature
-> raven-cli verifymessage "1D1ZrZNe3JUo7ZycKEYQQiQAWd9y54F4XX" "signature" "my message"
-
-As json rpc
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "signmessagewithprivkey", "params": ["privkey", "my message"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ signmessagewithprivkey: "signmessagewithprivkey",
-    /** signrawtransaction "hexstring" ( [{"txid":"id","vout":n,"scriptPubKey":"hex","redeemScript":"hex"},...] ["privatekey1",...] sighashtype )
-
-Sign inputs for raw transaction (serialized, hex-encoded).
-The second optional argument (may be null) is an array of previous transaction outputs that
-this transaction depends on but may not yet be in the block chain.
-The third optional argument (may be null) is an array of base58-encoded private
-keys that, if given, will be the only keys used to sign the transaction.
-
-
-Arguments:
-1. "hexstring"     (string, required) The transaction hex string
-2. "prevtxs"       (string, optional) An json array of previous dependent transaction outputs
-     [               (json array of json objects, or 'null' if none provided)
-       {
-         "txid":"id",             (string, required) The transaction id
-         "vout":n,                  (numeric, required) The output number
-         "scriptPubKey": "hex",   (string, required) script key
-         "redeemScript": "hex",   (string, required for P2SH or P2WSH) redeem script
-         "amount": value            (numeric, required) The amount spent
-       }
-       ,...
-    ]
-3. "privkeys"     (string, optional) A json array of base58-encoded private keys for signing
-    [                  (json array of strings, or 'null' if none provided)
-      "privatekey"   (string) private key in base58-encoding
-      ,...
-    ]
-4. "sighashtype"     (string, optional, default=ALL) The signature hash type. Must be one of
-       "ALL"
-       "NONE"
-       "SINGLE"
-       "ALL|ANYONECANPAY"
-       "NONE|ANYONECANPAY"
-       "SINGLE|ANYONECANPAY"
-
-Result:
-{
-  "hex" : "value",           (string) The hex-encoded raw transaction with signature(s)
-  "complete" : true|false,   (boolean) If the transaction has a complete set of signatures
-  "errors" : [                 (json array of objects) Script verification errors (if there are any)
-    {
-      "txid" : "hash",           (string) The hash of the referenced, previous transaction
-      "vout" : n,                (numeric) The index of the output to spent and used as input
-      "scriptSig" : "hex",       (string) The hex-encoded signature script
-      "sequence" : n,            (numeric) Script sequence number
-      "error" : "text"           (string) Verification or signing error related to the input
-    }
-    ,...
-  ]
-}
-
-Examples:
-> raven-cli signrawtransaction "myhex"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "signrawtransaction", "params": ["myhex"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ signrawtransaction: "signrawtransaction",
-    /** stop
-
-Stop Raven server.**/ stop: "stop",
-    /** submitblock "hexdata"  ( "dummy" )
-
-Attempts to submit new block to network.
-See https://en.raven.it/wiki/BIP_0022 for full specification.
-
-Arguments
-1. "hexdata"        (string, required) the hex-encoded block data to submit
-2. "dummy"          (optional) dummy value, for compatibility with BIP22. This value is ignored.
-
-Result:
-
-Examples:
-> raven-cli submitblock "mydata"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "submitblock", "params": ["mydata"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ submitblock: "submitblock",
-    /** subscribetochannel 
-
-Subscribe to a certain message channel
-
-Arguments:
-1. "channel_name"            (string, required) The channel name to subscribe to, it must end with '!' or have an '~' in the name
-
-Result:[
-
-]
-
-Examples:
-> raven-cli subscribetochannel "ASSET_NAME!"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "subscribetochannel", "params": ["ASSET_NAME!"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ subscribetochannel: "subscribetochannel",
-    /** testmempoolaccept ["rawtxs"] ( allowhighfees )
-
-Returns if raw transaction (serialized, hex-encoded) would be accepted by mempool.
-
-This checks if the transaction violates the consensus or policy rules.
-
-See sendrawtransaction call.
-
-Arguments:
-1. ["rawtxs"]       (array, required) An array of hex strings of raw transactions.
-                                        Length must be one for now.
-2. allowhighfees    (boolean, optional, default=false) Allow high fees
-
-Result:
-[                   (array) The result of the mempool acceptance test for each raw transaction in the input array.
-                            Length is exactly one for now.
- {
-  "txid"           (string) The transaction hash in hex
-  "allowed"        (boolean) If the mempool allows this tx to be inserted
-  "reject-reason"  (string) Rejection string (only present when 'allowed' is false)
- }
-]
-
-Examples:
-
-Create a transaction
-> raven-cli createrawtransaction "[{\"txid\" : \"mytxid\",\"vout\":0}]" "{\"myaddress\":0.01}"
-Sign the transaction, and get back the hex
-> raven-cli signrawtransaction "myhex"
-
-Test acceptance of the transaction (signed hex)
-> raven-cli testmempoolaccept "signedhex"
-
-As a json rpc call
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "testmempoolaccept", "params": [["signedhex"]] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ testmempoolaccept: "testmempoolaccept",
-    /** transfer "asset_name" qty "to_address" "message" expire_time "change_address" "asset_change_address"
-
-Transfers a quantity of an owned asset to a given address
-Arguments:
-1. "asset_name"               (string, required) name of asset
-2. "qty"                      (numeric, required) number of assets you want to send to the address
-3. "to_address"               (string, required) address to send the asset to
-4. "message"                  (string, optional) Once RIP5 is voted in ipfs hash or txid hash to send along with the transfer
-5. "expire_time"              (numeric, optional) UTC timestamp of when the message expires
-6. "change_address"       (string, optional, default = "") the transactions RVN change will be sent to this address
-7. "asset_change_address"     (string, optional, default = "") the transactions Asset change will be sent to this address
-
-Result:
-txid[ 
-txid
-]
-
-Examples:
-> raven-cli transfer "ASSET_NAME" 20 "address" "" "QmTqu3Lk3gmTsQVtjU7rYYM37EAW4xNmbuEAp2Mjr4AV7E" 15863654
-> raven-cli transfer "ASSET_NAME" 20 "address" "" "QmTqu3Lk3gmTsQVtjU7rYYM37EAW4xNmbuEAp2Mjr4AV7E" 15863654
-**/ transfer: "transfer",
-    /** transferfromaddress "asset_name" "from_address" qty "to_address" "message" expire_time "rvn_change_address" "asset_change_address"
-
-Transfer a quantity of an owned asset in a specific address to a given address
-Arguments:
-1. "asset_name"               (string, required) name of asset
-2. "from_address"             (string, required) address that the asset will be transferred from
-3. "qty"                      (numeric, required) number of assets you want to send to the address
-4. "to_address"               (string, required) address to send the asset to
-5. "message"                  (string, optional) Once RIP5 is voted in ipfs hash or txid hash to send along with the transfer
-6. "expire_time"              (numeric, optional) UTC timestamp of when the message expires
-7. "rvn_change_address"       (string, optional, default = "") the transaction RVN change will be sent to this address
-8. "asset_change_address"     (string, optional, default = "") the transaction Asset change will be sent to this address
-
-Result:
-txid[ 
-txid
-]
-
-Examples:
-> raven-cli transferfromaddress "ASSET_NAME" "fromaddress" 20 "address" "QmTqu3Lk3gmTsQVtjU7rYYM37EAW4xNmbuEAp2Mjr4AV7E", 156545652
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "transferfromaddress", "params": ["ASSET_NAME" "fromaddress" 20 "address" "QmTqu3Lk3gmTsQVtjU7rYYM37EAW4xNmbuEAp2Mjr4AV7E", 156545652] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ transferfromaddress: "transferfromaddress",
-    /** transferfromaddresses "asset_name" ["from_addresses"] qty "to_address" "message" expire_time "rvn_change_address" "asset_change_address"
-
-Transfer a quantity of an owned asset in specific address(es) to a given address
-Arguments:
-1. "asset_name"               (string, required) name of asset
-2. "from_addresses"           (array, required) list of from addresses to send from
-3. "qty"                      (numeric, required) number of assets you want to send to the address
-4. "to_address"               (string, required) address to send the asset to
-5. "message"                  (string, optional) Once RIP5 is voted in ipfs hash or txid hash to send along with the transfer
-6. "expire_time"              (numeric, optional) UTC timestamp of when the message expires
-7. "rvn_change_address"       (string, optional, default = "") the transactions RVN change will be sent to this address
-8. "asset_change_address"     (string, optional, default = "") the transactions Asset change will be sent to this address
-
-Result:
-txid[ 
-txid
-]
-
-Examples:
-> raven-cli transferfromaddresses "ASSET_NAME" '["fromaddress1", "fromaddress2"]' 20 "to_address" "QmTqu3Lk3gmTsQVtjU7rYYM37EAW4xNmbuEAp2Mjr4AV7E" 154652365
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "transferfromaddresses", "params": ["ASSET_NAME" '["fromaddress1", "fromaddress2"]' 20 "to_address" "QmTqu3Lk3gmTsQVtjU7rYYM37EAW4xNmbuEAp2Mjr4AV7E" 154652365] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ transferfromaddresses: "transferfromaddresses",
-    /** transferqualifier "qualifier_name" qty "to_address" ("change_address") ("message") (expire_time) 
-
-Transfer a qualifier asset owned by this wallet to the given address
-Arguments:
-1. "qualifier_name"           (string, required) name of qualifier asset
-2. "qty"                      (numeric, required) number of assets you want to send to the address
-3. "to_address"               (string, required) address to send the asset to
-4. "change_address"           (string, optional, default = "") the transaction change will be sent to this address
-5. "message"                  (string, optional) Once RIP5 is voted in ipfs hash or txid hash to send along with the transfer
-6. "expire_time"              (numeric, optional) UTC timestamp of when the message expires
-
-Result:
-txid[ 
-txid
-]
-
-Examples:
-> raven-cli transferqualifier "#QUALIFIER" 20 "to_address" "" "QmTqu3Lk3gmTsQVtjU7rYYM37EAW4xNmbuEAp2Mjr4AV7E" 15863654
-> raven-cli transferqualifier "#QUALIFIER" 20 "to_address" "change_address" "QmTqu3Lk3gmTsQVtjU7rYYM37EAW4xNmbuEAp2Mjr4AV7E" 15863654
-**/ transferqualifier: "transferqualifier",
-    /** unfreezeaddress asset_name address (change_address) (asset_data)
-
-Unfreeze an address from transferring a restricted asset
-
-Arguments:
-1. "asset_name"       (string, required) the name of the restricted asset you want to unfreeze
-2. "address"          (string, required) the address that will be unfrozen
-3. "change_address"   (string, optional) The change address for the owner token of the restricted asset
-4. "asset_data"       (string, optional) The asset data (ipfs or a hash) to be applied to the transfer of the owner token
-
-Result:
-"txid"                     (string) The transaction id
-
-Examples:
-> raven-cli unfreezeaddress "$RESTRICTED_ASSET" "address"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "unfreezeaddress", "params": ["$RESTRICTED_ASSET" "address"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-> raven-cli unfreezeaddress "$RESTRICTED_ASSET" "address" "change_address"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "unfreezeaddress", "params": ["$RESTRICTED_ASSET" "address" "change_address"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ unfreezeaddress: "unfreezeaddress",
-    /** unfreezerestrictedasset asset_name (change_address) (asset_data)
-
-Unfreeze all trading for a specific restricted asset
-
-Arguments:
-1. "asset_name"       (string, required) the name of the restricted asset you want to unfreeze
-2. "change_address"   (string, optional) The change address for the owner token of the restricted asset
-4. "asset_data"       (string, optional) The asset data (ipfs or a hash) to be applied to the transfer of the owner token
-
-Result:
-"txid"                     (string) The transaction id
-
-Examples:
-> raven-cli unfreezerestrictedasset "$RESTRICTED_ASSET"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "unfreezerestrictedasset", "params": ["$RESTRICTED_ASSET"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-> raven-cli unfreezerestrictedasset "$RESTRICTED_ASSET" "change_address"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "unfreezerestrictedasset", "params": ["$RESTRICTED_ASSET" "change_address"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ unfreezerestrictedasset: "unfreezerestrictedasset",
-    /** unsubscribefromchannel 
-
-Unsubscribe from a certain message channel
-
-Arguments:
-1. "channel_name"            (string, required) The channel name to unsubscribe from, must end with '!' or have an '~' in the name
-
-Result:[
-
-]
-
-Examples:
-> raven-cli unsubscribefromchannel "ASSET_NAME!"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "unsubscribefromchannel", "params": ["ASSET_NAME!"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ unsubscribefromchannel: "unsubscribefromchannel",
-    /** uptime
-
-Returns the total uptime of the server.
-
-Result:
-ttt        (numeric) The number of seconds that the server has been running
-
-Examples:
-> raven-cli uptime 
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "uptime", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ uptime: "uptime",
-    /** validateaddress "address"
-
-Return information about the given raven address.
-
-Arguments:
-1. "address"     (string, required) The raven address to validate
-
-Result:
-{
-  "isvalid" : true|false,       (boolean) If the address is valid or not. If not, this is the only property returned.
-  "address" : "address", (string) The raven address validated
-  "scriptPubKey" : "hex",       (string) The hex encoded scriptPubKey generated by the address
-  "ismine" : true|false,        (boolean) If the address is yours or not
-  "iswatchonly" : true|false,   (boolean) If the address is watchonly
-  "isscript" : true|false,      (boolean) If the key is a script
-  "script" : "type"             (string, optional) The output script type. Possible types: nonstandard, pubkey, pubkeyhash, scripthash, multisig, nulldata, witness_v0_keyhash, witness_v0_scripthash
-  "hex" : "hex",                (string, optional) The redeemscript for the p2sh address
-  "addresses"                   (string, optional) Array of addresses associated with the known redeemscript
-    [
-      "address"
-      ,...
-    ]
-  "sigsrequired" : xxxxx        (numeric, optional) Number of signatures required to spend multisig output
-  "pubkey" : "publickeyhex",    (string) The hex value of the raw public key
-  "iscompressed" : true|false,  (boolean) If the address is compressed
-  "account" : "account"         (string) DEPRECATED. The account associated with the address, "" is the default account
-  "timestamp" : timestamp,        (number, optional) The creation time of the key if available in seconds since epoch (Jan 1 1970 GMT)
-  "hdkeypath" : "keypath"       (string, optional) The HD keypath if the key is HD and available
-  "hdmasterkeyid" : "<hash160>" (string, optional) The Hash160 of the HD master pubkey
-}
-
-Examples:
-> raven-cli validateaddress "1PSSGeFHDnKNxiEyFrD1wcEaHr9hrQDDWc"
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "validateaddress", "params": ["1PSSGeFHDnKNxiEyFrD1wcEaHr9hrQDDWc"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ validateaddress: "validateaddress",
-    /** verifychain ( checklevel nblocks )
-
-Verifies blockchain database.
-
-Arguments:
-1. checklevel   (numeric, optional, 0-4, default=3) How thorough the block verification is.
-2. nblocks      (numeric, optional, default=6, 0=all) The number of blocks to check.
-
-Result:
-true|false       (boolean) Verified or not
-
-Examples:
-> raven-cli verifychain 
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "verifychain", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ verifychain: "verifychain",
-    /** verifymessage "address" "signature" "message"
-
-Verify a signed message
-
-Arguments:
-1. "address"         (string, required) The raven address to use for the signature.
-2. "signature"       (string, required) The signature provided by the signer in base 64 encoding (see signmessage).
-3. "message"         (string, required) The message that was signed.
-
-Result:
-true|false   (boolean) If the signature is verified or not.
-
-Examples:
-
-Unlock the wallet for 30 seconds
-> raven-cli walletpassphrase "mypassphrase" 30
-
-Create the signature
-> raven-cli signmessage "1D1ZrZNe3JUo7ZycKEYQQiQAWd9y54F4XX" "my message"
-
-Verify the signature
-> raven-cli verifymessage "1D1ZrZNe3JUo7ZycKEYQQiQAWd9y54F4XX" "signature" "my message"
-
-As json rpc
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "verifymessage", "params": ["1D1ZrZNe3JUo7ZycKEYQQiQAWd9y54F4XX", "signature", "my message"] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ verifymessage: "verifymessage",
-    /** verifytxoutproof "proof"
-
-Verifies that a proof points to a transaction in a block, returning the transaction it commits to
-and throwing an RPC error if the block is not in our best chain
-
-Arguments:
-1. "proof"    (string, required) The hex-encoded proof generated by gettxoutproof
-
-Result:
-["txid"]      (array, strings) The txid(s) which the proof commits to, or empty array if the proof is invalid
-**/ verifytxoutproof: "verifytxoutproof",
-    /** viewallmessagechannels 
-
-View all message channels the wallet is subscribed to
-
-Result:[
-"Asset Name"                      (string) The asset channel name
-
-]
-
-Examples:
-> raven-cli viewallmessagechannels 
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "viewallmessagechannels", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ viewallmessagechannels: "viewallmessagechannels",
-    /** viewallmessages 
-
-View all messages that the wallet contains
-
-Result:
-"Asset Name:"                     (string) The name of the asset the message was sent on
-"Message:"                        (string) The IPFS hash of the message
-"Time:"                           (Date) The time as a date in the format (YY-mm-dd Hour-minute-second)
-"Block Height:"                   (number) The height of the block the message was included in
-"Status:"                         (string) Status of the message (READ, UNREAD, ORPHAN, EXPIRED, SPAM, HIDDEN, ERROR)
-"Expire Time:"                    (Date, optional) If the message had an expiration date assigned, it will be shown here in the format (YY-mm-dd Hour-minute-second)
-"Expire UTC Time:"                (Date, optional) If the message contains an expire date that is too large, the UTC number will be displayed
-
-Examples:
-> raven-cli viewallmessages 
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "viewallmessages", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ viewallmessages: "viewallmessages",
-    /** viewmyrestrictedaddresses 
-
-View all addresses this wallet owns that have been restricted
-
-Result:
-{
-"Address:"                        (string) The address that was restricted
-"Asset Name:"                     (string) The asset that the restriction applies to
-"[Restricted|Derestricted]:"      (Date) The UTC datetime of the restriction or derestriction in the format (YY-mm-dd HH:MM:SS))
-                                         (Only the most recent restriction/derestriction event will be returned for each address)
-}...
-
-Examples:
-> raven-cli viewmyrestrictedaddresses 
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "viewmyrestrictedaddresses", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ viewmyrestrictedaddresses: "viewmyrestrictedaddresses",
-    /** viewmytaggedaddresses 
-
-View all addresses this wallet owns that have been tagged
-
-Result:
-{
-"Address:"                        (string) The address that was tagged
-"Tag Name:"                       (string) The asset name
-"[Assigned|Removed]:"             (Date) The UTC datetime of the assignment or removal of the tag in the format (YY-mm-dd HH:MM:SS)
-                                         (Only the most recent tagging/untagging event will be returned for each address)
-}...
-
-Examples:
-> raven-cli viewmytaggedaddresses 
-> curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "viewmytaggedaddresses", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8766/
-**/ viewmytaggedaddresses: "viewmytaggedaddresses"
-};
-
-
-
-var $80bd448eb6ea085b$require$Buffer = $g5Y9E$buffer.Buffer;
-function $80bd448eb6ea085b$var$throwSyntaxError() {
-    throw new Error("Syntax error, call getRPC with (username, password, URL)");
-}
-function $80bd448eb6ea085b$export$eb94c228b080d168(username, password, URL) {
-    if (!username) $80bd448eb6ea085b$var$throwSyntaxError();
-    if (!password) $80bd448eb6ea085b$var$throwSyntaxError();
-    if (!URL) $80bd448eb6ea085b$var$throwSyntaxError();
-    return async function rpc(method, params) {
-        const promise = new Promise((resolutionFunc, rejectionFunc)=>{
-            const data = {
-                jsonrpc: "2.0",
-                id: Math.random(),
-                method: method,
-                params: params
-            };
-            try {
-                const rpcResponse = $80bd448eb6ea085b$var$postData(URL, data, username, password);
-                rpcResponse.then(async (response)=>{
-                    /*
-              This means that we got a response.
-              The response can still be an error/problem but the server responded
-
-            */ if (response.ok) {
-                        //Happy flow
-                        const obj = await response.json(); //Convert to JSON
-                        resolutionFunc(obj.result);
-                    } else if (response.status !== 200) {
-                        //OK something is wrong
-                        let obj = {
-                            error: null,
-                            description: null
-                        };
-                        try {
-                            obj = await response.json();
-                        } catch (e) {}
-                        const myError = {
-                            statusText: response.statusText,
-                            status: response.status,
-                            description: obj.description,
-                            error: obj.error
-                        };
-                        rejectionFunc(myError);
-                    }
-                }).catch((e)=>{
-                    rejectionFunc({
-                        originalError: e,
-                        type: "ServerUnreachable",
-                        error: "Could not communicate with Raven core node",
-                        description: "Are you sure that the URL is correct? The URL is usually something like http://localhost:8766"
-                    });
-                });
-            } catch (e) {
-                rejectionFunc(e.response);
-            }
-        });
-        return promise;
-    };
-}
-function $80bd448eb6ea085b$var$getValidMethods() {
-    const keys = Object.keys((0, $ca417a034047e18f$export$e13b82b2b0368a6a)).sort();
-    return keys.join(" ");
-}
-// Example POST method implementation:
-async function $80bd448eb6ea085b$var$postData(url = "", data = {}, username, password) {
-    let base64Credentials = "";
-    //btoa or Buffer, depends if we are in Node.js or in the browser
-    if (typeof btoa === "function") base64Credentials = btoa(`${username}:${password}`);
-    else if ($80bd448eb6ea085b$require$Buffer) base64Credentials = $80bd448eb6ea085b$require$Buffer.from(`${username}:${password}`).toString("base64");
-    // Default options are marked with *
-    const response = await fetch(url, {
-        method: "POST",
-        mode: "cors",
-        headers: {
-            Authentification: base64Credentials,
-            "Content-Type": "application/json"
-        },
-        redirect: "follow",
-        referrerPolicy: "no-referrer",
-        body: JSON.stringify(data)
-    });
-    return response;
-} /*
-export const methods = {
-  "getaddressbalance": "getaddressbalance",
-  "getaddressdeltas": "getaddressdeltas",
-  "getaddressmempool": "getaddressmempool",
-  "getaddresstxids": "getaddresstxids",
-  "getaddressutxos": "getaddressutxos",
-  "getassetdata": "getassetdata",
-  "getcacheinfo": "getcacheinfo",
-  "getsnapshot": "getsnapshot",
-  "issue": "issue",
-  "issueunique": "issueunique",
-  "listaddressesbyasset": "listaddressesbyasset",
-  "listassetbalancesbyaddress": "listassetbalancesbyaddress",
-  "listassets": "listassets",
-  "listmyassets": "listmyassets",
-  "purgesnapshot": "purgesnapshot",
-  "reissue": "reissue",
-  "transfer": "transfer",
-  "transferfromaddress": "transferfromaddress",
-  "transferfromaddresses": "transferfromaddresses",
-  "clearmempool": "clearmempool",
-  "decodeblock": "decodeblock",
-  "getbestblockhash": "getbestblockhash",
-  "getblock": "getblock",
-  "getblockchaininfo": "getblockchaininfo",
-  "getblockcount": "getblockcount",
-  "getblockhash": "getblockhash",
-  "getblockhashes": "getblockhashes",
-  "getblockheader": "getblockheader",
-  "getchaintips": "getchaintips",
-  "getchaintxstats": "getchaintxstats",
-  "getdifficulty": "getdifficulty",
-  "getmempoolancestors": "getmempoolancestors",
-  "getmempooldescendants": "getmempooldescendants",
-  "getmempoolentry": "getmempoolentry",
-  "getmempoolinfo": "getmempoolinfo",
-  "getrawmempool": "getrawmempool",
-  "getspentinfo": "getspentinfo",
-  "gettxout": "gettxout",
-  "gettxoutproof": "gettxoutproof",
-  "gettxoutsetinfo": "gettxoutsetinfo",
-  "preciousblock": "preciousblock",
-  "pruneblockchain": "pruneblockchain",
-  "savemempool": "savemempool",
-  "verifychain": "verifychain",
-  "verifytxoutproof": "verifytxoutproof",
-  "getinfo": "getinfo",
-  "getmemoryinfo": "getmemoryinfo",
-  "getrpcinfo": "getrpcinfo",
-  "help": "help",
-  "stop": "stop",
-  "uptime": "uptime",
-  "generate": "generate",
-  "generatetoaddress": "generatetoaddress",
-  "getgenerate": "getgenerate",
-  "setgenerate": "setgenerate",
-  "clearmessages": "clearmessages",
-  "sendmessage": "sendmessage",
-  "subscribetochannel": "subscribetochannel",
-  "unsubscribefromchannel": "unsubscribefromchannel",
-  "viewallmessagechannels": "viewallmessagechannels",
-  "viewallmessages": "viewallmessages",
-  "getblocktemplate": "getblocktemplate",
-  "getkawpowhash": "getkawpowhash",
-  "getmininginfo": "getmininginfo",
-  "getnetworkhashps": "getnetworkhashps",
-  "pprpcsb": "pprpcsb",
-  "prioritisetransaction": "prioritisetransaction",
-  "submitblock": "submitblock",
-  "addnode": "addnode",
-  "clearbanned": "clearbanned",
-  "disconnectnode": "disconnectnode",
-  "getaddednodeinfo": "getaddednodeinfo",
-  "getconnectioncount": "getconnectioncount",
-  "getnettotals": "getnettotals",
-  "getnetworkinfo": "getnetworkinfo",
-  "getpeerinfo": "getpeerinfo",
-  "listbanned": "listbanned",
-  "ping": "ping",
-  "setban": "setban",
-  "setnetworkactive": "setnetworkactive",
-  "combinerawtransaction": "combinerawtransaction",
-  "createrawtransaction": "createrawtransaction",
-  "decoderawtransaction": "decoderawtransaction",
-  "decodescript": "decodescript",
-  "fundrawtransaction": "fundrawtransaction",
-  "getrawtransaction": "getrawtransaction",
-  "sendrawtransaction": "sendrawtransaction",
-  "signrawtransaction": "signrawtransaction",
-  "testmempoolaccept": "testmempoolaccept",
-  "addtagtoaddress": "addtagtoaddress",
-  "checkaddressrestriction": "checkaddressrestriction",
-  "checkaddresstag": "checkaddresstag",
-  "checkglobalrestriction": "checkglobalrestriction",
-  "freezeaddress": "freezeaddress",
-  "freezerestrictedasset": "freezerestrictedasset",
-  "getverifierstring": "getverifierstring",
-  "issuequalifierasset": "issuequalifierasset",
-  "issuerestrictedasset": "issuerestrictedasset",
-  "isvalidverifierstring": "isvalidverifierstring",
-  "listaddressesfortag": "listaddressesfortag",
-  "listaddressrestrictions": "listaddressrestrictions",
-  "listglobalrestrictions": "listglobalrestrictions",
-  "listtagsforaddress": "listtagsforaddress",
-  "reissuerestrictedasset": "reissuerestrictedasset",
-  "removetagfromaddress": "removetagfromaddress",
-  "transferqualifier": "transferqualifier",
-  "unfreezeaddress": "unfreezeaddress",
-  "unfreezerestrictedasset": "unfreezerestrictedasset",
-  "viewmyrestrictedaddresses": "viewmyrestrictedaddresses",
-  "viewmytaggedaddresses": "viewmytaggedaddresses",
-  "cancelsnapshotrequest": "cancelsnapshotrequest",
-  "distributereward": "distributereward",
-  "getdistributestatus": "getdistributestatus",
-  "getsnapshotrequest": "getsnapshotrequest",
-  "listsnapshotrequests": "listsnapshotrequests",
-  "requestsnapshot": "requestsnapshot",
-  "createmultisig": "createmultisig",
-  "estimatefee": "estimatefee",
-  "estimatesmartfee": "estimatesmartfee",
-  "signmessagewithprivkey": "signmessagewithprivkey",
-  "validateaddress": "validateaddress",
-  "verifymessage": "verifymessage",
-  "abandontransaction": "abandontransaction",
-  "abortrescan": "abortrescan",
-  "addmultisigaddress": "addmultisigaddress",
-  "addwitnessaddress": "addwitnessaddress",
-  "backupwallet": "backupwallet",
-  "bumpfee": "bumpfee",
-  "dumpprivkey": "dumpprivkey",
-  "dumpwallet": "dumpwallet",
-  "encryptwallet": "encryptwallet",
-  "getaccount": "getaccount",
-  "getaccountaddress": "getaccountaddress",
-  "getaddressesbyaccount": "getaddressesbyaccount",
-  "getbalance": "getbalance",
-  "getmasterkeyinfo": "getmasterkeyinfo",
-  "getmywords": "getmywords",
-  "getnewaddress": "getnewaddress",
-  "getrawchangeaddress": "getrawchangeaddress",
-  "getreceivedbyaccount": "getreceivedbyaccount",
-  "getreceivedbyaddress": "getreceivedbyaddress",
-  "gettransaction": "gettransaction",
-  "getunconfirmedbalance": "getunconfirmedbalance",
-  "getwalletinfo": "getwalletinfo",
-  "importaddress": "importaddress",
-  "importmulti": "importmulti",
-  "importprivkey": "importprivkey",
-  "importprunedfunds": "importprunedfunds",
-  "importpubkey": "importpubkey",
-  "importwallet": "importwallet",
-  "keypoolrefill": "keypoolrefill",
-  "listaccounts": "listaccounts",
-  "listaddressgroupings": "listaddressgroupings",
-  "listlockunspent": "listlockunspent",
-  "listreceivedbyaccount": "listreceivedbyaccount",
-  "listreceivedbyaddress": "listreceivedbyaddress",
-  "listsinceblock": "listsinceblock",
-  "listtransactions": "listtransactions",
-  "listunspent": "listunspent",
-  "listwallets": "listwallets",
-  "lockunspent": "lockunspent",
-  "move": "move",
-  "removeprunedfunds": "removeprunedfunds",
-  "rescanblockchain": "rescanblockchain",
-  "sendfrom": "sendfrom",
-  "sendfromaddress": "sendfromaddress",
-  "sendmany": "sendmany",
-  "sendtoaddress": "sendtoaddress",
-  "setaccount": "setaccount",
-  "settxfee": "settxfee",
-  "signmessage": "signmessage"
-}*/ 
-
-
-
-
-},{"buffer":185}],18:[function(require,module,exports){
+},{"bitcoinjs-message":134,"buffer":183}],16:[function(require,module,exports){
 var $g5Y9E$buffer = require("buffer");
 var $g5Y9E$bitcoinjslib = require("bitcoinjs-lib");
 var $g5Y9E$hyperbitjschains = require("@hyperbitjs/chains");
@@ -8108,7 +2801,7 @@ var $80bd448eb6ea085b$export$2e2bcd8739ae039 = {
 
 
 
-},{"@hyperbitjs/chains":21,"bitcoinjs-lib":97,"buffer":185}],19:[function(require,module,exports){
+},{"@hyperbitjs/chains":19,"bitcoinjs-lib":95,"buffer":183}],17:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 
@@ -9772,15 +4465,15 @@ exports.zec = zec;
 
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"buffer":185}],20:[function(require,module,exports){
+},{"buffer":183}],18:[function(require,module,exports){
 (function (Buffer){(function (){
 "use strict";function e(){return(e=Object.assign?Object.assign.bind():function(e){for(var s=1;s<arguments.length;s++){var i=arguments[s];for(var c in i)Object.prototype.hasOwnProperty.call(i,c)&&(e[c]=i[c])}return e}).apply(this,arguments)}Object.defineProperty(exports,"__esModule",{value:!0});var s={name:"BitcoinCash",decimalPlaces:1e8,unit:"BCH",messagePrefix:"eCash Signed Message:\n"},i={main:e({},s,{hashGenesisBlock:"000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f",port:8333,portRpc:8332,protocol:{magic:3908297187},seedsDns:["seed.bitcoinabc.org","seed-abc.bitcoinforks.org","btccash-seeder.bitcoinunlimited.info","seed.bitprim.org","seed.deadalnix.me","seeder.criptolayer.net"],versions:{bip32:{private:76066276,public:76067358},bip44:145,private:128,public:0,scripthash:5}}),test:e({},s,{hashGenesisBlock:"000000000933ea01ad0ee984209779baaec3ced90fa3f408719526f8d77f4943",port:18333,portRpc:18332,protocol:{magic:4109624820},seedsDns:["testnet-seed.bitcoinabc.org","testnet-seed-abc.bitcoinforks.org","testnet-seed.bitprim.org","testnet-seed.deadalnix.me","testnet-seeder.criptolayer.net"],versions:{bip32:{private:70615956,public:70617039},bip44:1,private:239,public:111,scripthash:196}}),regtest:e({},s,{hashGenesisBlock:"0f9188f13cb7b2c71f2a335e3a4fc328bf5beb436012afca590b1a11466e2206",port:18444,portRpc:18332,protocol:{magic:4206867930},seedsDns:[],versions:{bip32:{private:70615956,public:70617039},bip44:1,private:239,public:111,scripthash:196}})},c={main:e({},{name:"BlackCoin",decimalPlaces:1e8,unit:"BLK",messagePrefix:"BlackCoin Signed Message:\n"},{hashGenesisBlock:"000001faef25dec4fbcf906e6242621df2c183bf232f263d0ba5b101911e4563",port:15714,portRpc:15715,protocol:{magic:86127984},seedsDns:["rat4.blackcoin.co","seed.blackcoin.co","archon.darkfox.id.au","foxy.seeds.darkfox.id.au","6.syllabear.us.to","bcseed.syllabear.us.to"],versions:{bip32:{private:76066276,public:76067358},bip44:10,private:153,public:25,scripthash:85}}),test:null},a={name:"Bitcoin",decimalPlaces:1e8,unit:"BTC",messagePrefix:"Bitcoin Signed Message:\n",messagePrefixAlts:["Bitcoin Signed Message:\n","Bitcoin Signed Message:\n","Bitcoin Signed Message:\n"]},t={main:e({},a,{hashGenesisBlock:"000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f",port:8333,portRpc:8332,protocol:{magic:3652501241},bech32:"bc",seedsDns:["seed.bitcoin.sipa.be","dnsseed.bluematt.me","seed.bitcoinstats.com","seed.bitcoin.jonasschnelli.ch","seed.btc.petertodd.org","seed.bitcoin.sprovoost.nl","dnsseed.emzy.de"],versions:{bip32:{private:76066276,public:76067358},bip44:0,private:128,public:0,scripthash:5}}),test:e({},a,{hashGenesisBlock:"000000000933ea01ad0ee984209779baaec3ced90fa3f408719526f8d77f4943",port:18333,portRpc:18332,protocol:{magic:118034699},bech32:"tb",seedsDns:["testnet-seed.alexykot.me","testnet-seed.bitcoin.schildbach.de","testnet-seed.bitcoin.petertodd.org","testnet-seed.bluematt.me"],versions:{bip32:{private:70615956,public:70617039},bip44:1,private:239,public:111,scripthash:196}}),regtest:e({},a,{hashGenesisBlock:"0f9188f13cb7b2c71f2a335e3a4fc328bf5beb436012afca590b1a11466e2206",port:18444,portRpc:18332,protocol:{magic:3669344250},bech32:"bcrt",seedsDns:[],versions:{bip32:{private:70615956,public:70617039},bip44:1,private:239,public:111,scripthash:196}}),simnet:e({},a,{hashGenesisBlock:"f67ad7695d9b662a72ff3d8edbbb2de0bfa67b13974bb9910d116d5cbd863e68",port:18555,portRpc:18556,protocol:{magic:303307798},bech32:"sb",seedsDns:[],versions:{bip32:{private:69253376,public:69254458},bip44:115,private:100,public:63,scripthash:123}})},o={name:"Bitcoin Gold",unit:"BTG",decimalPlaces:1e8,messagePrefix:"Bitcoin Gold Signed Message:\n"},p={main:e({},o,{hashGenesisBlock:"000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f",port:8338,portRpc:8338,protocol:{magic:1148012513},bech32:"btg",seedsDns:["eu-dnsseed.bitcoingold-official.org","dnsseed.bitcoingold.org","dnsseed.btcgpu.org"],versions:{bip32:{private:76066276,public:76067358},bip44:156,private:128,public:38,scripthash:23}}),test:e({},o,{hashGenesisBlock:"0x00000000e0781ebe24b91eedc293adfea2f557b53ec379e78959de3853e6f9f6",port:18338,portRpc:18332,protocol:{magic:1164855522},bech32:"tbtg",seedsDns:["test-dnsseed.bitcoingold.org","test-dnsseed.btcgpu.org","eu-test-dnsseed.bitcoingold-official.org"],versions:{bip32:{private:70615956,public:70617039},bip44:156,private:239,public:111,scripthash:196}})},r={name:"c0ban",unit:"RYO",decimalPlaces:1e8,messagePrefix:"c0ban Signed Message:\n"},n={main:e({},r,{hashGenesisBlock:"000000005184ffce04351e687a3965b300ee011d26b2089232cd039273be4a67",port:3881,portRpc:3882,protocol:{magic:1851928675},seedsDns:["jp01.dnsseed.c0ban.com","kr01.dnsseed.c0ban.com"],versions:{bip32:{private:76066276,public:76067358},bip44:88888,private:136,public:18,scripthash:28}}),test:e({},r,{hashGenesisBlock:"000000005184ffce04351e687a3965b300ee011d26b2089232cd039273be4a67",port:13881,portRpc:13882,protocol:{magic:2390917251},seedsDns:[],versions:{bip32:{private:70812552,public:72910728},bip44:1,private:238,public:118,scripthash:198}}),regtest:e({},r,{hashGenesisBlock:"3249e44acac8fc67e6b94e882525cea6f5a9853e1ff7b4a1d5f470b23ff8ae11",port:23881,portRpc:23882,protocol:{magic:3669344250},seedsDns:[],versions:{bip32:{private:70617039,public:70615956},bip44:1,private:239,public:111,scripthash:196}})},d={name:"CityCoin",unit:"CITY",decimalPlaces:1e8,isProofOfStake:!0},b={main:e({},d,{unit:"CITY",hashGenesisBlock:"00000b0517068e602ed5279c20168cfa1e69884ee4e784909652da34c361bff2",port:4333,portRpc:4334,protocol:{magic:1129601281},seedsDns:["seed.city-chain.org","seed.city-coin.org","seed.citychain.foundation","seed.liberstad.com"],versions:{bip32:{private:76066276,public:76067358},bip44:1926,private:237,public:28,scripthash:88}}),test:e({},d,{unit:"TCITY",hashGenesisBlock:"00077765f625cc2cb6266544ff7d5a462f25be14ea1116dc2bd2fec17e40a5e3",port:24333,portRpc:24334,protocol:{magic:1129600001},seedsDns:["testseed.city-chain.org","testseed.city-coin.org","testseed.citychain.foundation"],versions:{bip32:{private:76066276,public:76067358},bip44:1926,private:194,public:66,scripthash:196}})},l={name:"Dash",decimalPlaces:1e8,unit:"DASH"},h={main:e({},l,{hashGenesisBlock:"00000ffd590b1485b3caadc19b22e6379c733355108f107a430458cdf3407ab6",port:9999,portRpc:9998,protocol:{magic:3177909439},seedsDns:["dash.org","dnsseed.dash.org","dashdot.io","dnsseed.dashdot.io","masternode.io","dnsseed.masternode.io","dashpay.io","dnsseed.dashpay.io"],versions:{bip32:{private:76066276,public:76067358},bip44:5,private:204,public:76,scripthash:16}}),test:e({},l,{hashGenesisBlock:"00000bafbc94add76cb75e2ec92894837288a481e5c005f6563d91623bf8bc2c",port:19999,portRpc:19998,seedsDns:["dashdot.io","testnet-seed.dashdot.io","masternode.io","test.dnsseed.masternode.io"],versions:{bip32:{private:70615956,public:70617039},bip44:1,private:239,public:140,scripthash:19}})},f={name:"Decred",unit:"DCR",decimalPlaces:1e8},v={main:e({},f,{hashGenesisBlock:"298e5cc3d985bfe7f81dc135f360abe089edd4396b86d2de66b0cef42b21d980",port:9108,portRpc:9109,protocol:{magic:4177573081},seedsDns:["mainnet-seed.decred.mindcry.org","mainnet-seed.decred.netpurgatory.com","mainnet.decredseed.org","mainnet-seed.decred.org"],versions:{bip32:{private:50177256,public:50178342},bip44:42,private:8926,public:1855,scripthash:1818}}),test:e({},f,{hashGenesisBlock:"5b7466edf6739adc9b32aaedc54e24bdc59a05f0ced855088835fe3cbe58375f",port:19108,portRpc:19109,protocol:{magic:1223139429},seedsDns:["testnet-seed.decred.mindcry.org","testnet-seed.decred.netpurgatory.org","testnet.decredseed.org","testnet-seed.decred.org"],versions:{bip32:{private:70615959,public:70617041},bip44:42,private:8974,public:3873,scripthash:3836}})},m={main:e({},{name:"DigiByte",decimalPlaces:1e8,unit:"DGB"},{hashGenesisBlock:"000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f",port:12024,portRpc:14022,protocol:{magic:4207130330},bech32:"dgb",seedsDns:["seed.digibyte.io","digiexplorer.info","digihash.co"],versions:{bip32:{private:76066276,public:76067358},bip44:20,private:128,public:30,scripthash:63,scripthash2:5}}),test:null},g={name:"Denarius",unit:"DNR",decimalPlaces:1e8},u={main:e({},g,{hashGenesisBlock:"00000d5dbbda01621cfc16bbc1f9bf3264d641a5dbf0de89fd0182c2c4828fcd",port:33339,portRpc:32339,protocol:{magic:3035624186},seedsDns:["denariusexplorer.org","denarius.host","denarius.tech","denarius.network"],versions:{bip32:{private:76066276,public:76067358},bip44:116,private:158,public:30,scripthash:90}}),test:e({},g,{hashGenesisBlock:"000086bfe8264d241f7f8e5393f747784b8ca2aa98bdd066278d590462a4fdb4",port:33368,portRpc:32368,versions:{bip32:{private:70615956,public:70617039},bip44:1,private:140,public:18,scripthash:116}})},k={name:"Dogecoin",unit:"DOGE",decimalPlaces:1e8,messagePrefix:"Dogecoin Signed Message:\n"},x={main:e({},k,{hashGenesisBlock:"1a91e3dace36e2be3bf030a65679fe821aa1d6ef92e7c9902eb318182c355691",port:22556,portRpc:22555,protocol:{magic:3233857728},seedsDns:["seed.multidoge.org","seed2.multidoge.org"],versions:{bip32:{private:49988504,public:49990397},bip44:3,private:158,public:30,scripthash:22}}),test:e({},k,{hashGenesisBlock:"bb0a78264637406b6360aad926284d544d7049f45189db5664f3c4d07350559e",port:44556,portRpc:44555,protocol:{magic:4240553948},seedsDns:["testseed.jrn.me.uk"],versions:{bip32:{private:70615956,public:70617039},bip44:1,private:241,public:113,scripthash:196}})},B={name:"Evrmore",unit:"EVR",decimalPlaces:1e8,messagePrefix:"Evrmore Signed Message:\n"},R={main:e({},B,{hashGenesisBlock:"0000007b11d0481b2420a7c656ef76775d54ab5b29ee7ea250bc768535693b05",port:8820,portRpc:8819,protocol:{magic:1297241669},seedsDns:["seed-mainnet-evr.evrmorecoin.org"],versions:{bip32:{private:76066276,public:76067358},bip44:175,private:128,public:33,scripthash:92}}),test:e({},B,{hashGenesisBlock:"00000044bc03f8460e64bc07b080f4929b1cb96fda46b8bd806e57bfb9db82f4",port:18820,portRpc:18819,protocol:{magic:1414682181},seedsDns:["seed-testnet-evr.evrmorecoin.org"],versions:{bip32:{private:70615956,public:70617039},bip44:1,private:239,public:111,scripthash:196}})},D={name:"Groestlcoin",decimalPlaces:1e8,unit:"GRS",messagePrefix:"GroestlCoin Signed Message:\n",messagePrefixAlts:["GroestlCoin Signed Message:\n"]},G={main:e({},D,{hashGenesisBlock:"00000ac5927c594d49cc0bdb81759d0da8297eb614683d3acb62f0703b639023",port:1331,portRpc:1441,protocol:{magic:3568615161},bech32:"grs",seedsDns:["dnsseed1.groestlcoin.org","dnsseed2.groestlcoin.org","dnsseed3.groestlcoin.org","dnsseed4.groestlcoin.org"],versions:{bip32:{private:76066276,public:76067358},bip44:17,private:128,public:36,scripthash:5}}),test:e({},D,{hashGenesisBlock:"0x000000ffbb50fc9898cdd36ec163e6ba23230164c0052a28876255b7dcf2cd36",port:17777,portRpc:17766,protocol:{magic:118034699},bech32:"tgrs",seedsDns:["testnet-seed1.groestlcoin.org","testnet-seed2.groestlcoin.org"],versions:{bip32:{private:70615956,public:70617039},bip44:1,private:239,public:111,scripthash:196}}),regtest:e({},D,{hashGenesisBlock:"0x000000ffbb50fc9898cdd36ec163e6ba23230164c0052a28876255b7dcf2cd36",port:18888,portRpc:18443,protocol:{magic:3669344250},bech32:"grsrt",seedsDns:[],versions:{bip32:{private:70615956,public:70617039},bip44:1,private:239,public:111,scripthash:196}})},P={name:"Litecoin",unit:"LTC",decimalPlaces:1e8,messagePrefix:"Litecoin Signed Message:\n"},y={main:e({},P,{hashGenesisBlock:"12a765e31ffd4059bada1e25190f6e98c99d9714d334efa41a195a7e7e04bfe2",port:9333,portRpc:9332,protocol:{magic:3686187259},bech32:"ltc",seedsDns:["dnsseed.litecointools.com","dnsseed.litecoinpool.org","dnsseed.ltc.xurious.com","dnsseed.koin-project.com","dnsseed.weminemnc.com"],versions:{bip32:{private:27106558,public:27108450},bip44:2,private:176,public:48,scripthash:50,scripthash2:5}}),test:e({},P,{hashGenesisBlock:"f5ae71e26c74beacc88382716aced69cddf3dffff24f384e1808905e0188f68f",port:19335,portRpc:19332,bech32:"tltc",versions:{bip32:{private:70709117,public:70711009},bip44:1,private:239,public:111,scripthash:58,scripthash2:196}})},M={name:"Meowcoin",unit:"MEWC",decimalPlaces:1e8,messagePrefix:"Meowcoin Signed Message:\n"},S={main:e({},M,{hashGenesisBlock:"0x000000edd819220359469c54f2614b5602ebc775ea67a64602f354bdaa320f70",port:8788,portRpc:9766,protocol:{magic:1129792845},seedsDns:["66.42.117.31","167.179.94.220"],versions:{bip32:{private:76066276,public:76067358},bip44:1669,private:112,public:50,scripthash:122}}),test:e({},M,{hashGenesisBlock:"0x000000eaab417d6dfe9bd75119972e1d07ecfe8ff655bef7c2acb3d9a0eeed81",port:4568,portRpc:19766,protocol:{magic:1668769133},seedsDns:["66.42.117.31","167.179.94.220"],versions:{bip32:{private:70615956,public:70617039},bip44:1,private:114,public:109,scripthash:124}})},C={name:"Monacoin",unit:"MONA",decimalPlaces:1e8,messagePrefix:"Monacoin Signed Message:\n"},T={main:e({},C,{hashGenesisBlock:"ff9f1c0116d19de7c9963845e129f9ed1bfc0b376eb54fd7afa42e0d418c8bb6",port:9401,portRpc:9402,protocol:{magic:3686187259},bech32:"mona",seedsDns:["dnsseed.monacoin.org"],versions:{bip32:{private:76066276,public:76067358},bip44:22,private:176,private2:178,public:50,scripthash:55,scripthash2:5}}),test:e({},C,{hashGenesisBlock:"a2b106ceba3be0c6d097b2a6a6aacf9d638ba8258ae478158f449c321061e0b2",port:19403,portRpc:19402,protocol:{magic:4056470269},bech32:"tmona",seedsDns:["testnet-dnsseed.monacoin.org"],versions:{bip32:{private:70615956,public:70617039},bip44:1,private:239,public:111,scripthash:117,scripthash2:196}})},j={main:e({},{name:"NuBits",decimalPlaces:1e6,unit:"NBT"},{hashGenesisBlock:"000003cc2da5a0a289ad0a590c20a8b975219ddc1204efd169e947dd4cbad73f",port:7890,portRpc:14002,protocol:{magic:3652501241},seedsDns:[],versions:{bip32:{private:76066276,public:76067358},bip44:12,private:150,public:25,scripthash:26}}),test:null},w={name:"Namecoin",unit:"NMC",decimalPlaces:1e8,messagePrefix:"Namecoin Signed Message:\n"},O={main:e({},w,{hashGenesisBlock:"000000000062b72c5e2ceb45fbc8587e807c155b0da735e6483dfba2f0a9c770",port:8334,portRpc:8336,seedsDns:["seed.namecoin.libreisp.se","nmc.seed.quisquis.de","seed.nmc.markasoftware.com","dnsseed1.nmc.dotbit.zone","dnsseed2.nmc.dotbit.zone","dnsseed.nmc.testls.space"],versions:{bip32:{private:76066276,public:76067358},bip44:7,private:180,public:52,scripthash:5}}),test:e({},w,{hashGenesisBlock:"00000007199508e34a9ff81e6ec0c477a4cccff2a4767a8eee39c11db367b008",port:18334,portRpc:18336,seedsDns:["dnsseed.test.namecoin.webbtc.com","ncts.roanapur.info"],versions:{bip32:{private:76066276,public:76067358},bip44:7,private:239,public:111,scripthash:196}})},q={name:"Peercoin",decimalPlaces:1e6,unit:"PPC",messagePrefix:"Peercoin Signed Message:\n",messagePrefixAlts:["Peercoin Signed Message:\n"]},z={main:e({},q,{hashGenesisBlock:"0000000032fe677166d54963b62a4677d8957e87c508eaa4fd7eb1c880cd27e3",port:9901,portRpc:9902,protocol:{magic:3857311974},seedsDns:["seed.peercoin.net","seed2.peercoin.net","seed.peercoin-library.org","ppcseed.ns.7server.net"],versions:{bip32:{private:76066276,public:76067358},bip44:6,private:183,public:55,scripthash:117}}),test:e({},q,{hashGenesisBlock:"00000001f757bb737f6596503e17cd17b0658ce630cc727c0cca81aec47c9f06",port:9903,portRpc:9904,protocol:{magic:4022399691},seedsDns:["tseed.peercoin.net","tseed2.peercoin.net","tseed.peercoin-library.org"],versions:{bip32:{private:70615956,public:70617039},bip44:1,private:239,public:111,scripthash:196}})},E={main:e({},{name:"Qtum",unit:"QTUM",decimalPlaces:1e8,messagePrefix:"Qtum Signed Message:\n"},{hashGenesisBlock:"000075aef83cf2853580f8ae8ce6f8c3096cfa21d98334d6e3f95e5582ed986c",port:3888,portRpc:3889,protocol:{magic:3550924785},bech32:"qc",seedsDns:["qtum3.dynu.net","qtum5.dynu.net","qtum6.dynu.net","qtum7.dynu.net"],versions:{bip32:{private:76066276,public:76067358},bip44:2301,private:128,public:58,scripthash:50}}),test:null},N={name:"ReddCoin",unit:"RDD",decimalPlaces:1e8},I={main:e({},N,{hashGenesisBlock:"b868e0d95a3c3c0e0dadc67ee587aaf9dc8acbf99e3b4b3110fad4eb74c1decc",port:45444,portRpc:45443,seedsDns:["seed.reddcoin.com","dnsseed01.redd.ink","dnsseed02.redd.ink","dnsseed03.redd.ink"],versions:{bip32:{private:76067358,public:76066276},bip44:4,private:189,public:61,scripthash:5}}),test:e({},N,{hashGenesisBlock:"a12ac9bd4cd26262c53a6277aafc61fe9dfe1e2b05eaa1ca148a5be8b394e35a",port:55444,portRpc:55443,seedsDns:["testnet-seed.reddcoin.com","testnet-dnsseed.redd.ink"],versions:{bip32:{private:70615956,public:70617039},bip44:1,private:239,public:111,scripthash:196}})},A={name:"Ritocoin",unit:"RITO",decimalPlaces:1e8,messagePrefix:"Rito Signed Message:\n"},V={main:e({},A,{hashGenesisBlock:"00000075e344bdf1c0e433f453764b1830a7aa19b2a5213e707502a22b779c1b",port:7342,portRpc:8501,protocol:{magic:712753313},seedsDns:["s1.ritocoin.org","s2.ritocoin.org","s3.ritocoin.org"],versions:{bip32:{private:76066276,public:76067358},bip44:19169,private:139,public:25,scripthash:105}}),test:e({},A,{hashGenesisBlock:"0x00000075e344bdf1c0e433f453764b1830a7aa19b2a5213e707502a22b779c1b",port:17342,portRpc:18501,protocol:{magic:1364087634},seedsDns:["tn.s1.ritocoin.org","tn.s2.ritocoin.org","tn.s3.ritocoin.org"],versions:{bip32:{private:70615956,public:70617039},bip44:1,private:239,public:111,scripthash:196}})},_={name:"Ravencoin",unit:"RVN",decimalPlaces:1e8,messagePrefix:"Raven Signed Message:\n"},L={main:e({},_,{hashGenesisBlock:"0000006b444bc2f2ffe627be9d9e7e7a0730000870ef6eb6da46c8eae389df90",port:8767,portRpc:8766,protocol:{magic:1314275666},seedsDns:["seed-raven.bitactivate.com","seed-raven.ravencoin.com","seed-raven.ravencoin.org"],versions:{bip32:{private:76066276,public:76067358},bip44:175,private:128,public:60,scripthash:122}}),test:e({},_,{hashGenesisBlock:"000000ecfc5e6324a079542221d00e10362bdc894d56500c414060eea8a3ad5a",port:18770,portRpc:18766,protocol:{magic:1414420050},seedsDns:["seed-testnet-raven.bitactivate.com","seed-testnet-raven.ravencoin.com","seed-testnet-raven.ravencoin.org"],versions:{bip32:{private:70615956,public:70617039},bip44:1,private:239,public:111,scripthash:196}})},H={name:"Viacoin",unit:"VIA",decimalPlaces:1e8},U={main:e({},H,{hashGenesisBlock:"4e9b54001f9976049830128ec0331515eaabe35a70970d79971da1539a400ba1",port:5223,portRpc:5222,protocol:{magic:3418777615},seedsDns:["seed.viacoin.net","viaseeder.barbatos.fr","mainnet.viacoin.net"],versions:{bip32:{private:76066276,public:76067358},bip44:14,private:199,public:71,scripthash:33}}),test:e({},H,{hashGenesisBlock:"770aa712aa08fdcbdecc1c8df1b3e2d4e17a7cf6e63a28b785b32e74c96cb27d",port:25223,portRpc:25222,protocol:{magic:2465187241},seedsDns:["testnet.viacoin.net","seed-testnet.viacoin.net"],versions:{bip32:{private:70615956,public:70617039},bip44:1,private:255,public:127,scripthash:196}})},Y={name:"Vertcoin",unit:"VTC",decimalPlaces:1e8,messagePrefix:"Bitcoin Signed Message:\n"},Q={main:e({},Y,{hashGenesisBlock:"4d96a915f49d40b1e5c2844d1ee2dccb90013a990ccea12c492d22110489f0c4",port:5889,portRpc:5888,protocol:{magic:3669344250},bech32:"vtc",seedsDns:["useast1.vtconline.org","vtc.gertjaap.org","seed.vtc.bryangoodson.org","dnsseed.pknight.ca","seed.orderofthetaco.org","seed.alexturek.org","vertcoin.mbl.cash"],versions:{bip32:{private:76066276,public:76067358},bip44:28,private:128,public:71,scripthash:5}}),test:e({},Y,{hashGenesisBlock:"cee8f24feb7a64c8f07916976aa4855decac79b6741a8ec2e32e2747497ad2c9",port:15889,portRpc:15888,protocol:{magic:1953654134},bech32:"tvtc",seedsDns:["jlovejoy.mit.edu","gertjaap.ddns.net","fr1.vtconline.org","tvtc.vertcoin.org"],versions:{bip32:{private:70615956,public:70617039},bip44:28,private:239,public:74,scripthash:196}}),regtest:e({},Y,{hashGenesisBlock:"0f9188f13cb7b2c71f2a335e3a4fc328bf5beb436012afca590b1a11466e2206",port:18444,portRpc:18332,protocol:{magic:3669344250},seedsDns:[],versions:{bip32:{private:70615956,public:70617039},bip44:28,private:239,public:111,scripthash:196}})},Z={name:"x42",unit:"X42",decimalPlaces:1e8,isProofOfStake:!0},K={main:e({},Z,{unit:"x42",hashGenesisBlock:"04ffe583707a96c1c2eb54af33a4b1dc6d9d8e09fea8c9a7b097ba88f0cb64c4",port:52342,portRpc:52343,protocol:{magic:55731778},seedsDns:["mainnet1.x42seed.host","mainnetnode1.x42seed.host","tech.x42.cloud","x42.seed.blockcore.net"],versions:{bip32:{private:76066276,public:76067358},bip44:424242,private:203,public:75,scripthash:125}}),test:e({},Z,{unit:"Tx42",hashGenesisBlock:"a92bf124a1e6f237015440d5f1e1999bdef8e321f2d3fdc367eb2f7733b17854",port:62342,portRpc:62343,protocol:{magic:72508994},seedsDns:["testnet1.x42seed.host"],versions:{bip32:{private:76066276,public:76067358},bip44:424242,private:193,public:65,scripthash:196}})},J={name:"Zcash",unit:"ZEC",decimalPlaces:1e8,messagePrefix:"Zcash Signed Message:\n"},W={main:e({},J,{hashGenesisBlock:"00040fe8ec8471911baa1db1266ea15dd06b4a8a5c453883c000b031973dce08",port:8233,portRpc:8232,protocol:{magic:1680337188},seedsDns:["dnsseed.z.cash","dnsseed.str4d.xyz","dnsseed.znodes.org"],versions:{bip32:{private:76066276,public:76067358},bip44:133,private:128,public:7352,scripthash:7357}}),test:e({},J,{hashGenesisBlock:"0x05a60a92d99d85997cce3b87616c089f6124d7342af37106edc76126334a2c38",port:18233,portRpc:18232,protocol:{magic:3220773626},seedsDns:["dnsseed.testnet.z.cash"],versions:{bip32:{private:70615956,public:70617039},bip44:133,private:239,public:7461,scripthash:7354}})},X={__proto__:null,bch:i,blk:c,btc:t,btg:p,cbn:n,city:b,dash:h,dcr:v,dgb:m,dnr:u,doge:x,evr:R,grs:G,ltc:y,mewc:S,mona:T,nbt:j,nmc:O,ppc:z,qtum:E,rdd:I,rito:V,rvn:L,via:U,vtc:Q,x42:K,zec:W};exports.bch=i,exports.blk=c,exports.btc=t,exports.btg=p,exports.cbn=n,exports.chains=X,exports.city=b,exports.dash=h,exports.dcr=v,exports.dgb=m,exports.dnr=u,exports.doge=x,exports.evr=R,exports.grs=G,exports.ltc=y,exports.mewc=S,exports.mona=T,exports.nbt=j,exports.nmc=O,exports.ppc=z,exports.qtum=E,exports.rdd=I,exports.rito=V,exports.rvn=L,exports.toBitcoinJS=function(s){return e({},s,{messagePrefix:s.messagePrefix||""+s.name+" Signed Message:\n",bech32:s.bech32,bip32:{public:s.versions.bip32.public,private:s.versions.bip32.private},pubKeyHash:s.versions.public,scriptHash:s.versions.scripthash,wif:s.versions.private,dustThreshold:null})},exports.toBitcore=function(s,i){var c,a,t=Buffer.allocUnsafe(4);t.writeUInt32BE(null!=(c=null==s||null==(a=s.protocol)?void 0:a.magic)?c:0);var o=t.readUInt32LE(0);return e({},s,{name:"test"===i?"testnet":"livenet",alias:"test"===i?"testnet":"mainnet",pubkeyhash:s.versions.public,privatekey:s.versions.private,scripthash:s.versions.scripthash,xpubkey:s.versions.bip32.public,xprivkey:s.versions.bip32.private,networkMagic:o,port:s.port,dnsSeeds:s.seedsDns||[]})},exports.via=U,exports.vtc=Q,exports.x42=K,exports.zec=W;
 
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"buffer":185}],21:[function(require,module,exports){
+},{"buffer":183}],19:[function(require,module,exports){
 arguments[4][4][0].apply(exports,arguments)
-},{"./chains.cjs.development.js":19,"./chains.cjs.production.min.js":20,"_process":285,"dup":4}],22:[function(require,module,exports){
+},{"./chains.cjs.development.js":17,"./chains.cjs.production.min.js":18,"_process":283,"dup":4}],20:[function(require,module,exports){
 'use strict';
 
 const asn1 = exports;
@@ -9793,7 +4486,7 @@ asn1.constants = require('./asn1/constants');
 asn1.decoders = require('./asn1/decoders');
 asn1.encoders = require('./asn1/encoders');
 
-},{"./asn1/api":23,"./asn1/base":25,"./asn1/constants":29,"./asn1/decoders":31,"./asn1/encoders":34,"bn.js":137}],23:[function(require,module,exports){
+},{"./asn1/api":21,"./asn1/base":23,"./asn1/constants":27,"./asn1/decoders":29,"./asn1/encoders":32,"bn.js":135}],21:[function(require,module,exports){
 'use strict';
 
 const encoders = require('./encoders');
@@ -9852,7 +4545,7 @@ Entity.prototype.encode = function encode(data, enc, /* internal */ reporter) {
   return this._getEncoder(enc).encode(data, reporter);
 };
 
-},{"./decoders":31,"./encoders":34,"inherits":266}],24:[function(require,module,exports){
+},{"./decoders":29,"./encoders":32,"inherits":264}],22:[function(require,module,exports){
 'use strict';
 
 const inherits = require('inherits');
@@ -10007,7 +4700,7 @@ EncoderBuffer.prototype.join = function join(out, offset) {
   return out;
 };
 
-},{"../base/reporter":27,"inherits":266,"safer-buffer":297}],25:[function(require,module,exports){
+},{"../base/reporter":25,"inherits":264,"safer-buffer":295}],23:[function(require,module,exports){
 'use strict';
 
 const base = exports;
@@ -10017,7 +4710,7 @@ base.DecoderBuffer = require('./buffer').DecoderBuffer;
 base.EncoderBuffer = require('./buffer').EncoderBuffer;
 base.Node = require('./node');
 
-},{"./buffer":24,"./node":26,"./reporter":27}],26:[function(require,module,exports){
+},{"./buffer":22,"./node":24,"./reporter":25}],24:[function(require,module,exports){
 'use strict';
 
 const Reporter = require('../base/reporter').Reporter;
@@ -10657,7 +5350,7 @@ Node.prototype._isPrintstr = function isPrintstr(str) {
   return /^[A-Za-z0-9 '()+,-./:=?]*$/.test(str);
 };
 
-},{"../base/buffer":24,"../base/reporter":27,"minimalistic-assert":271}],27:[function(require,module,exports){
+},{"../base/buffer":22,"../base/reporter":25,"minimalistic-assert":269}],25:[function(require,module,exports){
 'use strict';
 
 const inherits = require('inherits');
@@ -10782,7 +5475,7 @@ ReporterError.prototype.rethrow = function rethrow(msg) {
   return this;
 };
 
-},{"inherits":266}],28:[function(require,module,exports){
+},{"inherits":264}],26:[function(require,module,exports){
 'use strict';
 
 // Helper
@@ -10842,7 +5535,7 @@ exports.tag = {
 };
 exports.tagByName = reverse(exports.tag);
 
-},{}],29:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 'use strict';
 
 const constants = exports;
@@ -10865,7 +5558,7 @@ constants._reverse = function reverse(map) {
 
 constants.der = require('./der');
 
-},{"./der":28}],30:[function(require,module,exports){
+},{"./der":26}],28:[function(require,module,exports){
 'use strict';
 
 const inherits = require('inherits');
@@ -11202,7 +5895,7 @@ function derDecodeLen(buf, primitive, fail) {
   return len;
 }
 
-},{"../base/buffer":24,"../base/node":26,"../constants/der":28,"bn.js":137,"inherits":266}],31:[function(require,module,exports){
+},{"../base/buffer":22,"../base/node":24,"../constants/der":26,"bn.js":135,"inherits":264}],29:[function(require,module,exports){
 'use strict';
 
 const decoders = exports;
@@ -11210,7 +5903,7 @@ const decoders = exports;
 decoders.der = require('./der');
 decoders.pem = require('./pem');
 
-},{"./der":30,"./pem":32}],32:[function(require,module,exports){
+},{"./der":28,"./pem":30}],30:[function(require,module,exports){
 'use strict';
 
 const inherits = require('inherits');
@@ -11263,7 +5956,7 @@ PEMDecoder.prototype.decode = function decode(data, options) {
   return DERDecoder.prototype.decode.call(this, input, options);
 };
 
-},{"./der":30,"inherits":266,"safer-buffer":297}],33:[function(require,module,exports){
+},{"./der":28,"inherits":264,"safer-buffer":295}],31:[function(require,module,exports){
 'use strict';
 
 const inherits = require('inherits');
@@ -11560,7 +6253,7 @@ function encodeTag(tag, primitive, cls, reporter) {
   return res;
 }
 
-},{"../base/node":26,"../constants/der":28,"inherits":266,"safer-buffer":297}],34:[function(require,module,exports){
+},{"../base/node":24,"../constants/der":26,"inherits":264,"safer-buffer":295}],32:[function(require,module,exports){
 'use strict';
 
 const encoders = exports;
@@ -11568,7 +6261,7 @@ const encoders = exports;
 encoders.der = require('./der');
 encoders.pem = require('./pem');
 
-},{"./der":33,"./pem":35}],35:[function(require,module,exports){
+},{"./der":31,"./pem":33}],33:[function(require,module,exports){
 'use strict';
 
 const inherits = require('inherits');
@@ -11593,7 +6286,7 @@ PEMEncoder.prototype.encode = function encode(data, options) {
   return out.join('\n');
 };
 
-},{"./der":33,"inherits":266}],36:[function(require,module,exports){
+},{"./der":31,"inherits":264}],34:[function(require,module,exports){
 (function (global){(function (){
 'use strict';
 
@@ -12103,7 +6796,7 @@ var objectKeys = Object.keys || function (obj) {
 };
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"object-assign":273,"util/":39}],37:[function(require,module,exports){
+},{"object-assign":271,"util/":37}],35:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -12128,14 +6821,14 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],38:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 module.exports = function isBuffer(arg) {
   return arg && typeof arg === 'object'
     && typeof arg.copy === 'function'
     && typeof arg.fill === 'function'
     && typeof arg.readUInt8 === 'function';
 }
-},{}],39:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 (function (process,global){(function (){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -12725,7 +7418,7 @@ function hasOwnProperty(obj, prop) {
 }
 
 }).call(this)}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":38,"_process":285,"inherits":37}],40:[function(require,module,exports){
+},{"./support/isBuffer":36,"_process":283,"inherits":35}],38:[function(require,module,exports){
 'use strict'
 // base-x encoding / decoding
 // Copyright (c) 2018 base-x contributors
@@ -12846,7 +7539,7 @@ function base (ALPHABET) {
 }
 module.exports = base
 
-},{"safe-buffer":296}],41:[function(require,module,exports){
+},{"safe-buffer":294}],39:[function(require,module,exports){
 'use strict'
 
 exports.byteLength = byteLength
@@ -12998,7 +7691,7 @@ function fromByteArray (uint8) {
   return parts.join('')
 }
 
-},{}],42:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 'use strict'
 var ALPHABET = 'qpzry9x8gf2tvdw0s3jn54khce6mua7l'
 
@@ -13182,7 +7875,7 @@ module.exports = {
   fromWords: fromWords
 }
 
-},{}],43:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
 const parser_1 = require('../parser');
@@ -13267,7 +7960,7 @@ function getKeySet(keyVals) {
   return set;
 }
 
-},{"../parser":68}],44:[function(require,module,exports){
+},{"../parser":66}],42:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -13354,7 +8047,7 @@ function canAddToArray(array, item, dupeSet) {
 exports.canAddToArray = canAddToArray;
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"../../typeFields":71,"buffer":185}],45:[function(require,module,exports){
+},{"../../typeFields":69,"buffer":183}],43:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -13368,7 +8061,7 @@ function encode(data) {
 exports.encode = encode;
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"../../typeFields":71,"buffer":185}],46:[function(require,module,exports){
+},{"../../typeFields":69,"buffer":183}],44:[function(require,module,exports){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
 const typeFields_1 = require('../typeFields');
@@ -13455,7 +8148,7 @@ const outputs = {
 };
 exports.outputs = outputs;
 
-},{"../typeFields":71,"./global/globalXpub":44,"./global/unsignedTx":45,"./input/finalScriptSig":47,"./input/finalScriptWitness":48,"./input/nonWitnessUtxo":49,"./input/partialSig":50,"./input/porCommitment":51,"./input/sighashType":52,"./input/tapKeySig":53,"./input/tapLeafScript":54,"./input/tapMerkleRoot":55,"./input/tapScriptSig":56,"./input/witnessUtxo":57,"./output/tapTree":58,"./shared/bip32Derivation":59,"./shared/checkPubkey":60,"./shared/redeemScript":61,"./shared/tapBip32Derivation":62,"./shared/tapInternalKey":63,"./shared/witnessScript":64}],47:[function(require,module,exports){
+},{"../typeFields":69,"./global/globalXpub":42,"./global/unsignedTx":43,"./input/finalScriptSig":45,"./input/finalScriptWitness":46,"./input/nonWitnessUtxo":47,"./input/partialSig":48,"./input/porCommitment":49,"./input/sighashType":50,"./input/tapKeySig":51,"./input/tapLeafScript":52,"./input/tapMerkleRoot":53,"./input/tapScriptSig":54,"./input/witnessUtxo":55,"./output/tapTree":56,"./shared/bip32Derivation":57,"./shared/checkPubkey":58,"./shared/redeemScript":59,"./shared/tapBip32Derivation":60,"./shared/tapInternalKey":61,"./shared/witnessScript":62}],45:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -13489,7 +8182,7 @@ function canAdd(currentData, newData) {
 exports.canAdd = canAdd;
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"../../typeFields":71,"buffer":185}],48:[function(require,module,exports){
+},{"../../typeFields":69,"buffer":183}],46:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -13525,7 +8218,7 @@ function canAdd(currentData, newData) {
 exports.canAdd = canAdd;
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"../../typeFields":71,"buffer":185}],49:[function(require,module,exports){
+},{"../../typeFields":69,"buffer":183}],47:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -13558,7 +8251,7 @@ function canAdd(currentData, newData) {
 exports.canAdd = canAdd;
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"../../typeFields":71,"buffer":185}],50:[function(require,module,exports){
+},{"../../typeFields":69,"buffer":183}],48:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -13627,7 +8320,7 @@ function canAddToArray(array, item, dupeSet) {
 exports.canAddToArray = canAddToArray;
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"../../typeFields":71,"buffer":185}],51:[function(require,module,exports){
+},{"../../typeFields":69,"buffer":183}],49:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -13661,7 +8354,7 @@ function canAdd(currentData, newData) {
 exports.canAdd = canAdd;
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"../../typeFields":71,"buffer":185}],52:[function(require,module,exports){
+},{"../../typeFields":69,"buffer":183}],50:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -13697,7 +8390,7 @@ function canAdd(currentData, newData) {
 exports.canAdd = canAdd;
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"../../typeFields":71,"buffer":185}],53:[function(require,module,exports){
+},{"../../typeFields":69,"buffer":183}],51:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -13736,7 +8429,7 @@ function canAdd(currentData, newData) {
 exports.canAdd = canAdd;
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"../../typeFields":71,"buffer":185}],54:[function(require,module,exports){
+},{"../../typeFields":69,"buffer":183}],52:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -13797,7 +8490,7 @@ function canAddToArray(array, item, dupeSet) {
 exports.canAddToArray = canAddToArray;
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"../../typeFields":71,"buffer":185}],55:[function(require,module,exports){
+},{"../../typeFields":69,"buffer":183}],53:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -13834,7 +8527,7 @@ function canAdd(currentData, newData) {
 exports.canAdd = canAdd;
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"../../typeFields":71,"buffer":185}],56:[function(require,module,exports){
+},{"../../typeFields":69,"buffer":183}],54:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -13901,7 +8594,7 @@ function canAddToArray(array, item, dupeSet) {
 exports.canAddToArray = canAddToArray;
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"../../typeFields":71,"buffer":185}],57:[function(require,module,exports){
+},{"../../typeFields":69,"buffer":183}],55:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -13953,7 +8646,7 @@ function canAdd(currentData, newData) {
 exports.canAdd = canAdd;
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"../../typeFields":71,"../tools":65,"../varint":66,"buffer":185}],58:[function(require,module,exports){
+},{"../../typeFields":69,"../tools":63,"../varint":64,"buffer":183}],56:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -14022,7 +8715,7 @@ function canAdd(currentData, newData) {
 exports.canAdd = canAdd;
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"../../typeFields":71,"../varint":66,"buffer":185}],59:[function(require,module,exports){
+},{"../../typeFields":69,"../varint":64,"buffer":183}],57:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -14110,7 +8803,7 @@ function makeConverter(TYPE_BYTE, isValidPubkey = isValidDERKey) {
 exports.makeConverter = makeConverter;
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"buffer":185}],60:[function(require,module,exports){
+},{"buffer":183}],58:[function(require,module,exports){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
 function makeChecker(pubkeyTypes) {
@@ -14133,7 +8826,7 @@ function makeChecker(pubkeyTypes) {
 }
 exports.makeChecker = makeChecker;
 
-},{}],61:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -14172,7 +8865,7 @@ function makeConverter(TYPE_BYTE) {
 exports.makeConverter = makeConverter;
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"buffer":185}],62:[function(require,module,exports){
+},{"buffer":183}],60:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -14229,7 +8922,7 @@ function makeConverter(TYPE_BYTE) {
 exports.makeConverter = makeConverter;
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"../varint":66,"./bip32Derivation":59,"buffer":185}],63:[function(require,module,exports){
+},{"../varint":64,"./bip32Derivation":57,"buffer":183}],61:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -14272,7 +8965,7 @@ function makeConverter(TYPE_BYTE) {
 exports.makeConverter = makeConverter;
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"buffer":185}],64:[function(require,module,exports){
+},{"buffer":183}],62:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -14313,7 +9006,7 @@ function makeConverter(TYPE_BYTE) {
 exports.makeConverter = makeConverter;
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"buffer":185}],65:[function(require,module,exports){
+},{"buffer":183}],63:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -14380,7 +9073,7 @@ function writeUInt64LE(buffer, value, offset) {
 exports.writeUInt64LE = writeUInt64LE;
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"./varint":66,"buffer":185}],66:[function(require,module,exports){
+},{"./varint":64,"buffer":183}],64:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -14461,7 +9154,7 @@ function encodingLength(_number) {
 exports.encodingLength = encodingLength;
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"buffer":185}],67:[function(require,module,exports){
+},{"buffer":183}],65:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -14861,7 +9554,7 @@ function psbtFromKeyVals(
 exports.psbtFromKeyVals = psbtFromKeyVals;
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"../converter":46,"../converter/tools":65,"../converter/varint":66,"../typeFields":71,"buffer":185}],68:[function(require,module,exports){
+},{"../converter":44,"../converter/tools":63,"../converter/varint":64,"../typeFields":69,"buffer":183}],66:[function(require,module,exports){
 'use strict';
 function __export(m) {
   for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
@@ -14870,7 +9563,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 __export(require('./fromBuffer'));
 __export(require('./toBuffer'));
 
-},{"./fromBuffer":67,"./toBuffer":69}],69:[function(require,module,exports){
+},{"./fromBuffer":65,"./toBuffer":67}],67:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -14938,7 +9631,7 @@ function psbtToKeyVals({ globalMap, inputs, outputs }) {
 exports.psbtToKeyVals = psbtToKeyVals;
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"../converter":46,"../converter/tools":65,"buffer":185}],70:[function(require,module,exports){
+},{"../converter":44,"../converter/tools":63,"buffer":183}],68:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -15090,7 +9783,7 @@ class Psbt {
 exports.Psbt = Psbt;
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"./combiner":43,"./parser":68,"./typeFields":71,"./utils":72,"buffer":185}],71:[function(require,module,exports){
+},{"./combiner":41,"./parser":66,"./typeFields":69,"./utils":70,"buffer":183}],69:[function(require,module,exports){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
 var GlobalTypes;
@@ -15156,7 +9849,7 @@ exports.OUTPUT_TYPE_NAMES = [
   'tapBip32Derivation',
 ];
 
-},{}],72:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -15298,7 +9991,7 @@ function defaultLocktimeSetter(locktime, txBuf) {
 exports.defaultLocktimeSetter = defaultLocktimeSetter;
 
 }).call(this)}).call(this,{"isBuffer":require("../../../is-buffer/index.js")})
-},{"../../../is-buffer/index.js":267,"./converter":46}],73:[function(require,module,exports){
+},{"../../../is-buffer/index.js":265,"./converter":44}],71:[function(require,module,exports){
 (function (Buffer){(function (){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -15599,7 +10292,7 @@ function fromSeed(seed, network) {
 exports.fromSeed = fromSeed;
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"./crypto":74,"bs58check":188,"buffer":185,"tiny-secp256k1":329,"typeforce":333,"wif":337}],74:[function(require,module,exports){
+},{"./crypto":72,"bs58check":186,"buffer":183,"tiny-secp256k1":327,"typeforce":331,"wif":335}],72:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const createHash = require('create-hash');
@@ -15627,7 +10320,7 @@ function hmacSHA512(key, data) {
 }
 exports.hmacSHA512 = hmacSHA512;
 
-},{"create-hash":197,"create-hmac":199}],75:[function(require,module,exports){
+},{"create-hash":195,"create-hmac":197}],73:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var bip32_1 = require("./bip32");
@@ -15636,7 +10329,7 @@ exports.fromBase58 = bip32_1.fromBase58;
 exports.fromPublicKey = bip32_1.fromPublicKey;
 exports.fromPrivateKey = bip32_1.fromPrivateKey;
 
-},{"./bip32":73}],76:[function(require,module,exports){
+},{"./bip32":71}],74:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 // browserify by default only pulls in files that are hard coded in requires
@@ -15699,7 +10392,7 @@ try {
 }
 catch (err) { }
 
-},{"./wordlists/chinese_simplified.json":78,"./wordlists/chinese_traditional.json":79,"./wordlists/czech.json":80,"./wordlists/english.json":81,"./wordlists/french.json":82,"./wordlists/italian.json":83,"./wordlists/japanese.json":84,"./wordlists/korean.json":85,"./wordlists/portuguese.json":86,"./wordlists/spanish.json":87}],77:[function(require,module,exports){
+},{"./wordlists/chinese_simplified.json":76,"./wordlists/chinese_traditional.json":77,"./wordlists/czech.json":78,"./wordlists/english.json":79,"./wordlists/french.json":80,"./wordlists/italian.json":81,"./wordlists/japanese.json":82,"./wordlists/korean.json":83,"./wordlists/portuguese.json":84,"./wordlists/spanish.json":85}],75:[function(require,module,exports){
 (function (Buffer){(function (){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -15875,7 +10568,7 @@ var _wordlists_2 = require("./_wordlists");
 exports.wordlists = _wordlists_2.wordlists;
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"./_wordlists":76,"@noble/hashes/pbkdf2":10,"@noble/hashes/sha256":11,"@noble/hashes/sha512":12,"@noble/hashes/utils":13,"buffer":185}],78:[function(require,module,exports){
+},{"./_wordlists":74,"@noble/hashes/pbkdf2":10,"@noble/hashes/sha256":11,"@noble/hashes/sha512":12,"@noble/hashes/utils":13,"buffer":183}],76:[function(require,module,exports){
 module.exports=[
     "的",
     "一",
@@ -17927,7 +12620,7 @@ module.exports=[
     "歇"
 ]
 
-},{}],79:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 module.exports=[
     "的",
     "一",
@@ -19979,7 +14672,7 @@ module.exports=[
     "歇"
 ]
 
-},{}],80:[function(require,module,exports){
+},{}],78:[function(require,module,exports){
 module.exports=[
     "abdikace",
     "abeceda",
@@ -22031,7 +16724,7 @@ module.exports=[
     "zvyk"
 ]
 
-},{}],81:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 module.exports=[
     "abandon",
     "ability",
@@ -24083,7 +18776,7 @@ module.exports=[
     "zoo"
 ]
 
-},{}],82:[function(require,module,exports){
+},{}],80:[function(require,module,exports){
 module.exports=[
     "abaisser",
     "abandon",
@@ -26135,7 +20828,7 @@ module.exports=[
     "zoologie"
 ]
 
-},{}],83:[function(require,module,exports){
+},{}],81:[function(require,module,exports){
 module.exports=[
     "abaco",
     "abbaglio",
@@ -28187,7 +22880,7 @@ module.exports=[
     "zuppa"
 ]
 
-},{}],84:[function(require,module,exports){
+},{}],82:[function(require,module,exports){
 module.exports=[
     "あいこくしん",
     "あいさつ",
@@ -30239,7 +24932,7 @@ module.exports=[
     "われる"
 ]
 
-},{}],85:[function(require,module,exports){
+},{}],83:[function(require,module,exports){
 module.exports=[
     "가격",
     "가끔",
@@ -32291,7 +26984,7 @@ module.exports=[
     "힘껏"
 ]
 
-},{}],86:[function(require,module,exports){
+},{}],84:[function(require,module,exports){
 module.exports=[
     "abacate",
     "abaixo",
@@ -34343,7 +29036,7 @@ module.exports=[
     "zumbido"
 ]
 
-},{}],87:[function(require,module,exports){
+},{}],85:[function(require,module,exports){
 module.exports=[
     "ábaco",
     "abdomen",
@@ -36395,7 +31088,7 @@ module.exports=[
     "zurdo"
 ]
 
-},{}],88:[function(require,module,exports){
+},{}],86:[function(require,module,exports){
 // Reference https://github.com/bitcoin/bips/blob/master/bip-0066.mediawiki
 // Format: 0x30 [total-length] 0x02 [R-length] [R] 0x02 [S-length] [S]
 // NOTE: SIGHASH byte ignored AND restricted, truncate before use
@@ -36510,7 +31203,7 @@ module.exports = {
   encode: encode
 }
 
-},{"safe-buffer":296}],89:[function(require,module,exports){
+},{"safe-buffer":294}],87:[function(require,module,exports){
 module.exports={
   "OP_FALSE": 0,
   "OP_0": 0,
@@ -36645,7 +31338,7 @@ module.exports={
   "OP_INVALIDOPCODE": 255
 }
 
-},{}],90:[function(require,module,exports){
+},{}],88:[function(require,module,exports){
 var OPS = require('./index.json')
 
 var map = {}
@@ -36656,7 +31349,7 @@ for (var op in OPS) {
 
 module.exports = map
 
-},{"./index.json":89}],91:[function(require,module,exports){
+},{"./index.json":87}],89:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -36751,7 +31444,7 @@ function toOutputScript(address, network) {
 exports.toOutputScript = toOutputScript;
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"./networks":98,"./payments":100,"./script":109,"./types":135,"bech32":42,"bs58check":188,"buffer":185,"typeforce":333}],92:[function(require,module,exports){
+},{"./networks":96,"./payments":98,"./script":107,"./types":133,"bech32":40,"bs58check":186,"buffer":183,"typeforce":331}],90:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -36971,7 +31664,7 @@ function anyTxHasWitness(transactions) {
 }
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"./bufferutils":93,"./crypto":95,"./transaction":133,"./types":135,"buffer":185,"merkle-lib/fastRoot":269,"typeforce":333,"varuint-bitcoin":336}],93:[function(require,module,exports){
+},{"./bufferutils":91,"./crypto":93,"./transaction":131,"./types":133,"buffer":183,"merkle-lib/fastRoot":267,"typeforce":331,"varuint-bitcoin":334}],91:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -37118,7 +31811,7 @@ class BufferReader {
 exports.BufferReader = BufferReader;
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"./types":135,"buffer":185,"typeforce":333,"varuint-bitcoin":336}],94:[function(require,module,exports){
+},{"./types":133,"buffer":183,"typeforce":331,"varuint-bitcoin":334}],92:[function(require,module,exports){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
 const script_1 = require('./script');
@@ -37179,7 +31872,7 @@ function classifyWitness(script, allowIncomplete) {
 }
 exports.witness = classifyWitness;
 
-},{"./script":109,"./templates/multisig":112,"./templates/nulldata":115,"./templates/pubkey":116,"./templates/pubkeyhash":119,"./templates/scripthash":122,"./templates/witnesscommitment":125,"./templates/witnesspubkeyhash":127,"./templates/witnessscripthash":130}],95:[function(require,module,exports){
+},{"./script":107,"./templates/multisig":110,"./templates/nulldata":113,"./templates/pubkey":114,"./templates/pubkeyhash":117,"./templates/scripthash":120,"./templates/witnesscommitment":123,"./templates/witnesspubkeyhash":125,"./templates/witnessscripthash":128}],93:[function(require,module,exports){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
 const createHash = require('create-hash');
@@ -37216,7 +31909,7 @@ function hash256(buffer) {
 }
 exports.hash256 = hash256;
 
-},{"create-hash":197}],96:[function(require,module,exports){
+},{"create-hash":195}],94:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -37327,7 +32020,7 @@ function makeRandom(options) {
 exports.makeRandom = makeRandom;
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"./networks":98,"./types":135,"buffer":185,"randombytes":293,"tiny-secp256k1":329,"typeforce":333,"wif":337}],97:[function(require,module,exports){
+},{"./networks":96,"./types":133,"buffer":183,"randombytes":291,"tiny-secp256k1":327,"typeforce":331,"wif":335}],95:[function(require,module,exports){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
 const bip32 = require('bip32');
@@ -37355,7 +32048,7 @@ exports.Transaction = transaction_1.Transaction;
 var transaction_builder_1 = require('./transaction_builder');
 exports.TransactionBuilder = transaction_builder_1.TransactionBuilder;
 
-},{"./address":91,"./block":92,"./crypto":95,"./ecpair":96,"./networks":98,"./payments":100,"./psbt":108,"./script":109,"./transaction":133,"./transaction_builder":134,"bip32":75}],98:[function(require,module,exports){
+},{"./address":89,"./block":90,"./crypto":93,"./ecpair":94,"./networks":96,"./payments":98,"./psbt":106,"./script":107,"./transaction":131,"./transaction_builder":132,"bip32":73}],96:[function(require,module,exports){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
 exports.bitcoin = {
@@ -37392,7 +32085,7 @@ exports.testnet = {
   wif: 0xef,
 };
 
-},{}],99:[function(require,module,exports){
+},{}],97:[function(require,module,exports){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
 const networks_1 = require('../networks');
@@ -37443,7 +32136,7 @@ function p2data(a, opts) {
 }
 exports.p2data = p2data;
 
-},{"../networks":98,"../script":109,"./lazy":101,"typeforce":333}],100:[function(require,module,exports){
+},{"../networks":96,"../script":107,"./lazy":99,"typeforce":331}],98:[function(require,module,exports){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
 const embed_1 = require('./embed');
@@ -37463,7 +32156,7 @@ exports.p2wsh = p2wsh_1.p2wsh;
 // TODO
 // witness commitment
 
-},{"./embed":99,"./p2ms":102,"./p2pk":103,"./p2pkh":104,"./p2sh":105,"./p2wpkh":106,"./p2wsh":107}],101:[function(require,module,exports){
+},{"./embed":97,"./p2ms":100,"./p2pk":101,"./p2pkh":102,"./p2sh":103,"./p2wpkh":104,"./p2wsh":105}],99:[function(require,module,exports){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
 function prop(object, name, f) {
@@ -37496,7 +32189,7 @@ function value(f) {
 }
 exports.value = value;
 
-},{}],102:[function(require,module,exports){
+},{}],100:[function(require,module,exports){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
 const networks_1 = require('../networks');
@@ -37643,7 +32336,7 @@ function p2ms(a, opts) {
 }
 exports.p2ms = p2ms;
 
-},{"../networks":98,"../script":109,"./lazy":101,"tiny-secp256k1":329,"typeforce":333}],103:[function(require,module,exports){
+},{"../networks":96,"../script":107,"./lazy":99,"tiny-secp256k1":327,"typeforce":331}],101:[function(require,module,exports){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
 const networks_1 = require('../networks');
@@ -37717,7 +32410,7 @@ function p2pk(a, opts) {
 }
 exports.p2pk = p2pk;
 
-},{"../networks":98,"../script":109,"./lazy":101,"tiny-secp256k1":329,"typeforce":333}],104:[function(require,module,exports){
+},{"../networks":96,"../script":107,"./lazy":99,"tiny-secp256k1":327,"typeforce":331}],102:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -37853,7 +32546,7 @@ function p2pkh(a, opts) {
 exports.p2pkh = p2pkh;
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"../crypto":95,"../networks":98,"../script":109,"./lazy":101,"bs58check":188,"buffer":185,"tiny-secp256k1":329,"typeforce":333}],105:[function(require,module,exports){
+},{"../crypto":93,"../networks":96,"../script":107,"./lazy":99,"bs58check":186,"buffer":183,"tiny-secp256k1":327,"typeforce":331}],103:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -38040,7 +32733,7 @@ function p2sh(a, opts) {
 exports.p2sh = p2sh;
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"../crypto":95,"../networks":98,"../script":109,"./lazy":101,"bs58check":188,"buffer":185,"typeforce":333}],106:[function(require,module,exports){
+},{"../crypto":93,"../networks":96,"../script":107,"./lazy":99,"bs58check":186,"buffer":183,"typeforce":331}],104:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -38174,7 +32867,7 @@ function p2wpkh(a, opts) {
 exports.p2wpkh = p2wpkh;
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"../crypto":95,"../networks":98,"../script":109,"./lazy":101,"bech32":42,"buffer":185,"tiny-secp256k1":329,"typeforce":333}],107:[function(require,module,exports){
+},{"../crypto":93,"../networks":96,"../script":107,"./lazy":99,"bech32":40,"buffer":183,"tiny-secp256k1":327,"typeforce":331}],105:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -38385,7 +33078,7 @@ function p2wsh(a, opts) {
 exports.p2wsh = p2wsh;
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"../crypto":95,"../networks":98,"../script":109,"./lazy":101,"bech32":42,"buffer":185,"tiny-secp256k1":329,"typeforce":333}],108:[function(require,module,exports){
+},{"../crypto":93,"../networks":96,"../script":107,"./lazy":99,"bech32":40,"buffer":183,"tiny-secp256k1":327,"typeforce":331}],106:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -39787,7 +34480,7 @@ function range(n) {
 }
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"./address":91,"./bufferutils":93,"./crypto":95,"./ecpair":96,"./networks":98,"./payments":100,"./script":109,"./transaction":133,"bip174":70,"bip174/src/lib/converter/varint":66,"bip174/src/lib/utils":72,"buffer":185}],109:[function(require,module,exports){
+},{"./address":89,"./bufferutils":91,"./crypto":93,"./ecpair":94,"./networks":96,"./payments":98,"./script":107,"./transaction":131,"bip174":68,"bip174/src/lib/converter/varint":64,"bip174/src/lib/utils":70,"buffer":183}],107:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -39968,7 +34661,7 @@ exports.number = scriptNumber;
 exports.signature = scriptSignature;
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"./script_number":110,"./script_signature":111,"./types":135,"bip66":88,"bitcoin-ops":89,"bitcoin-ops/map":90,"buffer":185,"pushdata-bitcoin":292,"tiny-secp256k1":329,"typeforce":333}],110:[function(require,module,exports){
+},{"./script_number":108,"./script_signature":109,"./types":133,"bip66":86,"bitcoin-ops":87,"bitcoin-ops/map":88,"buffer":183,"pushdata-bitcoin":290,"tiny-secp256k1":327,"typeforce":331}],108:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -40033,7 +34726,7 @@ function encode(_number) {
 exports.encode = encode;
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"buffer":185}],111:[function(require,module,exports){
+},{"buffer":183}],109:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -40089,7 +34782,7 @@ function encode(signature, hashType) {
 exports.encode = encode;
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"./types":135,"bip66":88,"buffer":185,"typeforce":333}],112:[function(require,module,exports){
+},{"./types":133,"bip66":86,"buffer":183,"typeforce":331}],110:[function(require,module,exports){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
 const input = require('./input');
@@ -40097,7 +34790,7 @@ exports.input = input;
 const output = require('./output');
 exports.output = output;
 
-},{"./input":113,"./output":114}],113:[function(require,module,exports){
+},{"./input":111,"./output":112}],111:[function(require,module,exports){
 'use strict';
 // OP_0 [signatures ...]
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -40122,7 +34815,7 @@ check.toJSON = () => {
   return 'multisig input';
 };
 
-},{"../../script":109}],114:[function(require,module,exports){
+},{"../../script":107}],112:[function(require,module,exports){
 'use strict';
 // m [pubKeys ...] n OP_CHECKMULTISIG
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -40151,7 +34844,7 @@ check.toJSON = () => {
   return 'multi-sig output';
 };
 
-},{"../../script":109,"../../types":135}],115:[function(require,module,exports){
+},{"../../script":107,"../../types":133}],113:[function(require,module,exports){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
 // OP_RETURN {data}
@@ -40168,9 +34861,9 @@ check.toJSON = () => {
 const output = { check };
 exports.output = output;
 
-},{"../script":109}],116:[function(require,module,exports){
-arguments[4][112][0].apply(exports,arguments)
-},{"./input":117,"./output":118,"dup":112}],117:[function(require,module,exports){
+},{"../script":107}],114:[function(require,module,exports){
+arguments[4][110][0].apply(exports,arguments)
+},{"./input":115,"./output":116,"dup":110}],115:[function(require,module,exports){
 'use strict';
 // {signature}
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -40184,7 +34877,7 @@ check.toJSON = () => {
   return 'pubKey input';
 };
 
-},{"../../script":109}],118:[function(require,module,exports){
+},{"../../script":107}],116:[function(require,module,exports){
 'use strict';
 // {pubKey} OP_CHECKSIG
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -40203,9 +34896,9 @@ check.toJSON = () => {
   return 'pubKey output';
 };
 
-},{"../../script":109}],119:[function(require,module,exports){
-arguments[4][112][0].apply(exports,arguments)
-},{"./input":120,"./output":121,"dup":112}],120:[function(require,module,exports){
+},{"../../script":107}],117:[function(require,module,exports){
+arguments[4][110][0].apply(exports,arguments)
+},{"./input":118,"./output":119,"dup":110}],118:[function(require,module,exports){
 'use strict';
 // {signature} {pubKey}
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -40223,7 +34916,7 @@ check.toJSON = () => {
   return 'pubKeyHash input';
 };
 
-},{"../../script":109}],121:[function(require,module,exports){
+},{"../../script":107}],119:[function(require,module,exports){
 'use strict';
 // OP_DUP OP_HASH160 {pubKeyHash} OP_EQUALVERIFY OP_CHECKSIG
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -40245,9 +34938,9 @@ check.toJSON = () => {
   return 'pubKeyHash output';
 };
 
-},{"../../script":109}],122:[function(require,module,exports){
-arguments[4][112][0].apply(exports,arguments)
-},{"./input":123,"./output":124,"dup":112}],123:[function(require,module,exports){
+},{"../../script":107}],120:[function(require,module,exports){
+arguments[4][110][0].apply(exports,arguments)
+},{"./input":121,"./output":122,"dup":110}],121:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 // <scriptSig> {serialized scriptPubKey script}
@@ -40301,7 +34994,7 @@ check.toJSON = () => {
 };
 
 }).call(this)}).call(this,{"isBuffer":require("../../../../is-buffer/index.js")})
-},{"../../../../is-buffer/index.js":267,"../../script":109,"../multisig":112,"../pubkey":116,"../pubkeyhash":119,"../witnesspubkeyhash/output":129,"../witnessscripthash/output":132}],124:[function(require,module,exports){
+},{"../../../../is-buffer/index.js":265,"../../script":107,"../multisig":110,"../pubkey":114,"../pubkeyhash":117,"../witnesspubkeyhash/output":127,"../witnessscripthash/output":130}],122:[function(require,module,exports){
 'use strict';
 // OP_HASH160 {scriptHash} OP_EQUAL
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -40321,13 +35014,13 @@ check.toJSON = () => {
   return 'scriptHash output';
 };
 
-},{"../../script":109}],125:[function(require,module,exports){
+},{"../../script":107}],123:[function(require,module,exports){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
 const output = require('./output');
 exports.output = output;
 
-},{"./output":126}],126:[function(require,module,exports){
+},{"./output":124}],124:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 // OP_RETURN {aa21a9ed} {commitment}
@@ -40365,9 +35058,9 @@ function decode(buffer) {
 exports.decode = decode;
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"../../script":109,"../../types":135,"buffer":185,"typeforce":333}],127:[function(require,module,exports){
-arguments[4][112][0].apply(exports,arguments)
-},{"./input":128,"./output":129,"dup":112}],128:[function(require,module,exports){
+},{"../../script":107,"../../types":133,"buffer":183,"typeforce":331}],125:[function(require,module,exports){
+arguments[4][110][0].apply(exports,arguments)
+},{"./input":126,"./output":127,"dup":110}],126:[function(require,module,exports){
 'use strict';
 // {signature} {pubKey}
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -40388,7 +35081,7 @@ check.toJSON = () => {
   return 'witnessPubKeyHash input';
 };
 
-},{"../../script":109}],129:[function(require,module,exports){
+},{"../../script":107}],127:[function(require,module,exports){
 'use strict';
 // OP_0 {pubKeyHash}
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -40407,9 +35100,9 @@ check.toJSON = () => {
   return 'Witness pubKeyHash output';
 };
 
-},{"../../script":109}],130:[function(require,module,exports){
-arguments[4][112][0].apply(exports,arguments)
-},{"./input":131,"./output":132,"dup":112}],131:[function(require,module,exports){
+},{"../../script":107}],128:[function(require,module,exports){
+arguments[4][110][0].apply(exports,arguments)
+},{"./input":129,"./output":130,"dup":110}],129:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 // <scriptSig> {serialized scriptPubKey script}
@@ -40452,7 +35145,7 @@ check.toJSON = () => {
 };
 
 }).call(this)}).call(this,{"isBuffer":require("../../../../is-buffer/index.js")})
-},{"../../../../is-buffer/index.js":267,"../../script":109,"../multisig":112,"../pubkey":116,"../pubkeyhash":119,"typeforce":333}],132:[function(require,module,exports){
+},{"../../../../is-buffer/index.js":265,"../../script":107,"../multisig":110,"../pubkey":114,"../pubkeyhash":117,"typeforce":331}],130:[function(require,module,exports){
 'use strict';
 // OP_0 {scriptHash}
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -40471,7 +35164,7 @@ check.toJSON = () => {
   return 'Witness scriptHash output';
 };
 
-},{"../../script":109}],133:[function(require,module,exports){
+},{"../../script":107}],131:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -40877,7 +35570,7 @@ Transaction.ADVANCED_TRANSACTION_FLAG = 0x01;
 exports.Transaction = Transaction;
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"./bufferutils":93,"./crypto":95,"./script":109,"./types":135,"buffer":185,"typeforce":333,"varuint-bitcoin":336}],134:[function(require,module,exports){
+},{"./bufferutils":91,"./crypto":93,"./script":107,"./types":133,"buffer":183,"typeforce":331,"varuint-bitcoin":334}],132:[function(require,module,exports){
 (function (Buffer){(function (){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -41949,7 +36642,7 @@ function getSigningData(
 }
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"./address":91,"./bufferutils":93,"./classify":94,"./crypto":95,"./ecpair":96,"./networks":98,"./payments":100,"./script":109,"./transaction":133,"./types":135,"buffer":185,"typeforce":333}],135:[function(require,module,exports){
+},{"./address":89,"./bufferutils":91,"./classify":92,"./crypto":93,"./ecpair":94,"./networks":96,"./payments":98,"./script":107,"./transaction":131,"./types":133,"buffer":183,"typeforce":331}],133:[function(require,module,exports){
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
 const typeforce = require('typeforce');
@@ -42009,7 +36702,7 @@ exports.BufferN = typeforce.BufferN;
 exports.Null = typeforce.Null;
 exports.oneOf = typeforce.oneOf;
 
-},{"typeforce":333}],136:[function(require,module,exports){
+},{"typeforce":331}],134:[function(require,module,exports){
 (function (Buffer){(function (){
 const bs58check = require('bs58check')
 const bech32 = require('bech32')
@@ -42253,7 +36946,7 @@ module.exports = {
 }
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"bech32":42,"bs58check":188,"buffer":185,"buffer-equals":190,"create-hash":197,"secp256k1":298,"varuint-bitcoin":336}],137:[function(require,module,exports){
+},{"bech32":40,"bs58check":186,"buffer":183,"buffer-equals":188,"create-hash":195,"secp256k1":296,"varuint-bitcoin":334}],135:[function(require,module,exports){
 (function (module, exports) {
   'use strict';
 
@@ -45701,7 +40394,7 @@ module.exports = {
   };
 })(typeof module === 'undefined' || module, this);
 
-},{"buffer":139}],138:[function(require,module,exports){
+},{"buffer":137}],136:[function(require,module,exports){
 var r;
 
 module.exports = function rand(len) {
@@ -45768,9 +40461,9 @@ if (typeof self === 'object') {
   }
 }
 
-},{"crypto":139}],139:[function(require,module,exports){
+},{"crypto":137}],137:[function(require,module,exports){
 
-},{}],140:[function(require,module,exports){
+},{}],138:[function(require,module,exports){
 // based on the aes implimentation in triple sec
 // https://github.com/keybase/triplesec
 // which is in turn based on the one from crypto-js
@@ -46000,7 +40693,7 @@ AES.prototype.scrub = function () {
 
 module.exports.AES = AES
 
-},{"safe-buffer":296}],141:[function(require,module,exports){
+},{"safe-buffer":294}],139:[function(require,module,exports){
 var aes = require('./aes')
 var Buffer = require('safe-buffer').Buffer
 var Transform = require('cipher-base')
@@ -46119,7 +40812,7 @@ StreamCipher.prototype.setAAD = function setAAD (buf) {
 
 module.exports = StreamCipher
 
-},{"./aes":140,"./ghash":145,"./incr32":146,"buffer-xor":191,"cipher-base":192,"inherits":266,"safe-buffer":296}],142:[function(require,module,exports){
+},{"./aes":138,"./ghash":143,"./incr32":144,"buffer-xor":189,"cipher-base":190,"inherits":264,"safe-buffer":294}],140:[function(require,module,exports){
 var ciphers = require('./encrypter')
 var deciphers = require('./decrypter')
 var modes = require('./modes/list.json')
@@ -46134,7 +40827,7 @@ exports.createDecipher = exports.Decipher = deciphers.createDecipher
 exports.createDecipheriv = exports.Decipheriv = deciphers.createDecipheriv
 exports.listCiphers = exports.getCiphers = getCiphers
 
-},{"./decrypter":143,"./encrypter":144,"./modes/list.json":154}],143:[function(require,module,exports){
+},{"./decrypter":141,"./encrypter":142,"./modes/list.json":152}],141:[function(require,module,exports){
 var AuthCipher = require('./authCipher')
 var Buffer = require('safe-buffer').Buffer
 var MODES = require('./modes')
@@ -46260,7 +40953,7 @@ function createDecipher (suite, password) {
 exports.createDecipher = createDecipher
 exports.createDecipheriv = createDecipheriv
 
-},{"./aes":140,"./authCipher":141,"./modes":153,"./streamCipher":156,"cipher-base":192,"evp_bytestokey":230,"inherits":266,"safe-buffer":296}],144:[function(require,module,exports){
+},{"./aes":138,"./authCipher":139,"./modes":151,"./streamCipher":154,"cipher-base":190,"evp_bytestokey":228,"inherits":264,"safe-buffer":294}],142:[function(require,module,exports){
 var MODES = require('./modes')
 var AuthCipher = require('./authCipher')
 var Buffer = require('safe-buffer').Buffer
@@ -46376,7 +41069,7 @@ function createCipher (suite, password) {
 exports.createCipheriv = createCipheriv
 exports.createCipher = createCipher
 
-},{"./aes":140,"./authCipher":141,"./modes":153,"./streamCipher":156,"cipher-base":192,"evp_bytestokey":230,"inherits":266,"safe-buffer":296}],145:[function(require,module,exports){
+},{"./aes":138,"./authCipher":139,"./modes":151,"./streamCipher":154,"cipher-base":190,"evp_bytestokey":228,"inherits":264,"safe-buffer":294}],143:[function(require,module,exports){
 var Buffer = require('safe-buffer').Buffer
 var ZEROES = Buffer.alloc(16, 0)
 
@@ -46467,7 +41160,7 @@ GHASH.prototype.final = function (abl, bl) {
 
 module.exports = GHASH
 
-},{"safe-buffer":296}],146:[function(require,module,exports){
+},{"safe-buffer":294}],144:[function(require,module,exports){
 function incr32 (iv) {
   var len = iv.length
   var item
@@ -46484,7 +41177,7 @@ function incr32 (iv) {
 }
 module.exports = incr32
 
-},{}],147:[function(require,module,exports){
+},{}],145:[function(require,module,exports){
 var xor = require('buffer-xor')
 
 exports.encrypt = function (self, block) {
@@ -46503,7 +41196,7 @@ exports.decrypt = function (self, block) {
   return xor(out, pad)
 }
 
-},{"buffer-xor":191}],148:[function(require,module,exports){
+},{"buffer-xor":189}],146:[function(require,module,exports){
 var Buffer = require('safe-buffer').Buffer
 var xor = require('buffer-xor')
 
@@ -46538,7 +41231,7 @@ exports.encrypt = function (self, data, decrypt) {
   return out
 }
 
-},{"buffer-xor":191,"safe-buffer":296}],149:[function(require,module,exports){
+},{"buffer-xor":189,"safe-buffer":294}],147:[function(require,module,exports){
 var Buffer = require('safe-buffer').Buffer
 
 function encryptByte (self, byteParam, decrypt) {
@@ -46582,7 +41275,7 @@ exports.encrypt = function (self, chunk, decrypt) {
   return out
 }
 
-},{"safe-buffer":296}],150:[function(require,module,exports){
+},{"safe-buffer":294}],148:[function(require,module,exports){
 var Buffer = require('safe-buffer').Buffer
 
 function encryptByte (self, byteParam, decrypt) {
@@ -46609,7 +41302,7 @@ exports.encrypt = function (self, chunk, decrypt) {
   return out
 }
 
-},{"safe-buffer":296}],151:[function(require,module,exports){
+},{"safe-buffer":294}],149:[function(require,module,exports){
 var xor = require('buffer-xor')
 var Buffer = require('safe-buffer').Buffer
 var incr32 = require('../incr32')
@@ -46641,7 +41334,7 @@ exports.encrypt = function (self, chunk) {
   return xor(chunk, pad)
 }
 
-},{"../incr32":146,"buffer-xor":191,"safe-buffer":296}],152:[function(require,module,exports){
+},{"../incr32":144,"buffer-xor":189,"safe-buffer":294}],150:[function(require,module,exports){
 exports.encrypt = function (self, block) {
   return self._cipher.encryptBlock(block)
 }
@@ -46650,7 +41343,7 @@ exports.decrypt = function (self, block) {
   return self._cipher.decryptBlock(block)
 }
 
-},{}],153:[function(require,module,exports){
+},{}],151:[function(require,module,exports){
 var modeModules = {
   ECB: require('./ecb'),
   CBC: require('./cbc'),
@@ -46670,7 +41363,7 @@ for (var key in modes) {
 
 module.exports = modes
 
-},{"./cbc":147,"./cfb":148,"./cfb1":149,"./cfb8":150,"./ctr":151,"./ecb":152,"./list.json":154,"./ofb":155}],154:[function(require,module,exports){
+},{"./cbc":145,"./cfb":146,"./cfb1":147,"./cfb8":148,"./ctr":149,"./ecb":150,"./list.json":152,"./ofb":153}],152:[function(require,module,exports){
 module.exports={
   "aes-128-ecb": {
     "cipher": "AES",
@@ -46863,7 +41556,7 @@ module.exports={
   }
 }
 
-},{}],155:[function(require,module,exports){
+},{}],153:[function(require,module,exports){
 (function (Buffer){(function (){
 var xor = require('buffer-xor')
 
@@ -46883,7 +41576,7 @@ exports.encrypt = function (self, chunk) {
 }
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"buffer":185,"buffer-xor":191}],156:[function(require,module,exports){
+},{"buffer":183,"buffer-xor":189}],154:[function(require,module,exports){
 var aes = require('./aes')
 var Buffer = require('safe-buffer').Buffer
 var Transform = require('cipher-base')
@@ -46912,7 +41605,7 @@ StreamCipher.prototype._final = function () {
 
 module.exports = StreamCipher
 
-},{"./aes":140,"cipher-base":192,"inherits":266,"safe-buffer":296}],157:[function(require,module,exports){
+},{"./aes":138,"cipher-base":190,"inherits":264,"safe-buffer":294}],155:[function(require,module,exports){
 var DES = require('browserify-des')
 var aes = require('browserify-aes/browser')
 var aesModes = require('browserify-aes/modes')
@@ -46981,7 +41674,7 @@ exports.createDecipher = exports.Decipher = createDecipher
 exports.createDecipheriv = exports.Decipheriv = createDecipheriv
 exports.listCiphers = exports.getCiphers = getCiphers
 
-},{"browserify-aes/browser":142,"browserify-aes/modes":153,"browserify-des":158,"browserify-des/modes":159,"evp_bytestokey":230}],158:[function(require,module,exports){
+},{"browserify-aes/browser":140,"browserify-aes/modes":151,"browserify-des":156,"browserify-des/modes":157,"evp_bytestokey":228}],156:[function(require,module,exports){
 var CipherBase = require('cipher-base')
 var des = require('des.js')
 var inherits = require('inherits')
@@ -47033,7 +41726,7 @@ DES.prototype._final = function () {
   return Buffer.from(this._des.final())
 }
 
-},{"cipher-base":192,"des.js":202,"inherits":266,"safe-buffer":296}],159:[function(require,module,exports){
+},{"cipher-base":190,"des.js":200,"inherits":264,"safe-buffer":294}],157:[function(require,module,exports){
 exports['des-ecb'] = {
   key: 8,
   iv: 0
@@ -47059,7 +41752,7 @@ exports['des-ede'] = {
   iv: 0
 }
 
-},{}],160:[function(require,module,exports){
+},{}],158:[function(require,module,exports){
 (function (Buffer){(function (){
 var BN = require('bn.js')
 var randomBytes = require('randombytes')
@@ -47098,7 +41791,7 @@ crt.getr = getr
 module.exports = crt
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"bn.js":161,"buffer":185,"randombytes":293}],161:[function(require,module,exports){
+},{"bn.js":159,"buffer":183,"randombytes":291}],159:[function(require,module,exports){
 (function (module, exports) {
   'use strict';
 
@@ -50647,10 +45340,10 @@ module.exports = crt
   };
 })(typeof module === 'undefined' || module, this);
 
-},{"buffer":139}],162:[function(require,module,exports){
+},{"buffer":137}],160:[function(require,module,exports){
 module.exports = require('./browser/algorithms.json')
 
-},{"./browser/algorithms.json":163}],163:[function(require,module,exports){
+},{"./browser/algorithms.json":161}],161:[function(require,module,exports){
 module.exports={
   "sha224WithRSAEncryption": {
     "sign": "rsa",
@@ -50804,7 +45497,7 @@ module.exports={
   }
 }
 
-},{}],164:[function(require,module,exports){
+},{}],162:[function(require,module,exports){
 module.exports={
   "1.3.132.0.10": "secp256k1",
   "1.3.132.0.33": "p224",
@@ -50814,7 +45507,7 @@ module.exports={
   "1.3.132.0.35": "p521"
 }
 
-},{}],165:[function(require,module,exports){
+},{}],163:[function(require,module,exports){
 var Buffer = require('safe-buffer').Buffer
 var createHash = require('create-hash')
 var stream = require('readable-stream')
@@ -50908,7 +45601,7 @@ module.exports = {
   createVerify: createVerify
 }
 
-},{"./algorithms.json":163,"./sign":166,"./verify":167,"create-hash":197,"inherits":266,"readable-stream":183,"safe-buffer":184}],166:[function(require,module,exports){
+},{"./algorithms.json":161,"./sign":164,"./verify":165,"create-hash":195,"inherits":264,"readable-stream":181,"safe-buffer":182}],164:[function(require,module,exports){
 // much of this based on https://github.com/indutny/self-signed/blob/gh-pages/lib/rsa.js
 var Buffer = require('safe-buffer').Buffer
 var createHmac = require('create-hmac')
@@ -51053,7 +45746,7 @@ module.exports = sign
 module.exports.getKey = getKey
 module.exports.makeKey = makeKey
 
-},{"./curves.json":164,"bn.js":168,"browserify-rsa":160,"create-hmac":199,"elliptic":213,"parse-asn1":278,"safe-buffer":184}],167:[function(require,module,exports){
+},{"./curves.json":162,"bn.js":166,"browserify-rsa":158,"create-hmac":197,"elliptic":211,"parse-asn1":276,"safe-buffer":182}],165:[function(require,module,exports){
 // much of this based on https://github.com/indutny/self-signed/blob/gh-pages/lib/rsa.js
 var Buffer = require('safe-buffer').Buffer
 var BN = require('bn.js')
@@ -51139,9 +45832,9 @@ function checkValue (b, q) {
 
 module.exports = verify
 
-},{"./curves.json":164,"bn.js":168,"elliptic":213,"parse-asn1":278,"safe-buffer":184}],168:[function(require,module,exports){
-arguments[4][161][0].apply(exports,arguments)
-},{"buffer":139,"dup":161}],169:[function(require,module,exports){
+},{"./curves.json":162,"bn.js":166,"elliptic":211,"parse-asn1":276,"safe-buffer":182}],166:[function(require,module,exports){
+arguments[4][159][0].apply(exports,arguments)
+},{"buffer":137,"dup":159}],167:[function(require,module,exports){
 'use strict';
 
 function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
@@ -51270,7 +45963,7 @@ createErrorType('ERR_UNKNOWN_ENCODING', function (arg) {
 createErrorType('ERR_STREAM_UNSHIFT_AFTER_END_EVENT', 'stream.unshift() after end event');
 module.exports.codes = codes;
 
-},{}],170:[function(require,module,exports){
+},{}],168:[function(require,module,exports){
 (function (process){(function (){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -51399,7 +46092,7 @@ Object.defineProperty(Duplex.prototype, 'destroyed', {
   }
 });
 }).call(this)}).call(this,require('_process'))
-},{"./_stream_readable":172,"./_stream_writable":174,"_process":285,"inherits":266}],171:[function(require,module,exports){
+},{"./_stream_readable":170,"./_stream_writable":172,"_process":283,"inherits":264}],169:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -51437,7 +46130,7 @@ function PassThrough(options) {
 PassThrough.prototype._transform = function (chunk, encoding, cb) {
   cb(null, chunk);
 };
-},{"./_stream_transform":173,"inherits":266}],172:[function(require,module,exports){
+},{"./_stream_transform":171,"inherits":264}],170:[function(require,module,exports){
 (function (process,global){(function (){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -52467,7 +47160,7 @@ function indexOf(xs, x) {
   return -1;
 }
 }).call(this)}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../errors":169,"./_stream_duplex":170,"./internal/streams/async_iterator":175,"./internal/streams/buffer_list":176,"./internal/streams/destroy":177,"./internal/streams/from":179,"./internal/streams/state":181,"./internal/streams/stream":182,"_process":285,"buffer":185,"events":229,"inherits":266,"string_decoder/":328,"util":139}],173:[function(require,module,exports){
+},{"../errors":167,"./_stream_duplex":168,"./internal/streams/async_iterator":173,"./internal/streams/buffer_list":174,"./internal/streams/destroy":175,"./internal/streams/from":177,"./internal/streams/state":179,"./internal/streams/stream":180,"_process":283,"buffer":183,"events":227,"inherits":264,"string_decoder/":326,"util":137}],171:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -52658,7 +47351,7 @@ function done(stream, er, data) {
   if (stream._transformState.transforming) throw new ERR_TRANSFORM_ALREADY_TRANSFORMING();
   return stream.push(null);
 }
-},{"../errors":169,"./_stream_duplex":170,"inherits":266}],174:[function(require,module,exports){
+},{"../errors":167,"./_stream_duplex":168,"inherits":264}],172:[function(require,module,exports){
 (function (process,global){(function (){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -53302,7 +47995,7 @@ Writable.prototype._destroy = function (err, cb) {
   cb(err);
 };
 }).call(this)}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../errors":169,"./_stream_duplex":170,"./internal/streams/destroy":177,"./internal/streams/state":181,"./internal/streams/stream":182,"_process":285,"buffer":185,"inherits":266,"util-deprecate":335}],175:[function(require,module,exports){
+},{"../errors":167,"./_stream_duplex":168,"./internal/streams/destroy":175,"./internal/streams/state":179,"./internal/streams/stream":180,"_process":283,"buffer":183,"inherits":264,"util-deprecate":333}],173:[function(require,module,exports){
 (function (process){(function (){
 'use strict';
 
@@ -53485,7 +48178,7 @@ var createReadableStreamAsyncIterator = function createReadableStreamAsyncIterat
 };
 module.exports = createReadableStreamAsyncIterator;
 }).call(this)}).call(this,require('_process'))
-},{"./end-of-stream":178,"_process":285}],176:[function(require,module,exports){
+},{"./end-of-stream":176,"_process":283}],174:[function(require,module,exports){
 'use strict';
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
@@ -53669,7 +48362,7 @@ module.exports = /*#__PURE__*/function () {
   }]);
   return BufferList;
 }();
-},{"buffer":185,"util":139}],177:[function(require,module,exports){
+},{"buffer":183,"util":137}],175:[function(require,module,exports){
 (function (process){(function (){
 'use strict';
 
@@ -53768,7 +48461,7 @@ module.exports = {
   errorOrDestroy: errorOrDestroy
 };
 }).call(this)}).call(this,require('_process'))
-},{"_process":285}],178:[function(require,module,exports){
+},{"_process":283}],176:[function(require,module,exports){
 // Ported from https://github.com/mafintosh/end-of-stream with
 // permission from the author, Mathias Buus (@mafintosh).
 
@@ -53855,12 +48548,12 @@ function eos(stream, opts, callback) {
   };
 }
 module.exports = eos;
-},{"../../../errors":169}],179:[function(require,module,exports){
+},{"../../../errors":167}],177:[function(require,module,exports){
 module.exports = function () {
   throw new Error('Readable.from is not available in the browser')
 };
 
-},{}],180:[function(require,module,exports){
+},{}],178:[function(require,module,exports){
 // Ported from https://github.com/mafintosh/pump with
 // permission from the author, Mathias Buus (@mafintosh).
 
@@ -53947,7 +48640,7 @@ function pipeline() {
   return streams.reduce(pipe);
 }
 module.exports = pipeline;
-},{"../../../errors":169,"./end-of-stream":178}],181:[function(require,module,exports){
+},{"../../../errors":167,"./end-of-stream":176}],179:[function(require,module,exports){
 'use strict';
 
 var ERR_INVALID_OPT_VALUE = require('../../../errors').codes.ERR_INVALID_OPT_VALUE;
@@ -53970,10 +48663,10 @@ function getHighWaterMark(state, options, duplexKey, isDuplex) {
 module.exports = {
   getHighWaterMark: getHighWaterMark
 };
-},{"../../../errors":169}],182:[function(require,module,exports){
+},{"../../../errors":167}],180:[function(require,module,exports){
 module.exports = require('events').EventEmitter;
 
-},{"events":229}],183:[function(require,module,exports){
+},{"events":227}],181:[function(require,module,exports){
 exports = module.exports = require('./lib/_stream_readable.js');
 exports.Stream = exports;
 exports.Readable = exports;
@@ -53984,7 +48677,7 @@ exports.PassThrough = require('./lib/_stream_passthrough.js');
 exports.finished = require('./lib/internal/streams/end-of-stream.js');
 exports.pipeline = require('./lib/internal/streams/pipeline.js');
 
-},{"./lib/_stream_duplex.js":170,"./lib/_stream_passthrough.js":171,"./lib/_stream_readable.js":172,"./lib/_stream_transform.js":173,"./lib/_stream_writable.js":174,"./lib/internal/streams/end-of-stream.js":178,"./lib/internal/streams/pipeline.js":180}],184:[function(require,module,exports){
+},{"./lib/_stream_duplex.js":168,"./lib/_stream_passthrough.js":169,"./lib/_stream_readable.js":170,"./lib/_stream_transform.js":171,"./lib/_stream_writable.js":172,"./lib/internal/streams/end-of-stream.js":176,"./lib/internal/streams/pipeline.js":178}],182:[function(require,module,exports){
 /*! safe-buffer. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
 /* eslint-disable node/no-deprecated-api */
 var buffer = require('buffer')
@@ -54051,7 +48744,7 @@ SafeBuffer.allocUnsafeSlow = function (size) {
   return buffer.SlowBuffer(size)
 }
 
-},{"buffer":185}],185:[function(require,module,exports){
+},{"buffer":183}],183:[function(require,module,exports){
 (function (Buffer){(function (){
 /*!
  * The buffer module from node.js, for the browser.
@@ -55832,7 +50525,7 @@ function numberIsNaN (obj) {
 }
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"base64-js":41,"buffer":185,"ieee754":265}],186:[function(require,module,exports){
+},{"base64-js":39,"buffer":183,"ieee754":263}],184:[function(require,module,exports){
 // Base58 encoding/decoding
 // Originally written by Mike Hearn for BitcoinJ
 // Copyright (c) 2011 Google Inc
@@ -55919,7 +50612,7 @@ module.exports = {
   decode: decode
 }
 
-},{}],187:[function(require,module,exports){
+},{}],185:[function(require,module,exports){
 'use strict'
 
 var base58 = require('bs58')
@@ -55971,7 +50664,7 @@ module.exports = function (checksumFn) {
   }
 }
 
-},{"bs58":189,"safe-buffer":296}],188:[function(require,module,exports){
+},{"bs58":187,"safe-buffer":294}],186:[function(require,module,exports){
 'use strict'
 
 var createHash = require('create-hash')
@@ -55985,13 +50678,13 @@ function sha256x2 (buffer) {
 
 module.exports = bs58checkBase(sha256x2)
 
-},{"./base":187,"create-hash":197}],189:[function(require,module,exports){
+},{"./base":185,"create-hash":195}],187:[function(require,module,exports){
 var basex = require('base-x')
 var ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 
 module.exports = basex(ALPHABET)
 
-},{"base-x":40}],190:[function(require,module,exports){
+},{"base-x":38}],188:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 module.exports = function (a, b) {
@@ -56021,7 +50714,7 @@ module.exports = function (a, b) {
 };
 
 }).call(this)}).call(this,{"isBuffer":require("../is-buffer/index.js")})
-},{"../is-buffer/index.js":267}],191:[function(require,module,exports){
+},{"../is-buffer/index.js":265}],189:[function(require,module,exports){
 (function (Buffer){(function (){
 module.exports = function xor (a, b) {
   var length = Math.min(a.length, b.length)
@@ -56035,7 +50728,7 @@ module.exports = function xor (a, b) {
 }
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"buffer":185}],192:[function(require,module,exports){
+},{"buffer":183}],190:[function(require,module,exports){
 var Buffer = require('safe-buffer').Buffer
 var Transform = require('stream').Transform
 var StringDecoder = require('string_decoder').StringDecoder
@@ -56136,7 +50829,7 @@ CipherBase.prototype._toString = function (value, enc, fin) {
 
 module.exports = CipherBase
 
-},{"inherits":266,"safe-buffer":296,"stream":313,"string_decoder":328}],193:[function(require,module,exports){
+},{"inherits":264,"safe-buffer":294,"stream":311,"string_decoder":326}],191:[function(require,module,exports){
 var assert = require('assert')
 var cs = require('coinstring')
 var ECKey = require('eckey')
@@ -56219,7 +50912,7 @@ CoinKey.addressToHash = function (address) {
 
 module.exports = CoinKey
 
-},{"./util":194,"assert":36,"coinstring":195,"eckey":212,"inherits":266,"secure-random":304}],194:[function(require,module,exports){
+},{"./util":192,"assert":34,"coinstring":193,"eckey":210,"inherits":264,"secure-random":302}],192:[function(require,module,exports){
 (function (Buffer){(function (){
 // poor man's clone
 function clone (obj) {
@@ -56277,7 +50970,7 @@ module.exports = {
 }
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"buffer":185}],195:[function(require,module,exports){
+},{"buffer":183}],193:[function(require,module,exports){
 (function (Buffer){(function (){
 var base58 = require('bs58')
 var createHash = require('create-hash')
@@ -56374,7 +51067,7 @@ module.exports = {
 }
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"bs58":186,"buffer":185,"create-hash":197}],196:[function(require,module,exports){
+},{"bs58":184,"buffer":183,"create-hash":195}],194:[function(require,module,exports){
 (function (Buffer){(function (){
 var elliptic = require('elliptic')
 var BN = require('bn.js')
@@ -56502,7 +51195,7 @@ function formatReturnValue (bn, enc, len) {
 }
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"bn.js":137,"buffer":185,"elliptic":213}],197:[function(require,module,exports){
+},{"bn.js":135,"buffer":183,"elliptic":211}],195:[function(require,module,exports){
 'use strict'
 var inherits = require('inherits')
 var MD5 = require('md5.js')
@@ -56534,14 +51227,14 @@ module.exports = function createHash (alg) {
   return new Hash(sha(alg))
 }
 
-},{"cipher-base":192,"inherits":266,"md5.js":268,"ripemd160":295,"sha.js":306}],198:[function(require,module,exports){
+},{"cipher-base":190,"inherits":264,"md5.js":266,"ripemd160":293,"sha.js":304}],196:[function(require,module,exports){
 var MD5 = require('md5.js')
 
 module.exports = function (buffer) {
   return new MD5().update(buffer).digest()
 }
 
-},{"md5.js":268}],199:[function(require,module,exports){
+},{"md5.js":266}],197:[function(require,module,exports){
 'use strict'
 var inherits = require('inherits')
 var Legacy = require('./legacy')
@@ -56605,7 +51298,7 @@ module.exports = function createHmac (alg, key) {
   return new Hmac(alg, key)
 }
 
-},{"./legacy":200,"cipher-base":192,"create-hash/md5":198,"inherits":266,"ripemd160":295,"safe-buffer":296,"sha.js":306}],200:[function(require,module,exports){
+},{"./legacy":198,"cipher-base":190,"create-hash/md5":196,"inherits":264,"ripemd160":293,"safe-buffer":294,"sha.js":304}],198:[function(require,module,exports){
 'use strict'
 var inherits = require('inherits')
 var Buffer = require('safe-buffer').Buffer
@@ -56653,7 +51346,7 @@ Hmac.prototype._final = function () {
 }
 module.exports = Hmac
 
-},{"cipher-base":192,"inherits":266,"safe-buffer":296}],201:[function(require,module,exports){
+},{"cipher-base":190,"inherits":264,"safe-buffer":294}],199:[function(require,module,exports){
 'use strict'
 
 exports.randomBytes = exports.rng = exports.pseudoRandomBytes = exports.prng = require('randombytes')
@@ -56752,7 +51445,7 @@ exports.constants = {
   'POINT_CONVERSION_HYBRID': 6
 }
 
-},{"browserify-cipher":157,"browserify-sign":165,"browserify-sign/algos":162,"create-ecdh":196,"create-hash":197,"create-hmac":199,"diffie-hellman":208,"pbkdf2":279,"public-encrypt":286,"randombytes":293,"randomfill":294}],202:[function(require,module,exports){
+},{"browserify-cipher":155,"browserify-sign":163,"browserify-sign/algos":160,"create-ecdh":194,"create-hash":195,"create-hmac":197,"diffie-hellman":206,"pbkdf2":277,"public-encrypt":284,"randombytes":291,"randomfill":292}],200:[function(require,module,exports){
 'use strict';
 
 exports.utils = require('./des/utils');
@@ -56761,7 +51454,7 @@ exports.DES = require('./des/des');
 exports.CBC = require('./des/cbc');
 exports.EDE = require('./des/ede');
 
-},{"./des/cbc":203,"./des/cipher":204,"./des/des":205,"./des/ede":206,"./des/utils":207}],203:[function(require,module,exports){
+},{"./des/cbc":201,"./des/cipher":202,"./des/des":203,"./des/ede":204,"./des/utils":205}],201:[function(require,module,exports){
 'use strict';
 
 var assert = require('minimalistic-assert');
@@ -56828,7 +51521,7 @@ proto._update = function _update(inp, inOff, out, outOff) {
   }
 };
 
-},{"inherits":266,"minimalistic-assert":271}],204:[function(require,module,exports){
+},{"inherits":264,"minimalistic-assert":269}],202:[function(require,module,exports){
 'use strict';
 
 var assert = require('minimalistic-assert');
@@ -56972,7 +51665,7 @@ Cipher.prototype._finalDecrypt = function _finalDecrypt() {
   return this._unpad(out);
 };
 
-},{"minimalistic-assert":271}],205:[function(require,module,exports){
+},{"minimalistic-assert":269}],203:[function(require,module,exports){
 'use strict';
 
 var assert = require('minimalistic-assert');
@@ -57124,7 +51817,7 @@ DES.prototype._decrypt = function _decrypt(state, lStart, rStart, out, off) {
   utils.rip(l, r, out, off);
 };
 
-},{"./cipher":204,"./utils":207,"inherits":266,"minimalistic-assert":271}],206:[function(require,module,exports){
+},{"./cipher":202,"./utils":205,"inherits":264,"minimalistic-assert":269}],204:[function(require,module,exports){
 'use strict';
 
 var assert = require('minimalistic-assert');
@@ -57180,7 +51873,7 @@ EDE.prototype._update = function _update(inp, inOff, out, outOff) {
 EDE.prototype._pad = DES.prototype._pad;
 EDE.prototype._unpad = DES.prototype._unpad;
 
-},{"./cipher":204,"./des":205,"inherits":266,"minimalistic-assert":271}],207:[function(require,module,exports){
+},{"./cipher":202,"./des":203,"inherits":264,"minimalistic-assert":269}],205:[function(require,module,exports){
 'use strict';
 
 exports.readUInt32BE = function readUInt32BE(bytes, off) {
@@ -57438,7 +52131,7 @@ exports.padSplit = function padSplit(num, size, group) {
   return out.join(' ');
 };
 
-},{}],208:[function(require,module,exports){
+},{}],206:[function(require,module,exports){
 (function (Buffer){(function (){
 var generatePrime = require('./lib/generatePrime')
 var primes = require('./lib/primes.json')
@@ -57484,7 +52177,7 @@ exports.DiffieHellmanGroup = exports.createDiffieHellmanGroup = exports.getDiffi
 exports.createDiffieHellman = exports.DiffieHellman = createDiffieHellman
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"./lib/dh":209,"./lib/generatePrime":210,"./lib/primes.json":211,"buffer":185}],209:[function(require,module,exports){
+},{"./lib/dh":207,"./lib/generatePrime":208,"./lib/primes.json":209,"buffer":183}],207:[function(require,module,exports){
 (function (Buffer){(function (){
 var BN = require('bn.js');
 var MillerRabin = require('miller-rabin');
@@ -57652,7 +52345,7 @@ function formatReturnValue(bn, enc) {
 }
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"./generatePrime":210,"bn.js":137,"buffer":185,"miller-rabin":270,"randombytes":293}],210:[function(require,module,exports){
+},{"./generatePrime":208,"bn.js":135,"buffer":183,"miller-rabin":268,"randombytes":291}],208:[function(require,module,exports){
 var randomBytes = require('randombytes');
 module.exports = findPrime;
 findPrime.simpleSieve = simpleSieve;
@@ -57759,7 +52452,7 @@ function findPrime(bits, gen) {
 
 }
 
-},{"bn.js":137,"miller-rabin":270,"randombytes":293}],211:[function(require,module,exports){
+},{"bn.js":135,"miller-rabin":268,"randombytes":291}],209:[function(require,module,exports){
 module.exports={
     "modp1": {
         "gen": "02",
@@ -57794,7 +52487,7 @@ module.exports={
         "prime": "ffffffffffffffffc90fdaa22168c234c4c6628b80dc1cd129024e088a67cc74020bbea63b139b22514a08798e3404ddef9519b3cd3a431b302b0a6df25f14374fe1356d6d51c245e485b576625e7ec6f44c42e9a637ed6b0bff5cb6f406b7edee386bfb5a899fa5ae9f24117c4b1fe649286651ece45b3dc2007cb8a163bf0598da48361c55d39a69163fa8fd24cf5f83655d23dca3ad961c62f356208552bb9ed529077096966d670c354e4abc9804f1746c08ca18217c32905e462e36ce3be39e772c180e86039b2783a2ec07a28fb5c55df06f4c52c9de2bcbf6955817183995497cea956ae515d2261898fa051015728e5a8aaac42dad33170d04507a33a85521abdf1cba64ecfb850458dbef0a8aea71575d060c7db3970f85a6e1e4c7abf5ae8cdb0933d71e8c94e04a25619dcee3d2261ad2ee6bf12ffa06d98a0864d87602733ec86a64521f2b18177b200cbbe117577a615d6c770988c0bad946e208e24fa074e5ab3143db5bfce0fd108e4b82d120a92108011a723c12a787e6d788719a10bdba5b2699c327186af4e23c1a946834b6150bda2583e9ca2ad44ce8dbbbc2db04de8ef92e8efc141fbecaa6287c59474e6bc05d99b2964fa090c3a2233ba186515be7ed1f612970cee2d7afb81bdd762170481cd0069127d5b05aa993b4ea988d8fddc186ffb7dc90a6c08f4df435c93402849236c3fab4d27c7026c1d4dcb2602646dec9751e763dba37bdf8ff9406ad9e530ee5db382f413001aeb06a53ed9027d831179727b0865a8918da3edbebcf9b14ed44ce6cbaced4bb1bdb7f1447e6cc254b332051512bd7af426fb8f401378cd2bf5983ca01c64b92ecf032ea15d1721d03f482d7ce6e74fef6d55e702f46980c82b5a84031900b1c9e59e7c97fbec7e8f323a97a7e36cc88be0f1d45b7ff585ac54bd407b22b4154aacc8f6d7ebf48e1d814cc5ed20f8037e0a79715eef29be32806a1d58bb7c5da76f550aa3d8a1fbff0eb19ccb1a313d55cda56c9ec2ef29632387fe8d76e3c0468043e8f663f4860ee12bf2d5b0b7474d6e694f91e6dbe115974a3926f12fee5e438777cb6a932df8cd8bec4d073b931ba3bc832b68d9dd300741fa7bf8afc47ed2576f6936ba424663aab639c5ae4f5683423b4742bf1c978238f16cbe39d652de3fdb8befc848ad922222e04a4037c0713eb57a81a23f0c73473fc646cea306b4bcbc8862f8385ddfa9d4b7fa2c087e879683303ed5bdd3a062b3cf5b3a278a66d2a13f83f44f82ddf310ee074ab6a364597e899a0255dc164f31cc50846851df9ab48195ded7ea1b1d510bd7ee74d73faf36bc31ecfa268359046f4eb879f924009438b481c6cd7889a002ed5ee382bc9190da6fc026e479558e4475677e9aa9e3050e2765694dfc81f56e880b96e7160c980dd98edd3dfffffffffffffffff"
     }
 }
-},{}],212:[function(require,module,exports){
+},{}],210:[function(require,module,exports){
 (function (Buffer){(function (){
 var crypto = require('crypto')
 var secp256k1 = require('secp256k1')
@@ -57895,7 +52588,7 @@ ECKey.prototype.toString = function (format) {
 module.exports = ECKey
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"buffer":185,"crypto":201,"secp256k1":298}],213:[function(require,module,exports){
+},{"buffer":183,"crypto":199,"secp256k1":296}],211:[function(require,module,exports){
 'use strict';
 
 var elliptic = exports;
@@ -57910,7 +52603,7 @@ elliptic.curves = require('./elliptic/curves');
 elliptic.ec = require('./elliptic/ec');
 elliptic.eddsa = require('./elliptic/eddsa');
 
-},{"../package.json":228,"./elliptic/curve":216,"./elliptic/curves":219,"./elliptic/ec":220,"./elliptic/eddsa":223,"./elliptic/utils":227,"brorand":138}],214:[function(require,module,exports){
+},{"../package.json":226,"./elliptic/curve":214,"./elliptic/curves":217,"./elliptic/ec":218,"./elliptic/eddsa":221,"./elliptic/utils":225,"brorand":136}],212:[function(require,module,exports){
 'use strict';
 
 var BN = require('bn.js');
@@ -58293,7 +52986,7 @@ BasePoint.prototype.dblp = function dblp(k) {
   return r;
 };
 
-},{"../utils":227,"bn.js":137}],215:[function(require,module,exports){
+},{"../utils":225,"bn.js":135}],213:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -58730,7 +53423,7 @@ Point.prototype.eqXToP = function eqXToP(x) {
 Point.prototype.toP = Point.prototype.normalize;
 Point.prototype.mixedAdd = Point.prototype.add;
 
-},{"../utils":227,"./base":214,"bn.js":137,"inherits":266}],216:[function(require,module,exports){
+},{"../utils":225,"./base":212,"bn.js":135,"inherits":264}],214:[function(require,module,exports){
 'use strict';
 
 var curve = exports;
@@ -58740,7 +53433,7 @@ curve.short = require('./short');
 curve.mont = require('./mont');
 curve.edwards = require('./edwards');
 
-},{"./base":214,"./edwards":215,"./mont":217,"./short":218}],217:[function(require,module,exports){
+},{"./base":212,"./edwards":213,"./mont":215,"./short":216}],215:[function(require,module,exports){
 'use strict';
 
 var BN = require('bn.js');
@@ -58920,7 +53613,7 @@ Point.prototype.getX = function getX() {
   return this.x.fromRed();
 };
 
-},{"../utils":227,"./base":214,"bn.js":137,"inherits":266}],218:[function(require,module,exports){
+},{"../utils":225,"./base":212,"bn.js":135,"inherits":264}],216:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -59860,7 +54553,7 @@ JPoint.prototype.isInfinity = function isInfinity() {
   return this.z.cmpn(0) === 0;
 };
 
-},{"../utils":227,"./base":214,"bn.js":137,"inherits":266}],219:[function(require,module,exports){
+},{"../utils":225,"./base":212,"bn.js":135,"inherits":264}],217:[function(require,module,exports){
 'use strict';
 
 var curves = exports;
@@ -60068,7 +54761,7 @@ defineCurve('secp256k1', {
   ],
 });
 
-},{"./curve":216,"./precomputed/secp256k1":226,"./utils":227,"hash.js":248}],220:[function(require,module,exports){
+},{"./curve":214,"./precomputed/secp256k1":224,"./utils":225,"hash.js":246}],218:[function(require,module,exports){
 'use strict';
 
 var BN = require('bn.js');
@@ -60313,7 +55006,7 @@ EC.prototype.getKeyRecoveryParam = function(e, signature, Q, enc) {
   throw new Error('Unable to find valid recovery factor');
 };
 
-},{"../curves":219,"../utils":227,"./key":221,"./signature":222,"bn.js":137,"brorand":138,"hmac-drbg":264}],221:[function(require,module,exports){
+},{"../curves":217,"../utils":225,"./key":219,"./signature":220,"bn.js":135,"brorand":136,"hmac-drbg":262}],219:[function(require,module,exports){
 'use strict';
 
 var BN = require('bn.js');
@@ -60436,7 +55129,7 @@ KeyPair.prototype.inspect = function inspect() {
          ' pub: ' + (this.pub && this.pub.inspect()) + ' >';
 };
 
-},{"../utils":227,"bn.js":137}],222:[function(require,module,exports){
+},{"../utils":225,"bn.js":135}],220:[function(require,module,exports){
 'use strict';
 
 var BN = require('bn.js');
@@ -60604,7 +55297,7 @@ Signature.prototype.toDER = function toDER(enc) {
   return utils.encode(res, enc);
 };
 
-},{"../utils":227,"bn.js":137}],223:[function(require,module,exports){
+},{"../utils":225,"bn.js":135}],221:[function(require,module,exports){
 'use strict';
 
 var hash = require('hash.js');
@@ -60724,7 +55417,7 @@ EDDSA.prototype.isPoint = function isPoint(val) {
   return val instanceof this.pointClass;
 };
 
-},{"../curves":219,"../utils":227,"./key":224,"./signature":225,"hash.js":248}],224:[function(require,module,exports){
+},{"../curves":217,"../utils":225,"./key":222,"./signature":223,"hash.js":246}],222:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -60821,7 +55514,7 @@ KeyPair.prototype.getPublic = function getPublic(enc) {
 
 module.exports = KeyPair;
 
-},{"../utils":227}],225:[function(require,module,exports){
+},{"../utils":225}],223:[function(require,module,exports){
 'use strict';
 
 var BN = require('bn.js');
@@ -60888,7 +55581,7 @@ Signature.prototype.toHex = function toHex() {
 
 module.exports = Signature;
 
-},{"../utils":227,"bn.js":137}],226:[function(require,module,exports){
+},{"../utils":225,"bn.js":135}],224:[function(require,module,exports){
 module.exports = {
   doubles: {
     step: 4,
@@ -61670,7 +56363,7 @@ module.exports = {
   },
 };
 
-},{}],227:[function(require,module,exports){
+},{}],225:[function(require,module,exports){
 'use strict';
 
 var utils = exports;
@@ -61791,7 +56484,7 @@ function intFromLE(bytes) {
 utils.intFromLE = intFromLE;
 
 
-},{"bn.js":137,"minimalistic-assert":271,"minimalistic-crypto-utils":272}],228:[function(require,module,exports){
+},{"bn.js":135,"minimalistic-assert":269,"minimalistic-crypto-utils":270}],226:[function(require,module,exports){
 module.exports={
   "name": "elliptic",
   "version": "6.5.4",
@@ -61849,7 +56542,7 @@ module.exports={
   }
 }
 
-},{}],229:[function(require,module,exports){
+},{}],227:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -62348,7 +57041,7 @@ function eventTargetAgnosticAddListener(emitter, name, listener, flags) {
   }
 }
 
-},{}],230:[function(require,module,exports){
+},{}],228:[function(require,module,exports){
 var Buffer = require('safe-buffer').Buffer
 var MD5 = require('md5.js')
 
@@ -62395,7 +57088,7 @@ function EVP_BytesToKey (password, salt, keyBits, ivLen) {
 
 module.exports = EVP_BytesToKey
 
-},{"md5.js":268,"safe-buffer":296}],231:[function(require,module,exports){
+},{"md5.js":266,"safe-buffer":294}],229:[function(require,module,exports){
 'use strict'
 var Buffer = require('safe-buffer').Buffer
 var Transform = require('readable-stream').Transform
@@ -62492,39 +57185,39 @@ HashBase.prototype._digest = function () {
 
 module.exports = HashBase
 
-},{"inherits":266,"readable-stream":246,"safe-buffer":247}],232:[function(require,module,exports){
+},{"inherits":264,"readable-stream":244,"safe-buffer":245}],230:[function(require,module,exports){
+arguments[4][167][0].apply(exports,arguments)
+},{"dup":167}],231:[function(require,module,exports){
+arguments[4][168][0].apply(exports,arguments)
+},{"./_stream_readable":233,"./_stream_writable":235,"_process":283,"dup":168,"inherits":264}],232:[function(require,module,exports){
 arguments[4][169][0].apply(exports,arguments)
-},{"dup":169}],233:[function(require,module,exports){
+},{"./_stream_transform":234,"dup":169,"inherits":264}],233:[function(require,module,exports){
 arguments[4][170][0].apply(exports,arguments)
-},{"./_stream_readable":235,"./_stream_writable":237,"_process":285,"dup":170,"inherits":266}],234:[function(require,module,exports){
+},{"../errors":230,"./_stream_duplex":231,"./internal/streams/async_iterator":236,"./internal/streams/buffer_list":237,"./internal/streams/destroy":238,"./internal/streams/from":240,"./internal/streams/state":242,"./internal/streams/stream":243,"_process":283,"buffer":183,"dup":170,"events":227,"inherits":264,"string_decoder/":326,"util":137}],234:[function(require,module,exports){
 arguments[4][171][0].apply(exports,arguments)
-},{"./_stream_transform":236,"dup":171,"inherits":266}],235:[function(require,module,exports){
+},{"../errors":230,"./_stream_duplex":231,"dup":171,"inherits":264}],235:[function(require,module,exports){
 arguments[4][172][0].apply(exports,arguments)
-},{"../errors":232,"./_stream_duplex":233,"./internal/streams/async_iterator":238,"./internal/streams/buffer_list":239,"./internal/streams/destroy":240,"./internal/streams/from":242,"./internal/streams/state":244,"./internal/streams/stream":245,"_process":285,"buffer":185,"dup":172,"events":229,"inherits":266,"string_decoder/":328,"util":139}],236:[function(require,module,exports){
+},{"../errors":230,"./_stream_duplex":231,"./internal/streams/destroy":238,"./internal/streams/state":242,"./internal/streams/stream":243,"_process":283,"buffer":183,"dup":172,"inherits":264,"util-deprecate":333}],236:[function(require,module,exports){
 arguments[4][173][0].apply(exports,arguments)
-},{"../errors":232,"./_stream_duplex":233,"dup":173,"inherits":266}],237:[function(require,module,exports){
+},{"./end-of-stream":239,"_process":283,"dup":173}],237:[function(require,module,exports){
 arguments[4][174][0].apply(exports,arguments)
-},{"../errors":232,"./_stream_duplex":233,"./internal/streams/destroy":240,"./internal/streams/state":244,"./internal/streams/stream":245,"_process":285,"buffer":185,"dup":174,"inherits":266,"util-deprecate":335}],238:[function(require,module,exports){
+},{"buffer":183,"dup":174,"util":137}],238:[function(require,module,exports){
 arguments[4][175][0].apply(exports,arguments)
-},{"./end-of-stream":241,"_process":285,"dup":175}],239:[function(require,module,exports){
+},{"_process":283,"dup":175}],239:[function(require,module,exports){
 arguments[4][176][0].apply(exports,arguments)
-},{"buffer":185,"dup":176,"util":139}],240:[function(require,module,exports){
+},{"../../../errors":230,"dup":176}],240:[function(require,module,exports){
 arguments[4][177][0].apply(exports,arguments)
-},{"_process":285,"dup":177}],241:[function(require,module,exports){
+},{"dup":177}],241:[function(require,module,exports){
 arguments[4][178][0].apply(exports,arguments)
-},{"../../../errors":232,"dup":178}],242:[function(require,module,exports){
+},{"../../../errors":230,"./end-of-stream":239,"dup":178}],242:[function(require,module,exports){
 arguments[4][179][0].apply(exports,arguments)
-},{"dup":179}],243:[function(require,module,exports){
+},{"../../../errors":230,"dup":179}],243:[function(require,module,exports){
 arguments[4][180][0].apply(exports,arguments)
-},{"../../../errors":232,"./end-of-stream":241,"dup":180}],244:[function(require,module,exports){
+},{"dup":180,"events":227}],244:[function(require,module,exports){
 arguments[4][181][0].apply(exports,arguments)
-},{"../../../errors":232,"dup":181}],245:[function(require,module,exports){
+},{"./lib/_stream_duplex.js":231,"./lib/_stream_passthrough.js":232,"./lib/_stream_readable.js":233,"./lib/_stream_transform.js":234,"./lib/_stream_writable.js":235,"./lib/internal/streams/end-of-stream.js":239,"./lib/internal/streams/pipeline.js":241,"dup":181}],245:[function(require,module,exports){
 arguments[4][182][0].apply(exports,arguments)
-},{"dup":182,"events":229}],246:[function(require,module,exports){
-arguments[4][183][0].apply(exports,arguments)
-},{"./lib/_stream_duplex.js":233,"./lib/_stream_passthrough.js":234,"./lib/_stream_readable.js":235,"./lib/_stream_transform.js":236,"./lib/_stream_writable.js":237,"./lib/internal/streams/end-of-stream.js":241,"./lib/internal/streams/pipeline.js":243,"dup":183}],247:[function(require,module,exports){
-arguments[4][184][0].apply(exports,arguments)
-},{"buffer":185,"dup":184}],248:[function(require,module,exports){
+},{"buffer":183,"dup":182}],246:[function(require,module,exports){
 var hash = exports;
 
 hash.utils = require('./hash/utils');
@@ -62541,7 +57234,7 @@ hash.sha384 = hash.sha.sha384;
 hash.sha512 = hash.sha.sha512;
 hash.ripemd160 = hash.ripemd.ripemd160;
 
-},{"./hash/common":249,"./hash/hmac":250,"./hash/ripemd":251,"./hash/sha":252,"./hash/utils":259}],249:[function(require,module,exports){
+},{"./hash/common":247,"./hash/hmac":248,"./hash/ripemd":249,"./hash/sha":250,"./hash/utils":257}],247:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -62635,7 +57328,7 @@ BlockHash.prototype._pad = function pad() {
   return res;
 };
 
-},{"./utils":259,"minimalistic-assert":271}],250:[function(require,module,exports){
+},{"./utils":257,"minimalistic-assert":269}],248:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -62684,7 +57377,7 @@ Hmac.prototype.digest = function digest(enc) {
   return this.outer.digest(enc);
 };
 
-},{"./utils":259,"minimalistic-assert":271}],251:[function(require,module,exports){
+},{"./utils":257,"minimalistic-assert":269}],249:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -62832,7 +57525,7 @@ var sh = [
   8, 5, 12, 9, 12, 5, 14, 6, 8, 13, 6, 5, 15, 13, 11, 11
 ];
 
-},{"./common":249,"./utils":259}],252:[function(require,module,exports){
+},{"./common":247,"./utils":257}],250:[function(require,module,exports){
 'use strict';
 
 exports.sha1 = require('./sha/1');
@@ -62841,7 +57534,7 @@ exports.sha256 = require('./sha/256');
 exports.sha384 = require('./sha/384');
 exports.sha512 = require('./sha/512');
 
-},{"./sha/1":253,"./sha/224":254,"./sha/256":255,"./sha/384":256,"./sha/512":257}],253:[function(require,module,exports){
+},{"./sha/1":251,"./sha/224":252,"./sha/256":253,"./sha/384":254,"./sha/512":255}],251:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -62917,7 +57610,7 @@ SHA1.prototype._digest = function digest(enc) {
     return utils.split32(this.h, 'big');
 };
 
-},{"../common":249,"../utils":259,"./common":258}],254:[function(require,module,exports){
+},{"../common":247,"../utils":257,"./common":256}],252:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -62949,7 +57642,7 @@ SHA224.prototype._digest = function digest(enc) {
 };
 
 
-},{"../utils":259,"./256":255}],255:[function(require,module,exports){
+},{"../utils":257,"./256":253}],253:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -63056,7 +57749,7 @@ SHA256.prototype._digest = function digest(enc) {
     return utils.split32(this.h, 'big');
 };
 
-},{"../common":249,"../utils":259,"./common":258,"minimalistic-assert":271}],256:[function(require,module,exports){
+},{"../common":247,"../utils":257,"./common":256,"minimalistic-assert":269}],254:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -63093,7 +57786,7 @@ SHA384.prototype._digest = function digest(enc) {
     return utils.split32(this.h.slice(0, 12), 'big');
 };
 
-},{"../utils":259,"./512":257}],257:[function(require,module,exports){
+},{"../utils":257,"./512":255}],255:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -63425,7 +58118,7 @@ function g1_512_lo(xh, xl) {
   return r;
 }
 
-},{"../common":249,"../utils":259,"minimalistic-assert":271}],258:[function(require,module,exports){
+},{"../common":247,"../utils":257,"minimalistic-assert":269}],256:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -63476,7 +58169,7 @@ function g1_256(x) {
 }
 exports.g1_256 = g1_256;
 
-},{"../utils":259}],259:[function(require,module,exports){
+},{"../utils":257}],257:[function(require,module,exports){
 'use strict';
 
 var assert = require('minimalistic-assert');
@@ -63756,7 +58449,7 @@ function shr64_lo(ah, al, num) {
 }
 exports.shr64_lo = shr64_lo;
 
-},{"inherits":266,"minimalistic-assert":271}],260:[function(require,module,exports){
+},{"inherits":264,"minimalistic-assert":269}],258:[function(require,module,exports){
 var assert = require('assert')
 var Buffer = require('safe-buffer').Buffer
 var crypto = require('crypto')
@@ -64015,10 +58708,10 @@ function hash160 (buf) {
 HDKey.HARDENED_OFFSET = HARDENED_OFFSET
 module.exports = HDKey
 
-},{"assert":36,"bs58check":188,"crypto":201,"ripemd160":295,"safe-buffer":296,"secp256k1":261}],261:[function(require,module,exports){
+},{"assert":34,"bs58check":186,"crypto":199,"ripemd160":293,"safe-buffer":294,"secp256k1":259}],259:[function(require,module,exports){
 module.exports = require('./lib')(require('./lib/elliptic'))
 
-},{"./lib":263,"./lib/elliptic":262}],262:[function(require,module,exports){
+},{"./lib":261,"./lib/elliptic":260}],260:[function(require,module,exports){
 const EC = require('elliptic').ec
 
 const ec = new EC('secp256k1')
@@ -64422,7 +59115,7 @@ module.exports = {
   }
 }
 
-},{"elliptic":213}],263:[function(require,module,exports){
+},{"elliptic":211}],261:[function(require,module,exports){
 const errors = {
   IMPOSSIBLE_CASE: 'Impossible case. Please create issue.',
   TWEAK_ADD:
@@ -64760,7 +59453,7 @@ module.exports = (secp256k1) => {
   }
 }
 
-},{}],264:[function(require,module,exports){
+},{}],262:[function(require,module,exports){
 'use strict';
 
 var hash = require('hash.js');
@@ -64875,7 +59568,7 @@ HmacDRBG.prototype.generate = function generate(len, enc, add, addEnc) {
   return utils.encode(res, enc);
 };
 
-},{"hash.js":248,"minimalistic-assert":271,"minimalistic-crypto-utils":272}],265:[function(require,module,exports){
+},{"hash.js":246,"minimalistic-assert":269,"minimalistic-crypto-utils":270}],263:[function(require,module,exports){
 /*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
@@ -64962,7 +59655,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128
 }
 
-},{}],266:[function(require,module,exports){
+},{}],264:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -64991,7 +59684,7 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],267:[function(require,module,exports){
+},{}],265:[function(require,module,exports){
 /*!
  * Determine if an object is a Buffer
  *
@@ -65014,7 +59707,7 @@ function isSlowBuffer (obj) {
   return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
 }
 
-},{}],268:[function(require,module,exports){
+},{}],266:[function(require,module,exports){
 'use strict'
 var inherits = require('inherits')
 var HashBase = require('hash-base')
@@ -65162,7 +59855,7 @@ function fnI (a, b, c, d, m, k, s) {
 
 module.exports = MD5
 
-},{"hash-base":231,"inherits":266,"safe-buffer":296}],269:[function(require,module,exports){
+},{"hash-base":229,"inherits":264,"safe-buffer":294}],267:[function(require,module,exports){
 (function (Buffer){(function (){
 // constant-space merkle root calculation algorithm
 module.exports = function fastRoot (values, digestFn) {
@@ -65190,7 +59883,7 @@ module.exports = function fastRoot (values, digestFn) {
 }
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"buffer":185}],270:[function(require,module,exports){
+},{"buffer":183}],268:[function(require,module,exports){
 var bn = require('bn.js');
 var brorand = require('brorand');
 
@@ -65307,7 +60000,7 @@ MillerRabin.prototype.getDivisor = function getDivisor(n, k) {
   return false;
 };
 
-},{"bn.js":137,"brorand":138}],271:[function(require,module,exports){
+},{"bn.js":135,"brorand":136}],269:[function(require,module,exports){
 module.exports = assert;
 
 function assert(val, msg) {
@@ -65320,7 +60013,7 @@ assert.equal = function assertEqual(l, r, msg) {
     throw new Error(msg || ('Assertion failed: ' + l + ' != ' + r));
 };
 
-},{}],272:[function(require,module,exports){
+},{}],270:[function(require,module,exports){
 'use strict';
 
 var utils = exports;
@@ -65380,7 +60073,7 @@ utils.encode = function encode(arr, enc) {
     return arr;
 };
 
-},{}],273:[function(require,module,exports){
+},{}],271:[function(require,module,exports){
 /*
 object-assign
 (c) Sindre Sorhus
@@ -65472,7 +60165,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 	return to;
 };
 
-},{}],274:[function(require,module,exports){
+},{}],272:[function(require,module,exports){
 module.exports={"2.16.840.1.101.3.4.1.1": "aes-128-ecb",
 "2.16.840.1.101.3.4.1.2": "aes-128-cbc",
 "2.16.840.1.101.3.4.1.3": "aes-128-ofb",
@@ -65486,7 +60179,7 @@ module.exports={"2.16.840.1.101.3.4.1.1": "aes-128-ecb",
 "2.16.840.1.101.3.4.1.43": "aes-256-ofb",
 "2.16.840.1.101.3.4.1.44": "aes-256-cfb"
 }
-},{}],275:[function(require,module,exports){
+},{}],273:[function(require,module,exports){
 // from https://github.com/indutny/self-signed/blob/gh-pages/lib/asn1.js
 // Fedor, you are amazing.
 'use strict'
@@ -65610,7 +60303,7 @@ exports.signature = asn1.define('signature', function () {
   )
 })
 
-},{"./certificate":276,"asn1.js":22}],276:[function(require,module,exports){
+},{"./certificate":274,"asn1.js":20}],274:[function(require,module,exports){
 // from https://github.com/Rantanen/node-dtls/blob/25a7dc861bda38cfeac93a723500eea4f0ac2e86/Certificate.js
 // thanks to @Rantanen
 
@@ -65701,7 +60394,7 @@ var X509Certificate = asn.define('X509Certificate', function () {
 
 module.exports = X509Certificate
 
-},{"asn1.js":22}],277:[function(require,module,exports){
+},{"asn1.js":20}],275:[function(require,module,exports){
 // adapted from https://github.com/apatil/pemstrip
 var findProc = /Proc-Type: 4,ENCRYPTED[\n\r]+DEK-Info: AES-((?:128)|(?:192)|(?:256))-CBC,([0-9A-H]+)[\n\r]+([0-9A-z\n\r+/=]+)[\n\r]+/m
 var startRegex = /^-----BEGIN ((?:.*? KEY)|CERTIFICATE)-----/m
@@ -65734,7 +60427,7 @@ module.exports = function (okey, password) {
   }
 }
 
-},{"browserify-aes":142,"evp_bytestokey":230,"safe-buffer":296}],278:[function(require,module,exports){
+},{"browserify-aes":140,"evp_bytestokey":228,"safe-buffer":294}],276:[function(require,module,exports){
 var asn1 = require('./asn1')
 var aesid = require('./aesid.json')
 var fixProc = require('./fixProc')
@@ -65843,11 +60536,11 @@ function decrypt (data, password) {
   return Buffer.concat(out)
 }
 
-},{"./aesid.json":274,"./asn1":275,"./fixProc":277,"browserify-aes":142,"pbkdf2":279,"safe-buffer":296}],279:[function(require,module,exports){
+},{"./aesid.json":272,"./asn1":273,"./fixProc":275,"browserify-aes":140,"pbkdf2":277,"safe-buffer":294}],277:[function(require,module,exports){
 exports.pbkdf2 = require('./lib/async')
 exports.pbkdf2Sync = require('./lib/sync')
 
-},{"./lib/async":280,"./lib/sync":283}],280:[function(require,module,exports){
+},{"./lib/async":278,"./lib/sync":281}],278:[function(require,module,exports){
 (function (global){(function (){
 var Buffer = require('safe-buffer').Buffer
 
@@ -65969,7 +60662,7 @@ module.exports = function (password, salt, iterations, keylen, digest, callback)
 }
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./default-encoding":281,"./precondition":282,"./sync":283,"./to-buffer":284,"safe-buffer":296}],281:[function(require,module,exports){
+},{"./default-encoding":279,"./precondition":280,"./sync":281,"./to-buffer":282,"safe-buffer":294}],279:[function(require,module,exports){
 (function (process,global){(function (){
 var defaultEncoding
 /* istanbul ignore next */
@@ -65985,7 +60678,7 @@ if (global.process && global.process.browser) {
 module.exports = defaultEncoding
 
 }).call(this)}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":285}],282:[function(require,module,exports){
+},{"_process":283}],280:[function(require,module,exports){
 var MAX_ALLOC = Math.pow(2, 30) - 1 // default in iojs
 
 module.exports = function (iterations, keylen) {
@@ -66006,7 +60699,7 @@ module.exports = function (iterations, keylen) {
   }
 }
 
-},{}],283:[function(require,module,exports){
+},{}],281:[function(require,module,exports){
 var md5 = require('create-hash/md5')
 var RIPEMD160 = require('ripemd160')
 var sha = require('sha.js')
@@ -66113,7 +60806,7 @@ function pbkdf2 (password, salt, iterations, keylen, digest) {
 
 module.exports = pbkdf2
 
-},{"./default-encoding":281,"./precondition":282,"./to-buffer":284,"create-hash/md5":198,"ripemd160":295,"safe-buffer":296,"sha.js":306}],284:[function(require,module,exports){
+},{"./default-encoding":279,"./precondition":280,"./to-buffer":282,"create-hash/md5":196,"ripemd160":293,"safe-buffer":294,"sha.js":304}],282:[function(require,module,exports){
 var Buffer = require('safe-buffer').Buffer
 
 module.exports = function (thing, encoding, name) {
@@ -66128,7 +60821,7 @@ module.exports = function (thing, encoding, name) {
   }
 }
 
-},{"safe-buffer":296}],285:[function(require,module,exports){
+},{"safe-buffer":294}],283:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -66314,7 +61007,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],286:[function(require,module,exports){
+},{}],284:[function(require,module,exports){
 exports.publicEncrypt = require('./publicEncrypt')
 exports.privateDecrypt = require('./privateDecrypt')
 
@@ -66326,7 +61019,7 @@ exports.publicDecrypt = function publicDecrypt (key, buf) {
   return exports.privateDecrypt(key, buf, true)
 }
 
-},{"./privateDecrypt":288,"./publicEncrypt":289}],287:[function(require,module,exports){
+},{"./privateDecrypt":286,"./publicEncrypt":287}],285:[function(require,module,exports){
 var createHash = require('create-hash')
 var Buffer = require('safe-buffer').Buffer
 
@@ -66347,7 +61040,7 @@ function i2ops (c) {
   return out
 }
 
-},{"create-hash":197,"safe-buffer":296}],288:[function(require,module,exports){
+},{"create-hash":195,"safe-buffer":294}],286:[function(require,module,exports){
 var parseKeys = require('parse-asn1')
 var mgf = require('./mgf')
 var xor = require('./xor')
@@ -66454,7 +61147,7 @@ function compare (a, b) {
   return dif
 }
 
-},{"./mgf":287,"./withPublic":290,"./xor":291,"bn.js":137,"browserify-rsa":160,"create-hash":197,"parse-asn1":278,"safe-buffer":296}],289:[function(require,module,exports){
+},{"./mgf":285,"./withPublic":288,"./xor":289,"bn.js":135,"browserify-rsa":158,"create-hash":195,"parse-asn1":276,"safe-buffer":294}],287:[function(require,module,exports){
 var parseKeys = require('parse-asn1')
 var randomBytes = require('randombytes')
 var createHash = require('create-hash')
@@ -66544,7 +61237,7 @@ function nonZero (len) {
   return out
 }
 
-},{"./mgf":287,"./withPublic":290,"./xor":291,"bn.js":137,"browserify-rsa":160,"create-hash":197,"parse-asn1":278,"randombytes":293,"safe-buffer":296}],290:[function(require,module,exports){
+},{"./mgf":285,"./withPublic":288,"./xor":289,"bn.js":135,"browserify-rsa":158,"create-hash":195,"parse-asn1":276,"randombytes":291,"safe-buffer":294}],288:[function(require,module,exports){
 var BN = require('bn.js')
 var Buffer = require('safe-buffer').Buffer
 
@@ -66558,7 +61251,7 @@ function withPublic (paddedMsg, key) {
 
 module.exports = withPublic
 
-},{"bn.js":137,"safe-buffer":296}],291:[function(require,module,exports){
+},{"bn.js":135,"safe-buffer":294}],289:[function(require,module,exports){
 module.exports = function xor (a, b) {
   var len = a.length
   var i = -1
@@ -66568,7 +61261,7 @@ module.exports = function xor (a, b) {
   return a
 }
 
-},{}],292:[function(require,module,exports){
+},{}],290:[function(require,module,exports){
 var OPS = require('bitcoin-ops')
 
 function encodingLength (i) {
@@ -66647,7 +61340,7 @@ module.exports = {
   decode: decode
 }
 
-},{"bitcoin-ops":89}],293:[function(require,module,exports){
+},{"bitcoin-ops":87}],291:[function(require,module,exports){
 (function (process,global){(function (){
 'use strict'
 
@@ -66701,7 +61394,7 @@ function randomBytes (size, cb) {
 }
 
 }).call(this)}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":285,"safe-buffer":296}],294:[function(require,module,exports){
+},{"_process":283,"safe-buffer":294}],292:[function(require,module,exports){
 (function (process,global){(function (){
 'use strict'
 
@@ -66813,7 +61506,7 @@ function randomFillSync (buf, offset, size) {
 }
 
 }).call(this)}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":285,"randombytes":293,"safe-buffer":296}],295:[function(require,module,exports){
+},{"_process":283,"randombytes":291,"safe-buffer":294}],293:[function(require,module,exports){
 'use strict'
 var Buffer = require('buffer').Buffer
 var inherits = require('inherits')
@@ -66978,7 +61671,7 @@ function fn5 (a, b, c, d, e, m, k, s) {
 
 module.exports = RIPEMD160
 
-},{"buffer":185,"hash-base":231,"inherits":266}],296:[function(require,module,exports){
+},{"buffer":183,"hash-base":229,"inherits":264}],294:[function(require,module,exports){
 /* eslint-disable node/no-deprecated-api */
 var buffer = require('buffer')
 var Buffer = buffer.Buffer
@@ -67042,7 +61735,7 @@ SafeBuffer.allocUnsafeSlow = function (size) {
   return buffer.SlowBuffer(size)
 }
 
-},{"buffer":185}],297:[function(require,module,exports){
+},{"buffer":183}],295:[function(require,module,exports){
 (function (process){(function (){
 /* eslint-disable node/no-deprecated-api */
 
@@ -67123,11 +61816,11 @@ if (!safer.constants) {
 module.exports = safer
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":285,"buffer":185}],298:[function(require,module,exports){
+},{"_process":283,"buffer":183}],296:[function(require,module,exports){
 'use strict'
 module.exports = require('./lib')(require('./lib/elliptic'))
 
-},{"./lib":302,"./lib/elliptic":301}],299:[function(require,module,exports){
+},{"./lib":300,"./lib/elliptic":299}],297:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict'
 var toString = Object.prototype.toString
@@ -67175,7 +61868,7 @@ exports.isNumberInInterval = function (number, x, y, message) {
 }
 
 }).call(this)}).call(this,{"isBuffer":require("../../is-buffer/index.js")})
-},{"../../is-buffer/index.js":267}],300:[function(require,module,exports){
+},{"../../is-buffer/index.js":265}],298:[function(require,module,exports){
 'use strict'
 var Buffer = require('safe-buffer').Buffer
 var bip66 = require('bip66')
@@ -67370,7 +62063,7 @@ exports.signatureImportLax = function (sig) {
   return { r: r, s: s }
 }
 
-},{"bip66":88,"safe-buffer":296}],301:[function(require,module,exports){
+},{"bip66":86,"safe-buffer":294}],299:[function(require,module,exports){
 'use strict'
 var Buffer = require('safe-buffer').Buffer
 var createHash = require('create-hash')
@@ -67635,7 +62328,7 @@ exports.ecdhUnsafe = function (publicKey, privateKey, compressed) {
   return Buffer.from(pair.pub.mul(scalar).encode(true, compressed))
 }
 
-},{"../messages.json":303,"bn.js":137,"create-hash":197,"elliptic":213,"safe-buffer":296}],302:[function(require,module,exports){
+},{"../messages.json":301,"bn.js":135,"create-hash":195,"elliptic":211,"safe-buffer":294}],300:[function(require,module,exports){
 'use strict'
 var assert = require('./assert')
 var der = require('./der')
@@ -67882,7 +62575,7 @@ module.exports = function (secp256k1) {
   }
 }
 
-},{"./assert":299,"./der":300,"./messages.json":303}],303:[function(require,module,exports){
+},{"./assert":297,"./der":298,"./messages.json":301}],301:[function(require,module,exports){
 module.exports={
   "COMPRESSED_TYPE_INVALID": "compressed should be a boolean",
   "EC_PRIVATE_KEY_TYPE_INVALID": "private key should be a Buffer",
@@ -67921,7 +62614,7 @@ module.exports={
   "TWEAK_LENGTH_INVALID": "tweak length is invalid"
 }
 
-},{}],304:[function(require,module,exports){
+},{}],302:[function(require,module,exports){
 (function (process,Buffer){(function (){
 !function(globals){
 'use strict'
@@ -68008,7 +62701,7 @@ secureRandom.randomBuffer = function(byteCount) {
 }(this);
 
 }).call(this)}).call(this,require('_process'),require("buffer").Buffer)
-},{"_process":285,"buffer":185,"crypto":139}],305:[function(require,module,exports){
+},{"_process":283,"buffer":183,"crypto":137}],303:[function(require,module,exports){
 var Buffer = require('safe-buffer').Buffer
 
 // prototype class for hash functions
@@ -68091,7 +62784,7 @@ Hash.prototype._update = function () {
 
 module.exports = Hash
 
-},{"safe-buffer":296}],306:[function(require,module,exports){
+},{"safe-buffer":294}],304:[function(require,module,exports){
 var exports = module.exports = function SHA (algorithm) {
   algorithm = algorithm.toLowerCase()
 
@@ -68108,7 +62801,7 @@ exports.sha256 = require('./sha256')
 exports.sha384 = require('./sha384')
 exports.sha512 = require('./sha512')
 
-},{"./sha":307,"./sha1":308,"./sha224":309,"./sha256":310,"./sha384":311,"./sha512":312}],307:[function(require,module,exports){
+},{"./sha":305,"./sha1":306,"./sha224":307,"./sha256":308,"./sha384":309,"./sha512":310}],305:[function(require,module,exports){
 /*
  * A JavaScript implementation of the Secure Hash Algorithm, SHA-0, as defined
  * in FIPS PUB 180-1
@@ -68204,7 +62897,7 @@ Sha.prototype._hash = function () {
 
 module.exports = Sha
 
-},{"./hash":305,"inherits":266,"safe-buffer":296}],308:[function(require,module,exports){
+},{"./hash":303,"inherits":264,"safe-buffer":294}],306:[function(require,module,exports){
 /*
  * A JavaScript implementation of the Secure Hash Algorithm, SHA-1, as defined
  * in FIPS PUB 180-1
@@ -68305,7 +62998,7 @@ Sha1.prototype._hash = function () {
 
 module.exports = Sha1
 
-},{"./hash":305,"inherits":266,"safe-buffer":296}],309:[function(require,module,exports){
+},{"./hash":303,"inherits":264,"safe-buffer":294}],307:[function(require,module,exports){
 /**
  * A JavaScript implementation of the Secure Hash Algorithm, SHA-256, as defined
  * in FIPS 180-2
@@ -68360,7 +63053,7 @@ Sha224.prototype._hash = function () {
 
 module.exports = Sha224
 
-},{"./hash":305,"./sha256":310,"inherits":266,"safe-buffer":296}],310:[function(require,module,exports){
+},{"./hash":303,"./sha256":308,"inherits":264,"safe-buffer":294}],308:[function(require,module,exports){
 /**
  * A JavaScript implementation of the Secure Hash Algorithm, SHA-256, as defined
  * in FIPS 180-2
@@ -68497,7 +63190,7 @@ Sha256.prototype._hash = function () {
 
 module.exports = Sha256
 
-},{"./hash":305,"inherits":266,"safe-buffer":296}],311:[function(require,module,exports){
+},{"./hash":303,"inherits":264,"safe-buffer":294}],309:[function(require,module,exports){
 var inherits = require('inherits')
 var SHA512 = require('./sha512')
 var Hash = require('./hash')
@@ -68556,7 +63249,7 @@ Sha384.prototype._hash = function () {
 
 module.exports = Sha384
 
-},{"./hash":305,"./sha512":312,"inherits":266,"safe-buffer":296}],312:[function(require,module,exports){
+},{"./hash":303,"./sha512":310,"inherits":264,"safe-buffer":294}],310:[function(require,module,exports){
 var inherits = require('inherits')
 var Hash = require('./hash')
 var Buffer = require('safe-buffer').Buffer
@@ -68818,7 +63511,7 @@ Sha512.prototype._hash = function () {
 
 module.exports = Sha512
 
-},{"./hash":305,"inherits":266,"safe-buffer":296}],313:[function(require,module,exports){
+},{"./hash":303,"inherits":264,"safe-buffer":294}],311:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -68949,35 +63642,35 @@ Stream.prototype.pipe = function(dest, options) {
   return dest;
 };
 
-},{"events":229,"inherits":266,"readable-stream/lib/_stream_duplex.js":315,"readable-stream/lib/_stream_passthrough.js":316,"readable-stream/lib/_stream_readable.js":317,"readable-stream/lib/_stream_transform.js":318,"readable-stream/lib/_stream_writable.js":319,"readable-stream/lib/internal/streams/end-of-stream.js":323,"readable-stream/lib/internal/streams/pipeline.js":325}],314:[function(require,module,exports){
+},{"events":227,"inherits":264,"readable-stream/lib/_stream_duplex.js":313,"readable-stream/lib/_stream_passthrough.js":314,"readable-stream/lib/_stream_readable.js":315,"readable-stream/lib/_stream_transform.js":316,"readable-stream/lib/_stream_writable.js":317,"readable-stream/lib/internal/streams/end-of-stream.js":321,"readable-stream/lib/internal/streams/pipeline.js":323}],312:[function(require,module,exports){
+arguments[4][167][0].apply(exports,arguments)
+},{"dup":167}],313:[function(require,module,exports){
+arguments[4][168][0].apply(exports,arguments)
+},{"./_stream_readable":315,"./_stream_writable":317,"_process":283,"dup":168,"inherits":264}],314:[function(require,module,exports){
 arguments[4][169][0].apply(exports,arguments)
-},{"dup":169}],315:[function(require,module,exports){
+},{"./_stream_transform":316,"dup":169,"inherits":264}],315:[function(require,module,exports){
 arguments[4][170][0].apply(exports,arguments)
-},{"./_stream_readable":317,"./_stream_writable":319,"_process":285,"dup":170,"inherits":266}],316:[function(require,module,exports){
+},{"../errors":312,"./_stream_duplex":313,"./internal/streams/async_iterator":318,"./internal/streams/buffer_list":319,"./internal/streams/destroy":320,"./internal/streams/from":322,"./internal/streams/state":324,"./internal/streams/stream":325,"_process":283,"buffer":183,"dup":170,"events":227,"inherits":264,"string_decoder/":326,"util":137}],316:[function(require,module,exports){
 arguments[4][171][0].apply(exports,arguments)
-},{"./_stream_transform":318,"dup":171,"inherits":266}],317:[function(require,module,exports){
+},{"../errors":312,"./_stream_duplex":313,"dup":171,"inherits":264}],317:[function(require,module,exports){
 arguments[4][172][0].apply(exports,arguments)
-},{"../errors":314,"./_stream_duplex":315,"./internal/streams/async_iterator":320,"./internal/streams/buffer_list":321,"./internal/streams/destroy":322,"./internal/streams/from":324,"./internal/streams/state":326,"./internal/streams/stream":327,"_process":285,"buffer":185,"dup":172,"events":229,"inherits":266,"string_decoder/":328,"util":139}],318:[function(require,module,exports){
+},{"../errors":312,"./_stream_duplex":313,"./internal/streams/destroy":320,"./internal/streams/state":324,"./internal/streams/stream":325,"_process":283,"buffer":183,"dup":172,"inherits":264,"util-deprecate":333}],318:[function(require,module,exports){
 arguments[4][173][0].apply(exports,arguments)
-},{"../errors":314,"./_stream_duplex":315,"dup":173,"inherits":266}],319:[function(require,module,exports){
+},{"./end-of-stream":321,"_process":283,"dup":173}],319:[function(require,module,exports){
 arguments[4][174][0].apply(exports,arguments)
-},{"../errors":314,"./_stream_duplex":315,"./internal/streams/destroy":322,"./internal/streams/state":326,"./internal/streams/stream":327,"_process":285,"buffer":185,"dup":174,"inherits":266,"util-deprecate":335}],320:[function(require,module,exports){
+},{"buffer":183,"dup":174,"util":137}],320:[function(require,module,exports){
 arguments[4][175][0].apply(exports,arguments)
-},{"./end-of-stream":323,"_process":285,"dup":175}],321:[function(require,module,exports){
+},{"_process":283,"dup":175}],321:[function(require,module,exports){
 arguments[4][176][0].apply(exports,arguments)
-},{"buffer":185,"dup":176,"util":139}],322:[function(require,module,exports){
+},{"../../../errors":312,"dup":176}],322:[function(require,module,exports){
 arguments[4][177][0].apply(exports,arguments)
-},{"_process":285,"dup":177}],323:[function(require,module,exports){
+},{"dup":177}],323:[function(require,module,exports){
 arguments[4][178][0].apply(exports,arguments)
-},{"../../../errors":314,"dup":178}],324:[function(require,module,exports){
+},{"../../../errors":312,"./end-of-stream":321,"dup":178}],324:[function(require,module,exports){
 arguments[4][179][0].apply(exports,arguments)
-},{"dup":179}],325:[function(require,module,exports){
+},{"../../../errors":312,"dup":179}],325:[function(require,module,exports){
 arguments[4][180][0].apply(exports,arguments)
-},{"../../../errors":314,"./end-of-stream":323,"dup":180}],326:[function(require,module,exports){
-arguments[4][181][0].apply(exports,arguments)
-},{"../../../errors":314,"dup":181}],327:[function(require,module,exports){
-arguments[4][182][0].apply(exports,arguments)
-},{"dup":182,"events":229}],328:[function(require,module,exports){
+},{"dup":180,"events":227}],326:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -69274,7 +63967,7 @@ function simpleWrite(buf) {
 function simpleEnd(buf) {
   return buf && buf.length ? this.write(buf) : '';
 }
-},{"safe-buffer":296}],329:[function(require,module,exports){
+},{"safe-buffer":294}],327:[function(require,module,exports){
 (function (Buffer){(function (){
 const BN = require('bn.js')
 const EC = require('elliptic').ec
@@ -69560,7 +64253,7 @@ module.exports = {
 }
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"./rfc6979":330,"bn.js":137,"buffer":185,"elliptic":213}],330:[function(require,module,exports){
+},{"./rfc6979":328,"bn.js":135,"buffer":183,"elliptic":211}],328:[function(require,module,exports){
 (function (Buffer){(function (){
 const createHmac = require('create-hmac')
 
@@ -69626,7 +64319,7 @@ function deterministicGenerateK (hash, x, checkSig, isPrivate, extraEntropy) {
 module.exports = deterministicGenerateK
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"buffer":185,"create-hmac":199}],331:[function(require,module,exports){
+},{"buffer":183,"create-hmac":197}],329:[function(require,module,exports){
 var native = require('./native')
 
 function getTypeName (fn) {
@@ -69738,7 +64431,7 @@ module.exports = {
   getValueTypeName: getValueTypeName
 }
 
-},{"./native":334}],332:[function(require,module,exports){
+},{"./native":332}],330:[function(require,module,exports){
 (function (Buffer){(function (){
 var NATIVE = require('./native')
 var ERRORS = require('./errors')
@@ -69833,7 +64526,7 @@ for (var typeName in types) {
 module.exports = types
 
 }).call(this)}).call(this,{"isBuffer":require("../is-buffer/index.js")})
-},{"../is-buffer/index.js":267,"./errors":331,"./native":334}],333:[function(require,module,exports){
+},{"../is-buffer/index.js":265,"./errors":329,"./native":332}],331:[function(require,module,exports){
 var ERRORS = require('./errors')
 var NATIVE = require('./native')
 
@@ -70095,7 +64788,7 @@ typeforce.TfPropertyTypeError = TfPropertyTypeError
 
 module.exports = typeforce
 
-},{"./errors":331,"./extra":332,"./native":334}],334:[function(require,module,exports){
+},{"./errors":329,"./extra":330,"./native":332}],332:[function(require,module,exports){
 var types = {
   Array: function (value) { return value !== null && value !== undefined && value.constructor === Array },
   Boolean: function (value) { return typeof value === 'boolean' },
@@ -70118,7 +64811,7 @@ for (var typeName in types) {
 
 module.exports = types
 
-},{}],335:[function(require,module,exports){
+},{}],333:[function(require,module,exports){
 (function (global){(function (){
 
 /**
@@ -70189,7 +64882,7 @@ function config (name) {
 }
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],336:[function(require,module,exports){
+},{}],334:[function(require,module,exports){
 'use strict'
 var Buffer = require('safe-buffer').Buffer
 
@@ -70281,7 +64974,7 @@ function encodingLength (number) {
 
 module.exports = { encode: encode, decode: decode, encodingLength: encodingLength }
 
-},{"safe-buffer":296}],337:[function(require,module,exports){
+},{"safe-buffer":294}],335:[function(require,module,exports){
 (function (Buffer){(function (){
 var bs58check = require('bs58check')
 
@@ -70348,5 +65041,5 @@ module.exports = {
 }
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"bs58check":188,"buffer":185}]},{},[1])(1)
+},{"bs58check":186,"buffer":183}]},{},[1])(1)
 });
