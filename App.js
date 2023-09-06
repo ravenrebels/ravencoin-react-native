@@ -1,11 +1,14 @@
 import "react-native-get-random-values"; //Must be the first import
 import React from "react";
 import { StatusBar } from "expo-status-bar";
-import { Text, View } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { Button, Card, Input, Text } from "@rneui/base";
+import * as Clipboard from "expo-clipboard";
+import { View, ScrollView } from "react-native";
 import { useBalance } from "./useBalance.js";
 import { useAddressObjects } from "./useAddressObjects.js";
 import { toAddresses } from "./toAddresses.js";
-import { Input, Button } from "react-native-elements";
+
 import { send } from "./send.js";
 
 const styles = {
@@ -47,55 +50,63 @@ export default function App() {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <Text style={{ fontSize: 30 }}>
-        Ravencoin packages from @RavenRebels!
-      </Text>
-      <Text style={{ fontSize: 18, marginTop: 20 }}>TESTNET</Text>
-      <TextWithLabel label="Mnemonic" text={mnemonic} />
-      <TextWithLabel
-        label="First address (testnet)"
-        text={addresses.length && addresses[0]}
-      />
-      <TextWithLabel label="Balance" text={balance / 1e8} />
-
-      <View style={{ background: "#EEEEEE", marginTop: 40 }}>
-        <Text style={{ fontSize: 28 }}>Send RVN</Text>
-        <Input
-          placeholder="Enter Ravencoin address here"
-          containerStyle={{ width: 340 }} // Set the width here
-          label="To address"
-          defaultValue={recipientAddress}
-          onChangeText={(text) => {
-            setRecipientAddress(text);
-          }}
-          leftIcon={{ type: "font-awesome", name: "user" }} // Adjust the icon as needed
-        />
-        <Button
-          title="Send 1 RVN"
-          onPress={async (event) => {
-            try {
-              const id = await send(addressObjects, 1, recipientAddress);
-              alert("Sending transaction " + id);
-              console.log("Sending", id);
-            } catch (e) {
-              alert("Error " + e);
+    <SafeAreaProvider>
+      <ScrollView>
+        <View style={styles.container}>
+          <Text h3>Ravencoin packages from @RavenRebels!</Text>
+          <Text style={{ fontSize: 18, marginTop: 20 }}>TESTNET</Text>
+          <TextWithLabel label="Mnemonic" text={mnemonic} />
+          <TextWithLabel
+            label="First address (testnet)"
+            text={addresses.length && addresses[0]}
+          />
+          <Button
+            title="Copy address"
+            onPress={() =>
+              Clipboard.setStringAsync(addresses.length && addresses[0])
             }
-          }}
-        ></Button>
-      </View>
-      <StatusBar style="auto" />
-    </View>
+          ></Button>
+          <TextWithLabel label="Balance" text={balance / 1e8} />
+
+          <Card>
+            <Card.Title>Send RVN</Card.Title>
+            <Input
+              placeholder="Enter Ravencoin address here"
+              containerStyle={{ width: 340 }} // Set the width here
+              label="To address"
+              defaultValue={recipientAddress}
+              onChangeText={(text) => {
+                setRecipientAddress(text);
+              }}
+            />
+            <Button
+              title="Send 1 RVN"
+              onPress={async (event) => {
+                try {
+                  const id = await send(addressObjects, 1, recipientAddress);
+                  alert("Sending transaction " + id);
+                  console.log("Sending", id);
+                } catch (e) {
+                  alert("Error " + e);
+                }
+              }}
+            ></Button>
+          </Card>
+          <StatusBar style="auto" />
+        </View>
+      </ScrollView>
+    </SafeAreaProvider>
   );
 }
 
 function TextWithLabel({ label, text }) {
   return (
-    <View style={{ marginTop: 40 }}>
-      <View>
-        <Text style={{ fontSize: 28, fontWeight: 600 }}>{label}</Text>
+    <Card>
+      <View style={{ marginTop: 40 }}>
+        <Card.Title>{label}</Card.Title>
+        <Card.Divider />
+        <Text>{text}</Text>
       </View>
-      <Text style={{ fontSize: 20 }}>{text}</Text>
-    </View>
+    </Card>
   );
 }
