@@ -14,7 +14,6 @@
   "dependencies": {
     "@expo/webpack-config": "^19.0.0",
     "@ravenrebels/ravencoin-key": "^2.5.0",
-    "@ravenrebels/ravencoin-message": "^0.7.0",
     "@ravenrebels/ravencoin-rpc": "^0.3.0",
     "@ravenrebels/ravencoin-sign-transaction": "^0.2.11",
     "@rneui/themed": "^4.0.0-rc.8",

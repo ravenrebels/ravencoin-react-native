@@ -1,4 +1,3 @@
-const { verifyMessage, sign } = require("@ravenrebels/ravencoin-message");
 const SIGNER = require("@ravenrebels/ravencoin-sign-transaction");
 //const RavencoinWallet = require("@ravenrebels/ravencoin-jswallet");
 const {
@@ -20,7 +19,6 @@ module.exports = {
   getAddressPair,
   getHDKey,
   isMnemonicValid,
-  sign,
+
   signTransaction: SIGNER.sign,
-  verifyMessage,
 };

@@ -96,7 +96,7 @@ export async function send(addressObjects, amount, recipientAddress) {
     privateKeys
   );
 
-  console.log("Siged transaction", signedTransaction);
+  console.log("Signed transaction", signedTransaction);
   return rpc("sendrawtransaction", [signedTransaction]);
   //OK lets sign the raw transaction
   //Syntax:   Signer.sign("rvn", raw, UTXOs, privateKeys);
