@@ -11,22 +11,24 @@ import config from "./config";
  *
  * @param {*} addressObjects
  * @param {*} amount
- * @param {*} toAddress
+ * @param {*} recipientAddress
  */
-export async function send(addressObjects, amount, toAddress) {
+export async function send(addressObjects, amount, recipientAddress) {
   if (amount > 0 === false) {
     throw new Error("Amount must be larger than zero");
   }
 
-  if (!toAddress) {
-    throw new Error("Invalid toAddress");
+  if (!recipientAddress) {
+    throw new Error("Invalid recipient address");
   }
-  console.log("Processing to address", toAddress);
+  console.log("Processing to address", recipientAddress);
   //Validate to address
-  const validateToAddress = await rpc("validateaddress", [toAddress]);
+  const validateRecipientAddress = await rpc("validateaddress", [
+    recipientAddress,
+  ]);
 
-  if (validateToAddress.isvalid !== true) {
-    throw Error("Invalid toAddress");
+  if (validateRecipientAddress.isvalid !== true) {
+    throw Error("Invalid recipient address");
   }
 
   //Get all UTXO, unspent transaction outputs
@@ -65,8 +67,8 @@ export async function send(addressObjects, amount, toAddress) {
   const changeAmount = (totalAmount - amount - FEE).toFixed(4);
   const outputs = {};
 
-  //Add the amount to be sent to toAddress
-  outputs[toAddress] = amount;
+  //Add the amount to be sent to recipient
+  outputs[recipientAddress] = amount;
 
   const changeAddress = addressObjects[1].address; //Should we our first internal/change address
   //Add change

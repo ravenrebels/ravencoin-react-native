@@ -1,11 +1,11 @@
 import "react-native-get-random-values"; //Must be the first import
 import React from "react";
 import { StatusBar } from "expo-status-bar";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import { useBalance } from "./useBalance.js";
 import { useAddressObjects } from "./useAddressObjects.js";
 import { toAddresses } from "./toAddresses.js";
-import { Input, Button, ThemeProvider } from "react-native-elements";
+import { Input, Button } from "react-native-elements";
 import { send } from "./send.js";
 
 const styles = {
@@ -27,8 +27,8 @@ export default function App() {
   const [tick, setTick] = React.useState(0);
   const addressObjects = useAddressObjects(mnemonic);
 
-  const [toAddress, setToAddress] = React.useState(
-    "mzn451nQQEHSwBupLuRDpxfqhorC5uGCBX"
+  const [recipientAddress, setRecipientAddress] = React.useState(
+    "mpMRG3rGhbnbE5S75ts9Kx3DEYBhzmuJyE"
   );
   const addresses = toAddresses(addressObjects);
   const balance = useBalance(tick, addresses);
@@ -65,16 +65,22 @@ export default function App() {
           placeholder="Enter Ravencoin address here"
           containerStyle={{ width: 340 }} // Set the width here
           label="To address"
-          defaultValue={toAddress}
+          defaultValue={recipientAddress}
           onChangeText={(text) => {
-            setToAddress(text);
+            setRecipientAddress(text);
           }}
           leftIcon={{ type: "font-awesome", name: "user" }} // Adjust the icon as needed
         />
         <Button
           title="Send 1 RVN"
-          onPress={(event) => {
-            send(addressObjects, 1, toAddress);
+          onPress={async (event) => {
+            try {
+              const id = await send(addressObjects, 1, recipientAddress);
+              alert("Sending transaction " + id);
+              console.log("Sending", id);
+            } catch (e) {
+              alert("Error " + e);
+            }
           }}
         ></Button>
       </View>
