@@ -1,0 +1,37 @@
+{
+  "name": "awesomeproject",
+  "version": "1.0.0",
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "buildRavencoinHandler": "browserify ./RavencoinHandler.js  --standalone RavencoinHandler -o _ravencoinhandler.js",
+    "buildWallet": "browserify ./Wallet.js  --standalone Wallet -o _wallet.js",
+    "build": "npm run buildRavencoinHandler && npx expo export:web",
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web"
+  },
+  "dependencies": {
+    "@expo/webpack-config": "^19.0.0",
+    "@ravenrebels/ravencoin-jswallet": "^0.7.29",
+    "@ravenrebels/ravencoin-key": "^2.5.0",
+    "@ravenrebels/ravencoin-message": "^0.7.0",
+    "@ravenrebels/ravencoin-rpc": "^0.3.0",
+    "@ravenrebels/ravencoin-sign-transaction": "^0.2.11",
+    "browserify": "^17.0.0",
+    "expo": "~49.0.8",
+    "expo-random": "^13.2.0",
+    "expo-status-bar": "~1.6.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-native": "0.72.4",
+    "react-native-elements": "^3.4.3",
+    "react-native-get-random-values": "^1.9.0",
+    "react-native-vector-icons": "^10.0.0",
+    "react-native-web": "~0.19.6"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.0"
+  },
+  "private": true
+}
